@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+<Configuration>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%c{1}] %X{class} - %msg%n" />
+        </Console>
+
+        <RollingFile name="RollingFile"
+            fileName="./logs/spring-boot-logger-log4j2.log"
+            filePattern="./logs/$${date:yyyy-MM}/spring-boot-logger-log4j2-%d{-dd-MMMM-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- rollover on startup, daily and when the file reaches 
+                    10 MegaBytes -->
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy
+                    size="10 MB" />
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+        
+        <JDBC name="DatabasePecusAuditAppender" tableName="AUDIT_LOG">
+            <Filters>
+                <MarkerFilter marker="SMART_LOGGER_AUDIT" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <ConnectionFactory class="de.pecus.api.config.ConfigLog4JConnectionFactory" method="getPecusBitacoraDatabaseConnection" />
+            <Column name="FK_USER_ID" pattern="%X{userId}" />
+            <Column name="DX_TOKEN" pattern="%X{token}" />
+            <Column name="DX_LOG_LEVEL" pattern="%level" />
+            <Column name="DX_CLASS_NAME" pattern="%X{class}" />
+            <Column name="DX_METHOD_NAME" pattern="%X{method}" />
+            <Column name="DX_MESSAGE" pattern="%X{message}" />
+            <Column name="DD_EVENT_DATE" pattern="%X{eventDate}" />
+            <Column name="DD_REQUEST_DATE" pattern="%X{requestDate}" />
+            <Column name="DD_LOG_DATE" isEventTimestamp="true" />
+            <Column name="DX_REQUEST_VO" pattern="%X{requestVO}" />
+            <Column name="DX_RESPONSE_VO" pattern="%X{responseVO}" />
+            <Column name="DX_STACKTRACE" pattern="%X{stacktrace}" />
+            <Column name="DX_ID_CLIENT_INVOKE" pattern="%X{idClienteInvoke}" />
+            <Column name="DX_CLIENT_OPERATION_CODE" pattern="%X{codigoOperacionCliente}" />
+            <Column name="DX_ELAPSED_TIME" pattern="%X{elapsedTime}" /> 
+            <Column name="DX_STATUS" pattern="%X{status}" /> 
+        </JDBC>
+        
+        <JDBC name="DatabasePecusErrorAppender" tableName="ERROR_LOG">
+            <Filters>
+                <MarkerFilter marker="SMART_LOGGER_ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <ConnectionFactory class="de.pecus.api.config.ConfigLog4JConnectionFactory" method="getPecusBitacoraDatabaseConnection" />
+            <Column name="FK_USER_ID" pattern="%X{userId}" />
+            <Column name="DX_TOKEN" pattern="%X{token}" />
+            <Column name="DX_LOG_LEVEL" pattern="%level" />
+            <Column name="DX_CLASS_NAME" pattern="%X{class}" />
+            <Column name="DX_METHOD_NAME" pattern="%X{method}" />
+            <Column name="DX_MESSAGE" pattern="%X{message}" />
+            <Column name="DD_EVENT_DATE" pattern="%X{eventDate}" />
+            <Column name="DD_REQUEST_DATE" pattern="%X{requestDate}" />
+            <Column name="DD_LOG_DATE" isEventTimestamp="true" />
+            <Column name="DX_REQUEST_VO" pattern="%X{requestVO}" />
+            <Column name="DX_STACKTRACE" pattern="%X{stacktrace}" />
+            <Column name="DX_ID_CLIENT_INVOKE" pattern="%X{idClienteInvoke}" />
+            <Column name="DX_CLIENT_OPERATION_CODE" pattern="%X{codigoOperacionCliente}" />
+        </JDBC>
+        
+    </Appenders>
+
+    <Loggers>
+        <!-- Root error level -->
+        <Root level="INFO">
+            <AppenderRef ref="Console" />
+        </Root>
+        
+        <Logger name="org.springframework.ws.client.MessageTracing">
+	        <level value="INFO" />
+	        <AppenderRef ref="Console" />
+	    </Logger>
+	    
+	    <Logger name="org.springframework.ws.server.MessageTracing">
+	        <level value="INFO" />
+	        <AppenderRef ref="Console" />
+	    </Logger>
+	    
+	    <Logger name="springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator" additivity="false">
+	    	<level value="OFF" />
+	    </Logger>
+        
+        <Logger name="de.pecus" additivity="false">
+            <AppenderRef ref="Console" level="INFO" />
+            <AppenderRef ref="DatabasePecusAuditAppender" level="ALL" />
+            <AppenderRef ref="DatabasePecusErrorAppender" level="WARN, ERROR, TRACE" />
+        </Logger>
+    </Loggers>
+
+</Configuration>

@@ -1,0 +1,513 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.pecus</groupId>
+	<artifactId>lib-java-commons-pecus</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+
+
+	<properties>
+		<!-- Encoding -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<java-ee.version>6.0</java-ee.version>
+		<junit.version>4.12</junit.version>
+		<slf4j.version>1.7.26</slf4j.version>
+		<logback.version>1.0.13</logback.version>
+		<spring.version>5.3.6</spring.version>
+		<spring-boot.version>2.4.5</spring-boot.version>
+		<spring-data-jpa.version>2.5.0</spring-data-jpa.version>
+		<spring-security.version>5.4.6</spring-security.version>
+		<hibernate.version>5.4.27.Final</hibernate.version>
+		<hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
+		<aspectj.version>1.7.2</aspectj.version>
+		<jackson-json.version>2.6.7</jackson-json.version>
+		<jackson-json.oi.version>0.9.0</jackson-json.oi.version>
+		<commons-dbcp.version>1.4</commons-dbcp.version>
+		<commons-lang3.version>3.7</commons-lang3.version>
+		<rxjava.version>1.2.10</rxjava.version>
+		<jtds.version>1.3.1</jtds.version>
+		<javax.websocket.version>1.1</javax.websocket.version>
+		<!-- Librerias Apache -->
+		<commons-lang.version>2.6</commons-lang.version>
+		<commons-collections.version>3.2.1</commons-collections.version>
+		<!-- Mocks -->
+		<mockito.version>1.10.19</mockito.version>
+		<!-- sonar properties -->
+		<sonar.sources>src/main</sonar.sources>
+		<sonar.tests>src/test</sonar.tests>
+		<!-- Sonar-JaCoCo properties -->
+		<jacoco.version>0.7.9</jacoco.version>
+		<sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>
+		<sonar.language>java</sonar.language>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.jacoco.reportMissing.force.zero>true</sonar.jacoco.reportMissing.force.zero>
+		<commons-codec.version>1.10</commons-codec.version>
+		<commons-logging.version>1.2</commons-logging.version>
+		<httpcore.version>4.4.9</httpcore.version>
+		<httpclient.version>4.5.6</httpclient.version>
+		<gson.version>2.8.5</gson.version>
+		<!-- Apache -->
+		<apache.codec.version>1.8</apache.codec.version>
+		<apache.compress.version>1.5</apache.compress.version>
+		<apache.beanutils.version>1.9.1</apache.beanutils.version>
+		<!-- Maven plugins version -->
+		<maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
+		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+		<maven-resources-plugin.version>2.4.3</maven-resources-plugin.version>
+		<!-- MariaDB -->
+		<mariadb.driver.version>2.5.1</mariadb.driver.version>
+		<!-- Oracle Driver -->
+		<oracle.driver.version>19.3.0.0</oracle.driver.version>
+		<oracle.pki.version>19.9.0.0</oracle.pki.version>
+		<oracle.osdt.version>19.3.0.0</oracle.osdt.version>
+		<!-- AWS -->
+		<aws.version>2.5.70</aws.version>
+		<!-- Sonar -->
+		<sonar.coverage.exclusions>
+			**/vo/*,
+			**/repositories/*,
+			**/entities/*,
+			**/config/*,
+			**/constant/*,
+			**/enums/*,
+			**/error/*,
+			**/trasformers/*,
+			**/pecus-api-commons/**
+		</sonar.coverage.exclusions>
+		<sonar.exclusions>
+			**/config/*,
+			**/test/**,
+			**/aspect/SystemArchitecture.*,
+			**/repositories/*
+		</sonar.exclusions>
+		<sonar.cpd.exclusions>
+			**/entities/*,
+			**/vo/*,
+			**/error/*
+		</sonar.cpd.exclusions>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>local</id>
+			<properties>
+				<spring.profiles.active>local</spring.profiles.active>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<spring.profiles.active>dev</spring.profiles.active>
+			</properties>
+		</profile>
+		<profile>
+			<id>qa</id>
+			<properties>
+				<spring.profiles.active>qa</spring.profiles.active>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<spring.profiles.active>prod</spring.profiles.active>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven-jar-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.nimbusds</groupId>
+			<artifactId>nimbus-jose-jwt</artifactId>
+			<version>8.20.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<version>${spring-boot.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+
+		<!-- Add Log4j2 Dependency -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>2.12.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.12.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.26</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- Spring Data JPA dependencies -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring-data-jpa.version}</version>
+		</dependency>
+
+		<!-- Database dependencies -->
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>${mariadb.driver.version}</version>
+		</dependency>
+
+		<!--dependency>
+			<groupId>com.oracle.jdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
+			<version>${oracle.driver.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.database.security</groupId>
+			<artifactId>oraclepki</artifactId>
+			<version>${oracle.pki.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.ojdbc</groupId>
+			<artifactId>osdt_cert</artifactId>
+			<version>${oracle.osdt.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.ojdbc</groupId>
+			<artifactId>osdt_core</artifactId>
+			<version>${oracle.osdt.version}</version>
+		</dependency-->
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>5.2.12.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>11.2.0.jre11</version>
+		</dependency>
+
+		<!-- Aspects libraries -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>5.1.7.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>5.1.7.RELEASE</version>
+		</dependency>
+
+		<!-- Apache -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${commons-lang.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>${commons-collections.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-pool</groupId>
+			<artifactId>commons-pool</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.16</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-codec</groupId>
+					<artifactId>commons-codec</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${apache.beanutils.version}</version>
+		</dependency>
+
+		<!-- Swagger -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+
+		<!-- Encrypt dependencies -->
+
+		<!-- Testing dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>2.0.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<version>1.3</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>${commons-dbcp.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson-json.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${jackson-json.oi.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
+		<!-- Web dependencies -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.reactivex</groupId>
+			<artifactId>rxjava</artifactId>
+			<version>${rxjava.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.websocket</groupId>
+			<artifactId>javax.websocket-api</artifactId>
+			<version>${javax.websocket.version}</version>
+		</dependency>
+
+		<!-- Resources plugin -->
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-resources-plugin</artifactId>
+			<version>${maven-resources-plugin.version}</version>
+		</dependency>
+
+		<!-- QRCode -->
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+
+		<!-- JAXB-API -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
+		<!-- Encription to Gnexus-->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.70</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.15</version>
+		</dependency>
+
+	</dependencies>
+
+	<!--repositories>
+		<repository>
+			<id>pecus-maven-artifact-repo</id>
+			<name>pecus-maven-artifact-repo</name>
+			<url>https://pecus-repo.com/maven/pecus-maven-artifact-repo/</url>
+		</repository>
+		<repository>
+			<id>maven.oracle.com</id>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<url>https://maven.oracle.com</url>
+			<layout>default</layout>
+		</repository>
+	</repositories-->
+
+	<!-- Upload to nexus repo -->
+	<!--distributionManagement>
+		<repository>
+			<id>pecus-maven-artifact-repo</id>
+			<name>pecus-maven-artifact-repo</name>
+			<url>https://pecus-repo.com/maven/pecus-maven-artifact-repo/</url>
+		</repository>
+	</distributionManagement-->
+
+</project>
