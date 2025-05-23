@@ -71,7 +71,7 @@ public class UsuarioDO extends AuditBase<Long> implements Serializable {
     private String pushProviderToken;
     @Column(name = "DX_USER_ID_PAIS")
     private String ladaPais;
-    @Column(name =  "DD_ACEPTACION_TERMINOS" )
+    @Column(name = "DD_ACEPTACION_TERMINOS" )
     private Date terminosAceptados;
     @Column(name = "DX_CODIGO_ALEXA")
     private String codigoAlexa;
