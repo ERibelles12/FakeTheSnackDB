@@ -17,9 +17,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @author Luis Enrique Sanchez Santiago
  *
  */
-@Configuration
-@ComponentScan(basePackages = { "com.pecus.api.controllers", "com.pecus.api.smartlogger.controllers" })
-@EnableAsync
+//@Configuration
+//@ComponentScan(basePackages = { "de.pecus.api.controllers", "de.pecus.api.smartlogger.controllers" })
+//@EnableAsync
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     /**
