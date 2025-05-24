@@ -11,8 +11,6 @@ import de.pecus.api.vo.usuarios.FindDetailUsuarioRequestVO;
 import de.pecus.api.vo.usuarios.FindDetailUsuarioResponseVO;
 import de.pecus.api.vo.usuarios.FindListUsuarioRequestVO;
 import de.pecus.api.vo.usuarios.FindListUsuarioResponseVO;
-import de.pecus.api.vo.usuarios.FindUserByEmailAndPhoneNumberRequestVO;
-import de.pecus.api.vo.usuarios.FindUserByEmailAndPhoneNumberResponseVO;
 import de.pecus.api.vo.usuarios.UpdateUsuarioRequestVO;
 
 /**
@@ -29,13 +27,6 @@ public interface UsuarioService {
 	 * @param idUsuario
 	 */
 	UsuarioDO exists(Long idUsuario, String idioma);
-	
-	/**
-	 * Metodo que consulta un usuario por medio del email y telefono
-	 * @param request
-	 * @return
-	 */
-	ResponseVO<FindUserByEmailAndPhoneNumberResponseVO> findByEmailAndPhone(RequestVO<FindUserByEmailAndPhoneNumberRequestVO> request);
 	
 	
 	/**

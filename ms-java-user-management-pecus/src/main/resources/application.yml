@@ -30,9 +30,9 @@ spring:
     allow-bean-definition-overriding: true
     banner-mode: off
   datasource:
-    jdbcUrl: jdbc:postgresql://localhost:5432/PECUS?currentSchema=pecus_schema
-    username: pecusapp
-    password: p3cu54pp
+    jdbcUrl: jdbc:postgresql://localhost:13579/postgres
+    username: postgres
+    password: admin
     driverClassName: org.postgresql.Driver
     hikari:
      maximum-pool-size: 4
@@ -41,7 +41,6 @@ spring:
     show-sql: false
     open-in-view: false
     properties:
-      hibernate:
         format_sql: true
         jdbc:
           time_zone: UTC

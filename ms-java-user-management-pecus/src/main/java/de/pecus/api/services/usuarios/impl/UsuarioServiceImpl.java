@@ -44,8 +44,6 @@ import de.pecus.api.vo.usuarios.FindDetailUsuarioRequestVO;
 import de.pecus.api.vo.usuarios.FindDetailUsuarioResponseVO;
 import de.pecus.api.vo.usuarios.FindListUsuarioRequestVO;
 import de.pecus.api.vo.usuarios.FindListUsuarioResponseVO;
-import de.pecus.api.vo.usuarios.FindUserByEmailAndPhoneNumberRequestVO;
-import de.pecus.api.vo.usuarios.FindUserByEmailAndPhoneNumberResponseVO;
 import de.pecus.api.vo.usuarios.UpdateUsuarioRequestVO;
 
 /**
@@ -91,70 +89,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw new PecusException(UsuarioBusinessErrors.NOT_FOUND_USUARIO_ERROR, idioma);
 		}
 		return usuario;
-	}
-
-	/**
-	 * Metodo que consulta un usuario por email y numero de telefono
-	 */
-	@Auditable
-	@Override
-	public ResponseVO<FindUserByEmailAndPhoneNumberResponseVO> findByEmailAndPhone(
-			RequestVO<FindUserByEmailAndPhoneNumberRequestVO> request) {
-
-		ResponseVO<FindUserByEmailAndPhoneNumberResponseVO> response = new ResponseVO<>();
-
-		// Validamos parametros de entrada
-		validateParamsFindByEmailAndPhone(request, response);
-
-		if (ValidatorUtil.isSuccessfulResponse(response)) {
-			// Buscamos al usuario por numeor de telefono
-			UsuarioDO usuarioDO = usuarioRepository.findByMobileNumberAndLadaPais(UsuariosDataConstants.LADA_MEXICO,
-					request.getParameters().getUserIdMobileNumber());
-			if (ValidatorUtil.isNull(usuarioDO)
-					&& !ValidatorUtil.isNullOrEmpty(request.getParameters().getUserIdEmail())) {
-				// Buscamos al usuario por email
-				usuarioDO = usuarioRepository.findByUserIdEmail(request.getParameters().getUserIdEmail());
-			}
-
-			// Validamos si se encontro al usuario en alguna de las busquedas anteriores
-			if (ValidatorUtil.isNull(usuarioDO)) {
-				LOGGER.debug(request, UsuarioBusinessErrors.NOT_FOUND_USUARIO_ERROR);
-				ResponseUtil.addError(request, response, UsuarioBusinessErrors.NOT_FOUND_USUARIO_ERROR);
-			} else {
-				FindUserByEmailAndPhoneNumberResponseVO findUserByEmailAndPhoneNumberResponseVO = new FindUserByEmailAndPhoneNumberResponseVO();
-				findUserByEmailAndPhoneNumberResponseVO.setEmail(usuarioDO.getUserIdEmail());
-				findUserByEmailAndPhoneNumberResponseVO.setIdUsuario(usuarioDO.getId());
-				findUserByEmailAndPhoneNumberResponseVO.setPhoneNumber(usuarioDO.getUserIdMobileNumber());
-				findUserByEmailAndPhoneNumberResponseVO.setTokenFirebase(usuarioDO.getPushProviderToken());
-				response.setData(findUserByEmailAndPhoneNumberResponseVO);
-				response.setSuccess(Boolean.TRUE);
-			}
-		}
-
-		return response;
-	}
-
-	/**
-	 * Metodo para la validacion de parametros de la operacion findByEmailAndPhone
-	 * 
-	 * @param request
-	 * @param response
-	 */
-	private void validateParamsFindByEmailAndPhone(RequestVO<FindUserByEmailAndPhoneNumberRequestVO> request,
-			ResponseVO<FindUserByEmailAndPhoneNumberResponseVO> response) {
-
-		if (ValidatorUtil.isNull(request.getParameters())) {
-			// Si no se ha informado ningun parametro regresa el error y no sigue validando
-			LOGGER.debug(request, GeneralBusinessErrors.REQUIRED_PARAMETERS_ERROR);
-			ResponseUtil.addError(request, response, GeneralBusinessErrors.REQUIRED_PARAMETERS_ERROR);
-		} else {
-			if (ValidatorUtil.isNullOrEmpty(request.getParameters().getUserIdMobileNumber())
-					&& ValidatorUtil.isNullOrEmpty(request.getParameters().getUserIdEmail())) {
-				// Si no se ha informado ningun parametro regresa el error y no sigue validando
-				ResponseUtil.addError(request, response, UsuarioBusinessErrors.REQUIRED_USER_ID_MOBILE_NUMBER_ERROR);
-				LOGGER.debug(request, UsuarioBusinessErrors.REQUIRED_USER_ID_MOBILE_NUMBER_ERROR);
-			}
-		}
 	}
 
 	@Auditable
@@ -243,7 +177,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			predicates.add(usuarioIdMobilePredicate);
 		}
 		
-		Predicate activePredicate = cb.equal(usuarioRoot.get("active"), Boolean.TRUE);
+		Predicate activePredicate = cb.equal(usuarioRoot.get("active"), GeneralConstants.ONE);
 		predicates.add(activePredicate);
 		
 		return predicates;
