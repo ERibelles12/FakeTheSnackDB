@@ -35,7 +35,7 @@ public abstract class AuditBase<T extends Serializable> extends Base<T> implemen
     protected Date creationDate;
     
     @Column(name = "DN_ACTIVO", nullable = false)
-    protected Integer active;
+    protected Boolean active;
 
     /**
      * Gets the last modified username.
@@ -129,14 +129,14 @@ public abstract class AuditBase<T extends Serializable> extends Base<T> implemen
     /**
      * @return the active
      */
-    public Integer getActive() {
+    public Boolean getActive() {
         return active;
     }
 
     /**
      * @param active the active to set
      */
-    public void setActive(Integer active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 }

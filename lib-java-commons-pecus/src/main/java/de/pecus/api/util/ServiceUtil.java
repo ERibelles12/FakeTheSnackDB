@@ -60,13 +60,13 @@ public final class ServiceUtil {
 		}
 		entity.setLastModifiedDate(date);
 		entity.setLastModifiedUsername(userId);
-		entity.setActive(GeneralConstants.ONE);
+		entity.setActive(Boolean.TRUE);
 		
 	}
 
 	public static void setDisabledEntity(AuditBase<?> entity, String token) {
 		setAuditFields(entity, token);
-		entity.setActive(GeneralConstants.ONE);
+		entity.setActive(Boolean.FALSE);
 	}
 	
 	/**
