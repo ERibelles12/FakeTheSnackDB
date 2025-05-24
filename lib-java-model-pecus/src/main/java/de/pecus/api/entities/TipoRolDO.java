@@ -36,8 +36,6 @@ public class TipoRolDO extends AuditBase<Long> implements Serializable {
 	private static final long serialVersionUID = -5382607608047169433L;
 	
 	@Id
-	@SequenceGenerator(name="TIPO_ROL_ID_GENERATOR", sequenceName="SEQ_PK_TIPO_ROL_ID",allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TIPO_ROL_ID_GENERATOR")
 	@Column(name="PK_ID")
 	private Long id;
 	@Column(name =  "DX_ID_NOMBRE" )
