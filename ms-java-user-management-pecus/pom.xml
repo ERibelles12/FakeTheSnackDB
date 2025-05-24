@@ -122,10 +122,6 @@
       <artifactId>lib-java-commons-pecus</artifactId>
     </dependency>
     <dependency>
-      <groupId>de.pecus</groupId>
-      <artifactId>lib-java-security-model-pecus</artifactId>
-    </dependency>
-    <dependency>
       <groupId>de.pecus.arquitectura</groupId>
       <artifactId>lib-java-architecture-smart-logger-pecus</artifactId>
     </dependency>

@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,14 +37,15 @@ public class UsuarioDO extends AuditBase<Long> implements Serializable {
     private static final long serialVersionUID = 3736839829404032486L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="PK_ID")
     private Long id;
     
 	@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DD_LAST_LOGIN")
     private Date lastLoginActive;
     @Column(name = "DN_NOTIFICATION_ENABLED")
-    private Boolean notificationsEnabled;
+    private Integer notificationsEnabled;
     @Column(name = "DX_PASSWORD")
     private String password;
     @Column(name = "DN_PASSWORD_STATUS")
@@ -101,11 +101,11 @@ public class UsuarioDO extends AuditBase<Long> implements Serializable {
         this.lastLoginActive = lastLoginActive;
     }
 
-    public Boolean getNotificationsEnabled() {
+    public Integer getNotificationsEnabled() {
         return notificationsEnabled;
     }
 
-    public void setNotificationsEnabled(Boolean notificationsEnabled) {
+    public void setNotificationsEnabled(Integer notificationsEnabled) {
         this.notificationsEnabled = notificationsEnabled;
     }
 
@@ -222,7 +222,7 @@ public class UsuarioDO extends AuditBase<Long> implements Serializable {
 	}
 
     public Boolean isNotificationsEnabled() {
-        return this.notificationsEnabled;
+        return this.notificationsEnabled == 1;
     }
 
 }

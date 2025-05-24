@@ -22,7 +22,7 @@ public interface ArquitecturaComponenteRepository extends JpaRepository<ArqCompo
 	 */
 	 @Query(value = " SELECT arqComponente"
              + " FROM  ArqComponenteDO arqComponente "
-             + " WHERE arqComponente.active = true "
+             + " WHERE arqComponente.active = 1 "
              + " AND   arqComponente.id = :id ")
 	 ArqComponenteDO findByIdAndActive(@Param("id") Long id);
 	
@@ -35,7 +35,7 @@ public interface ArquitecturaComponenteRepository extends JpaRepository<ArqCompo
 	 */
 	 @Query(value = " SELECT arqComponente"
              + " FROM  ArqComponenteDO arqComponente "
-             + " WHERE arqComponente.active = true "
+             + " WHERE arqComponente.active = 1 "
              + " AND   arqComponente.idNombre = :idNombre")
 	ArqComponenteDO findByIdNombreAndActive(@Param("idNombre") String idNombre);
 	
@@ -48,7 +48,7 @@ public interface ArquitecturaComponenteRepository extends JpaRepository<ArqCompo
      */
 	 @Query(value = " SELECT arqComponente"
              + " FROM  ArqComponenteDO arqComponente "
-             + " WHERE arqComponente.active = true "
+             + " WHERE arqComponente.active = 1 "
              + " AND   (arqComponente.id = :id OR arqComponente.idNombre = :idNombre) ")
     ArqComponenteDO findByIdOrIdNombreAndActive(@Param("id") Long id, @Param("idNombre") String idNombre);
 
@@ -62,11 +62,11 @@ public interface ArquitecturaComponenteRepository extends JpaRepository<ArqCompo
     @Query(value = " SELECT arqComponente"
                 + " FROM  ArqComponenteDO arqComponente "
     		    + " JOIN FETCH arqComponente.arqTipoComponente tc"
-                + " WHERE arqComponente.active = true "
+                + " WHERE arqComponente.active = 1 "
                 + " AND ( :idNombre IS NULL OR arqComponente.idNombre LIKE :idNombre ) "
                 + " AND ( :idArqTipoComponente IS NULL OR tc.id = :idArqTipoComponente ) ",
                 countQuery = " SELECT COUNT(arqComponente) FROM  ArqComponenteDO arqComponente "
-                        + " WHERE arqComponente.active = true "
+                        + " WHERE arqComponente.active = 1 "
                         + " AND ( :idNombre IS NULL OR arqComponente.idNombre LIKE :idNombre ) "
                         + " AND ( :idArqTipoComponente IS NULL OR arqComponente.arqTipoComponente.id = :idArqTipoComponente ) "
                 )
@@ -86,12 +86,12 @@ public interface ArquitecturaComponenteRepository extends JpaRepository<ArqCompo
     @Query(value = " SELECT arqComponente"
                 + " FROM  ArqComponenteDO arqComponente "
     		    + " JOIN FETCH arqComponente.arqTipoComponente tc"
-                + " WHERE arqComponente.active = true "
+                + " WHERE arqComponente.active = 1 "
                 + " AND ( :idNombre IS NULL OR arqComponente.idNombre LIKE :idNombre ) "
                 + " AND ( :idNombreArqTipoComponente IS NULL OR tc.idNombre LIKE :idNombreArqTipoComponente ) "
                 + " AND ( :idArqTipoComponente IS NULL OR tc.id = :idArqTipoComponente ) ",
                 countQuery = " SELECT COUNT(arqComponente) FROM  ArqComponenteDO arqComponente "
-                        + " WHERE arqComponente.active = true "
+                        + " WHERE arqComponente.active = 1 "
                         + " AND ( :idNombre IS NULL OR arqComponente.idNombre LIKE :idNombre ) "
                         + " AND ( :idNombreArqTipoComponente IS NULL OR arqComponente.arqTipoComponente.idNombre LIKE :idNombreArqTipoComponente ) "
                         + " AND ( :idArqTipoComponente IS NULL OR arqComponente.arqTipoComponente.id = :idArqTipoComponente ) ")

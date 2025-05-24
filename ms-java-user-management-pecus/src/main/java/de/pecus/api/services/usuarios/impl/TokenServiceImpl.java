@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
+import de.pecus.api.constant.GeneralConstants;
 import de.pecus.api.constant.UsuariosDataConstants;
 import de.pecus.api.entities.CodigoActivacionDO;
 import de.pecus.api.entities.UsuarioDO;
@@ -348,7 +349,7 @@ public class TokenServiceImpl implements TokenService {
 		
 		if(cambiaEstado) {
 			codigoDO.setEstatusCodigoActivacion(0);
-			codigoDO.setActive(Boolean.FALSE);
+			codigoDO.setActive(GeneralConstants.ZERO);
 		}
 		
 		// Guardamos el usuario en la BD de usuarios

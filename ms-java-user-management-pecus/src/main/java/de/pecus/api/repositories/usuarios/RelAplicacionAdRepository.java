@@ -18,7 +18,7 @@ import de.pecus.api.entities.RelAplicacionAdDO;
 public interface RelAplicacionAdRepository extends JpaRepository<RelAplicacionAdDO, Serializable> {
 
 	@Query(value = "SELECT rad FROM RelAplicacionAdDO rad "
-			+ " WHERE rad.active = true "
+			+ " WHERE rad.active = 1 "
 			+ " AND rad.aplicacion.id = :idAplicacion ")
 	RelAplicacionAdDO findByIdAplicacion(@Param("idAplicacion") Long idAplicacion);
 }

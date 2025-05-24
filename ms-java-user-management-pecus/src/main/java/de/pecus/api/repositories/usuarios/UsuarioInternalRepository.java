@@ -47,7 +47,7 @@ public interface UsuarioInternalRepository extends JpaRepository<UsuarioInternoD
 	 * @return ObjetoDO encontrado
 	 *
 	 */
-	@Query(" SELECT usuario FROM UsuarioInternoDO usuario WHERE usuario.active = true AND usuario.id = :id")
+	@Query(" SELECT usuario FROM UsuarioInternoDO usuario WHERE usuario.active = 1 AND usuario.id = :id")
 	UsuarioInternoDO findById(@Param("id") Long id);
 
 }

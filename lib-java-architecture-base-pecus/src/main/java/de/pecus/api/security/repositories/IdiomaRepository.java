@@ -36,7 +36,7 @@ public interface IdiomaRepository extends JpaRepository<IdiomaDO, Serializable>{
 	@Query(value = " SELECT idioma" 
 			+ " FROM  IdiomaDO idioma "
 			+ " WHERE   ( :idNombre IS NULL OR idioma.idNombre like :idNombre ) "
-			+ " AND idioma.active = true  ")
+			+ " AND idioma.active = 1  ")
 	Page<IdiomaDO> findList(@Param("idNombre") String idNombre, Pageable pageable);
 
 }

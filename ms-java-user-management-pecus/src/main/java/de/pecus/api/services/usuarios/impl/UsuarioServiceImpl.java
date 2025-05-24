@@ -11,6 +11,7 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -82,7 +83,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 
 		// Consulta
-		UsuarioDO usuario = usuarioRepository.findByIdAndActive(idUsuario, Boolean.TRUE);
+		UsuarioDO usuario = usuarioRepository.findByIdAndActive(idUsuario, GeneralConstants.ONE);
 
 		// Validacion de existencia
 		if (ValidatorUtil.isNull(usuario)) {
@@ -255,7 +256,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     		findListUsuarioResponseVO.setId(usuarioDO.getId());
     		findListUsuarioResponseVO.setImagenPerfil(usuarioDO.getImagenPerfil());
     		findListUsuarioResponseVO.setLadaPais(usuarioDO.getLadaPais());
-    		findListUsuarioResponseVO.setNotificationsEnabled(usuarioDO.getNotificationsEnabled());
+    		findListUsuarioResponseVO.setNotificationsEnabled(Boolean.valueOf(usuarioDO.getNotificationsEnabled().toString()));
     		findListUsuarioResponseVO.setTerminosAceptados(usuarioDO.getTerminosAceptados());
     		findListUsuarioResponseVO.setUserIdEmail(usuarioDO.getUserIdEmail());
     		findListUsuarioResponseVO.setUserIdMobileDevice(usuarioDO.getUserIdMobileDevice());
@@ -310,12 +311,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if(validaParametrosCrearUsuario(request, response)) {
 			// Seteamos la información del usuario
 			UsuarioDO usuarioDO = new UsuarioDO();
+			usuarioDO.setId(RandomUtils.nextLong());
 			usuarioDO.setUserIdEmail(request.getParameters().getEmail());
 			usuarioDO.setUserIdMobileNumber(request.getParameters().getTelefono());
 			usuarioDO.setLadaPais(UsuariosDataConstants.LADA_MEXICO);
 			usuarioDO.setPasswordStatus(UsuariosDataConstants.ESTATUS_PASSWORD_ACTUALIZADO);
 			usuarioDO.setPassword(passwordService.encryptPasswordSHA256(request.getParameters().getPassword()));
-			usuarioDO.setNotificationsEnabled(request.getParameters().getNotificaciones());
+			//usuarioDO.setNotificationsEnabled(request.getParameters().getNotificaciones().toString());
 			usuarioDO.setImagenPerfil(request.getParameters().getImagenPerfil());
 			ServiceUtil.setAuditFields(usuarioDO, request.getToken());
 			usuarioDO = usuarioRepository.saveAndFlush(usuarioDO);
@@ -393,7 +395,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				usuarioDO.setPassword(passwordService.encryptPasswordSHA256(request.getParameters().getPassword()));
 			}
 			if (!ValidatorUtil.isNull(request.getParameters().getNotificaciones())) {
-				usuarioDO.setNotificationsEnabled(request.getParameters().getNotificaciones());
+				usuarioDO.setNotificationsEnabled(Integer.valueOf(request.getParameters().getNotificaciones().toString()));
 			}
 			ServiceUtil.setAuditFields(usuarioDO, request.getToken());
 			// Actualizamos el usuario
@@ -416,7 +418,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			}else {
 				
 				// Buscamos el usuario original
-				UsuarioDO originalUsuarioDO = usuarioRepository.findByIdAndActive(request.getParameters().getId(), Boolean.TRUE);
+				UsuarioDO originalUsuarioDO = usuarioRepository.findByIdAndActive(request.getParameters().getId(), GeneralConstants.ONE);
 				
 				// Valida el correo electronico registrado.
 				if (!ValidatorUtil.isNullOrEmpty(request.getParameters().getEmail())) {
@@ -464,7 +466,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public ResponseVO<FindDetailUsuarioResponseVO> findDetailUsuario(RequestVO<FindDetailUsuarioRequestVO> request) {
 		ResponseVO<FindDetailUsuarioResponseVO> response = new ResponseVO<FindDetailUsuarioResponseVO>();
 		if (validaParametrosFindDetailUsuario(request, response)) {
-			UsuarioDO usuarioDO = usuarioRepository.findByIdAndActive(request.getParameters().getIdUsuario(), Boolean.TRUE);
+			UsuarioDO usuarioDO = usuarioRepository.findByIdAndActive(request.getParameters().getIdUsuario(), GeneralConstants.ONE);
 			if (ValidatorUtil.isNull(usuarioDO)) {
 				ResponseUtil.addError(request, response, UsuarioBusinessErrors.NOT_FOUND_USUARIO_ERROR);
 			} else {
@@ -473,7 +475,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				findDetailUsuarioResponseVO.setImagenPerfil(usuarioDO.getImagenPerfil());
 				findDetailUsuarioResponseVO.setLadaPais(usuarioDO.getLadaPais());
 				findDetailUsuarioResponseVO.setLastLoginActive(usuarioDO.getLastLoginActive());
-				findDetailUsuarioResponseVO.setNotificationsEnabled(usuarioDO.getNotificationsEnabled());
+				findDetailUsuarioResponseVO.setNotificationsEnabled(Boolean.valueOf(usuarioDO.getNotificationsEnabled().toString()));
 				findDetailUsuarioResponseVO.setPasswordStatus(usuarioDO.getPasswordStatus());
 				findDetailUsuarioResponseVO.setPasswordStatusChangedAt(usuarioDO.getPasswordStatusChangedAt());
 				findDetailUsuarioResponseVO.setTerminosAceptados(usuarioDO.getTerminosAceptados());

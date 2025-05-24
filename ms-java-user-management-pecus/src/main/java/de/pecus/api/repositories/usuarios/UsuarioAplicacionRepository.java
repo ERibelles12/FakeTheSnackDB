@@ -47,7 +47,7 @@ public interface UsuarioAplicacionRepository extends JpaRepository<UsuarioAplica
 	 * @return ObjetoDO encontrado
 	 *
 	 */
-	@Query(" SELECT usuario FROM UsuarioAplicacionDO usuario WHERE usuario.active = true AND usuario.id = :id")
+	@Query(" SELECT usuario FROM UsuarioAplicacionDO usuario WHERE usuario.active = 1 AND usuario.id = :id")
 	UsuarioAplicacionDO findById(@Param("id") Long id);
 
 }

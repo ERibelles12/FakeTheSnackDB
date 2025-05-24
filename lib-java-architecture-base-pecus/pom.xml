@@ -19,7 +19,7 @@
         <!-- pecus -->
         <dependency>
             <groupId>de.pecus</groupId>
-            <artifactId>lib-java-security-model-pecus</artifactId>
+            <artifactId>lib-java-model-pecus</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
