@@ -4,6 +4,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,16 +12,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
-import org.apache.commons.lang.math.RandomUtils;
 
 import de.pecus.api.annotation.Auditable;
 import de.pecus.api.constant.DataConstants;
-import de.pecus.api.entities.TipoRolDO;
+import de.pecus.api.entities.ProductDO;
 import de.pecus.api.enums.WildcardTypeEnum;
 import de.pecus.api.error.FuncionesBusinessError;
 import de.pecus.api.error.GeneralBusinessErrors;
-import de.pecus.api.repositories.usuarios.TipoRolRepository;
-import de.pecus.api.services.usuarios.TipoRolService;
+import de.pecus.api.repositories.usuarios.ProductRepository;
+import de.pecus.api.services.usuarios.ProductService;
 import de.pecus.api.util.CriteriaUtil;
 import de.pecus.api.util.ResponseUtil;
 import de.pecus.api.util.ServiceUtil;
@@ -29,36 +29,36 @@ import de.pecus.api.util.ValidatorArqUtil;
 import de.pecus.api.util.ValidatorUtil;
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.roles.CreateTipoRolRequestVO;
-import de.pecus.api.vo.roles.DeleteTipoRolRequestVO;
-import de.pecus.api.vo.roles.FindDetailTipoRolRequestVO;
-import de.pecus.api.vo.roles.FindDetailTipoRolResponseVO;
-import de.pecus.api.vo.roles.FindListTipoRolRequestVO;
-import de.pecus.api.vo.roles.FindListTipoRolResponseVO;
-import de.pecus.api.vo.roles.UpdateTipoRolRequestVO;
+import de.pecus.api.vo.product.CreateProductRequestVO;
+import de.pecus.api.vo.product.DeleteProductRequestVO;
+import de.pecus.api.vo.product.FindDetailProductRequestVO;
+import de.pecus.api.vo.product.FindDetailProductResponseVO;
+import de.pecus.api.vo.product.FindListProductRequestVO;
+import de.pecus.api.vo.product.FindListProductResponseVO;
+import de.pecus.api.vo.product.UpdateProductRequestVO;
 
 /**
- * Clase de logica de negocio para administracion de tipoRoles
+ * Clase de logica de negocio para administracion de productes
  * 
  * @author Proa
  *
  */
 @Service
-public class TipoRolServiceImpl implements TipoRolService {
+public class ProductServiceImpl implements ProductService {
 
 	@Autowired
-	private TipoRolRepository tipoRolRepository;
+	private ProductRepository productRepository;
 
 
 	/**
-	 * Crea un nuevo registro de tipoRol
+	 * Crea un nuevo registro de product
 	 * 
-	 * @param request Objeto con parametros de entrada de tipoRol
+	 * @param request Objeto con parametros de entrada de product
 	 * 
 	 * @return Id generado
 	 */
 	@Auditable
-	public ResponseVO<Long> create(RequestVO<de.pecus.api.vo.roles.CreateTipoRolRequestVO> request) {
+	public ResponseVO<Long> create(RequestVO<de.pecus.api.vo.product.CreateProductRequestVO> request) {
 
 		// Declarar variables
 		ResponseVO<Long> response = new ResponseVO<>();
@@ -67,22 +67,21 @@ public class TipoRolServiceImpl implements TipoRolService {
 			if (validateParametersCreate(request, response)) {
 		
 				// Preparar los datos para actualizar la BB.DD.
-				TipoRolDO tipoRolDO = new TipoRolDO();
+				ProductDO productDO = new ProductDO();
 				
-				tipoRolDO.setId(RandomUtils.nextLong());
-				tipoRolDO.setIdNombre(request.getParameters().getIdNombre());
-				tipoRolDO.setDescripcion(request.getParameters().getDescripcion());
-				tipoRolDO.setGlobal(request.getParameters().getGlobal());
+				productDO.setId(RandomUtils.nextLong());
+				productDO.setName(request.getParameters().getName());
+				productDO.setDescripcion(request.getParameters().getDescripcion());
 				
 				// Actualizar los parametros de auditoria
-				ServiceUtil.setAuditFields(tipoRolDO, request.getToken());
+				ServiceUtil.setAuditFields(productDO, request.getToken());
 
 				// Insertar el registro
-				tipoRolDO = tipoRolRepository.saveAndFlush(tipoRolDO);
+				productDO = productRepository.saveAndFlush(productDO);
 
 				// Regresar la respuesta correcta y el objeto a regresar
 				response.setSuccess(true);
-				response.setData(tipoRolDO.getId());
+				response.setData(productDO.getId());
 				
 			}
 		return response;
@@ -90,34 +89,33 @@ public class TipoRolServiceImpl implements TipoRolService {
 
 
 	/**
-	 * Actualiza un registro de tipoRol
+	 * Actualiza un registro de product
 	 * 
-	 * @param request Objeto con parametros de entrada de tipoRol
+	 * @param request Objeto con parametros de entrada de product
 	 * 
 	 * @return Id actualizado
 	 */
 	@Auditable
-	public ResponseVO<Long> update(RequestVO<UpdateTipoRolRequestVO> request) {
+	public ResponseVO<Long> update(RequestVO<UpdateProductRequestVO> request) {
 
 		// Declarar variables
 		ResponseVO<Long> response = new ResponseVO<>();
-		TipoRolDO registroDO = new TipoRolDO();
+		ProductDO registroDO = new ProductDO();
 
 		// Validar los campos de entrada
 		if (validateParametersUpdate(request, response)) {
 			
-			UpdateTipoRolRequestVO parameters = request.getParameters();
+			UpdateProductRequestVO parameters = request.getParameters();
 
 			registroDO.setId(parameters.getId());
-			registroDO.setIdNombre(parameters.getIdNombre());
+			registroDO.setName(parameters.getName());
 			registroDO.setDescripcion(parameters.getDescripcion());
-			registroDO.setGlobal(parameters.getGlobal());
 			
 			// Actualizar parametros de auditoria
 			ServiceUtil.setAuditFields(registroDO, request.getToken());
 
 			// Actualizar el registro en BB.DD.
-			registroDO = tipoRolRepository.saveAndFlush(registroDO);
+			registroDO = productRepository.saveAndFlush(registroDO);
 
 			// Preparar respuesta y objeto actualizado
 			response.setSuccess(true);
@@ -128,14 +126,14 @@ public class TipoRolServiceImpl implements TipoRolService {
 
 
 	/**
-	 * Marca un registro como eliminado un registro de tipoRol
+	 * Marca un registro como eliminado un registro de product
 	 * 
-	 * @param request Objeto con parametros de entrada de tipoRol
+	 * @param request Objeto con parametros de entrada de product
 	 * 
 	 * @return Id eliminado
 	 */
 	@Auditable
-	public ResponseVO<Boolean> delete(RequestVO<DeleteTipoRolRequestVO> request) {
+	public ResponseVO<Boolean> delete(RequestVO<DeleteProductRequestVO> request) {
 
 		// Declarar variables
 		ResponseVO<Boolean> response = new ResponseVO<>();
@@ -143,16 +141,16 @@ public class TipoRolServiceImpl implements TipoRolService {
 		// Validar campos de entrada
 		if (validateParametersDelete(request, response)) {
 
-			TipoRolDO tipoRolDO = this.exists(request.getParameters().getId(), null);
-			if (ValidatorUtil.isNull(tipoRolDO)) {
+			ProductDO productDO = this.exists(request.getParameters().getId(), null);
+			if (ValidatorUtil.isNull(productDO)) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_ERROR, request);
 			}
 			else {
 			// Actualizar la informacion
-			ServiceUtil.setDisabledEntity(tipoRolDO, request.getToken());
+			ServiceUtil.setDisabledEntity(productDO, request.getToken());
 			
 			// Actualizar la BB.DD.
-			tipoRolDO = tipoRolRepository.saveAndFlush(tipoRolDO);
+			productDO = productRepository.saveAndFlush(productDO);
 
 			// Preparar respuesta y objeto eliminado
 			response.setSuccess(true);
@@ -163,7 +161,7 @@ public class TipoRolServiceImpl implements TipoRolService {
 	}
 
 	/**
-	 * Consulta un tipoRol por Identificador unico
+	 * Consulta un product por Identificador unico
 	 * 
 	 * @return Objeto VO con los datos encontrados
 	 * @param Id      Identificador del registro a buscar
@@ -171,24 +169,23 @@ public class TipoRolServiceImpl implements TipoRolService {
 	 * @param request Objeto con los datos de busqueda
 	 */
 	@Auditable
-	public ResponseVO<FindDetailTipoRolResponseVO> findDetail(RequestVO<FindDetailTipoRolRequestVO> request) {
+	public ResponseVO<FindDetailProductResponseVO> findDetail(RequestVO<FindDetailProductRequestVO> request) {
 
 		// declaracion de varables
-		ResponseVO<FindDetailTipoRolResponseVO> response = new ResponseVO<>();
-		FindDetailTipoRolResponseVO salida = new FindDetailTipoRolResponseVO();
+		ResponseVO<FindDetailProductResponseVO> response = new ResponseVO<>();
+		FindDetailProductResponseVO salida = new FindDetailProductResponseVO();
 		
 		// validar que se cumplen las condiciones para realizar la consulta
 		if (validateParametersFindDetail(request, response)) {
 
-			TipoRolDO tipoRolDO = this.exists(request.getParameters().getId(), request.getParameters().getIdNombre());
+			ProductDO productDO = this.exists(request.getParameters().getId(), request.getParameters().getName());
 
-			if (ValidatorUtil.isNull(tipoRolDO)) {
+			if (ValidatorUtil.isNull(productDO)) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_ERROR, request);
 			} else {
-				salida.setId(tipoRolDO.getId());
-				salida.setIdNombre(tipoRolDO.getIdNombre());
-				salida.setDescripcion(tipoRolDO.getDescripcion());
-				salida.setGlobal(tipoRolDO.getGlobal());
+				salida.setId(productDO.getId());
+				salida.setName(productDO.getName());
+				salida.setDescripcion(productDO.getDescripcion());
 
 				response.setData(salida);
 				// regresar la respuesta correcta con los registros obtenidos.
@@ -211,19 +208,19 @@ public class TipoRolServiceImpl implements TipoRolService {
 	 * @param request Objeto con parametros de entrada de banner
 	 */
 	@Auditable
-	public ResponseVO<List<FindListTipoRolResponseVO>> findList(RequestVO<FindListTipoRolRequestVO> request) {
+	public ResponseVO<List<FindListProductResponseVO>> findList(RequestVO<FindListProductRequestVO> request) {
 
 		// declaracion de varables
-		ResponseVO<List<FindListTipoRolResponseVO>> response = new ResponseVO<>();
+		ResponseVO<List<FindListProductResponseVO>> response = new ResponseVO<>();
 		
-		Page<TipoRolDO> listaTipoRol = null;
+		Page<ProductDO> listaProduct = null;
 		
 		if (validateParametersFindByList(request, response)) {
 	
-			FindListTipoRolRequestVO parameters = request.getParameters();
+			FindListProductRequestVO parameters = request.getParameters();
 			// Se obtiene el idioma
 			
-			String  idNombre 	= CriteriaUtil.validateNullLike(parameters.getIdNombre(), WildcardTypeEnum.BOTH_SIDES);
+			String  name 	= CriteriaUtil.validateNullLike(parameters.getName(), WildcardTypeEnum.BOTH_SIDES);
 			
 			// Preparamos el objeto para la paginacion
 			String orderby = request.getOrderBy();
@@ -235,19 +232,19 @@ public class TipoRolServiceImpl implements TipoRolService {
 			Integer page = ValidatorUtil.isNullOrZero(request.getPage()) ? 1 : request.getPage();
 			Pageable pageable = PageRequest.of(page - 1, size, Sort.by(orderType, orderBy));
 			
-			String normalizedIdNombre = this.limpiarAcentos(request.getParameters().getIdNombre());
+			String normalizedName = this.limpiarAcentos(request.getParameters().getName());
 			
 			// ejecucion de la busqueda por el parametro recibido
-			listaTipoRol = tipoRolRepository.findList(this.cleanString(normalizedIdNombre), pageable);
+			listaProduct = productRepository.findList(this.cleanString(normalizedName), pageable);
 
 			// Si no se encontro ningun registro que cumpla la condicion generar error.
-			if (ValidatorUtil.isNullOrEmpty(listaTipoRol.getContent())) {
+ 				if (ValidatorUtil.isNullOrEmpty(listaProduct.getContent())) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_REGISTER_LIST_ERROR);
 			} else {
 				// Regresar la respuesta correcta con los registros obtenidos.
 				response.setSuccess(true);
-				response.setTotalRows(listaTipoRol.getTotalElements());
-				response.setData(transformListDO(listaTipoRol.getContent()));
+				response.setTotalRows(listaProduct.getTotalElements());
+				response.setData(transformListDO(listaProduct.getContent()));
 			}
 		}
 		return response;
@@ -274,23 +271,23 @@ public class TipoRolServiceImpl implements TipoRolService {
 	 * @param response Respuesta donde se agregan los errores
 	 * @return true si todos los parametros son correctos
 	 */
-	private boolean validateParametersCreate(RequestVO<CreateTipoRolRequestVO> request, ResponseVO<Long> response) {
+	private boolean validateParametersCreate(RequestVO<CreateProductRequestVO> request, ResponseVO<Long> response) {
 		
 		// Obtener los parametros de entrada
-		CreateTipoRolRequestVO parameters = request.getParameters();
+		CreateProductRequestVO parameters = request.getParameters();
 
 		// Validaciones de campos obligatorios
-		if (StringUtil.isNullOrEmpty(parameters.getIdNombre())) {
+		if (StringUtil.isNullOrEmpty(parameters.getName())) {
 			ResponseUtil.addError(request, response, 
 					FuncionesBusinessError.REQUIRED_ID_NOMBRE_ERROR, request);
 		} else {
 			// Validacion de tamano
-			String idNombre = StringUtil.substring(parameters.getIdNombre(), DataConstants.MAX_SIZE_ID_NOMBRE);
+			String name = StringUtil.substring(parameters.getName(), DataConstants.MAX_SIZE_ID_NOMBRE);
 
 			// Validacion de formato
-			parameters.setIdNombre(StringUtil.toUpperCase(idNombre));
+			parameters.setName(StringUtil.toUpperCase(name));
 
-				TipoRolDO registroB = this.exists(null,parameters.getIdNombre());
+				ProductDO registroB = this.exists(null,parameters.getName());
 				
 				if (!ValidatorUtil.isNull(registroB)) {
 					ResponseUtil.addError(request, response, 
@@ -306,9 +303,6 @@ public class TipoRolServiceImpl implements TipoRolService {
 			parameters.setDescripcion(StringUtil.substring(parameters.getDescripcion(), DataConstants.MAX_SIZE_DESCRIPCION));
 		}
 		
-		if (ValidatorUtil.isNull(parameters.getGlobal())) {
-			request.getParameters().setGlobal(false);
-		}
 				
 		// Regresar el resultado de la validacion
 		return ValidatorUtil.isSuccessfulResponse(response);
@@ -322,10 +316,10 @@ public class TipoRolServiceImpl implements TipoRolService {
 	 * @param response Respuesta donde se agregan los errores
 	 * @return true si todos los parametros son correctos
 	 */
-	private boolean validateParametersUpdate(RequestVO<UpdateTipoRolRequestVO> request, ResponseVO<Long> response) {
+	private boolean validateParametersUpdate(RequestVO<UpdateProductRequestVO> request, ResponseVO<Long> response) {
 		// Recuperar parametros de entrada
-		UpdateTipoRolRequestVO parameters = request.getParameters();
-		TipoRolDO registroUpdate = new TipoRolDO();
+		UpdateProductRequestVO parameters = request.getParameters();
+		ProductDO registroUpdate = new ProductDO();
 		
 		// Validar que se informaron los campos de entrada
 		if (ValidatorUtil.isNull(parameters)) {
@@ -350,25 +344,25 @@ public class TipoRolServiceImpl implements TipoRolService {
 		}
 		
 		// Validaciones de campos obligatorios: NOMBRE
-		if (!StringUtil.isNullOrEmpty(parameters.getIdNombre())) {
+		if (!StringUtil.isNullOrEmpty(parameters.getName())) {
 			// Validacion de tamano
-			String idNombre = StringUtil.substring(parameters.getIdNombre(), DataConstants.MAX_SIZE_ID_NOMBRE);
+			String name = StringUtil.substring(parameters.getName(), DataConstants.MAX_SIZE_ID_NOMBRE);
 
 			// Validacion de formato
-			parameters.setIdNombre(StringUtil.toUpperCase(idNombre));
+			parameters.setName(StringUtil.toUpperCase(name));
 			
-				//Validar la posible duplicidad del idNombre
-				TipoRolDO tipoRolBusqueda = this.exists(null, request.getParameters().getIdNombre());
+				//Validar la posible duplicidad del name
+				ProductDO productBusqueda = this.exists(null, request.getParameters().getName());
 				
-				if (!ValidatorUtil.isNull(tipoRolBusqueda)) {
+				if (!ValidatorUtil.isNull(productBusqueda)) {
 					//Si se encuentra el registro validamos que no sea el mismo Id
-					if (registroUpdate.getId() != tipoRolBusqueda.getId()) {
+					if (registroUpdate.getId() != productBusqueda.getId()) {
 						ResponseUtil.addError(request, response, FuncionesBusinessError.DUPLICATED_ERROR, request);
 						
 					}
 			}
 		} else {
-			parameters.setIdNombre(registroUpdate.getIdNombre());
+			parameters.setName(registroUpdate.getName());
 		}
 		
 		// Validaciones de campos obligatorios: DESCRIPCION
@@ -380,11 +374,7 @@ public class TipoRolServiceImpl implements TipoRolService {
 		} else {
 			parameters.setDescripcion(registroUpdate.getDescripcion());
 		}
-			
-		if (ValidatorUtil.isNull(parameters.getGlobal())) {
-			parameters.setGlobal(registroUpdate.getGlobal());
-		}
-		
+					
 		// Retorna el resultado de la validacion.
 		return ValidatorUtil.isSuccessfulResponse(response);
 		
@@ -397,7 +387,7 @@ public class TipoRolServiceImpl implements TipoRolService {
 	 * @param response Respuesta donde se agregan los errores
 	 * @return true si todos los parametros son correctos
 	 */
-	private boolean validateParametersDelete(RequestVO<DeleteTipoRolRequestVO> request, ResponseVO<Boolean> response) {
+	private boolean validateParametersDelete(RequestVO<DeleteProductRequestVO> request, ResponseVO<Boolean> response) {
 
 		// Validar que se han informado los parametros de entrada
 		if (ValidatorUtil.isNull(request.getParameters())) {
@@ -425,16 +415,16 @@ public class TipoRolServiceImpl implements TipoRolService {
 	 * @param request  Objeto con los parametros a valida
 	 * @param response Respuesta donde se agregan los errores
 	 */
-	private boolean validateParametersFindDetail(RequestVO<FindDetailTipoRolRequestVO> request, ResponseVO<FindDetailTipoRolResponseVO> response) {
+	private boolean validateParametersFindDetail(RequestVO<FindDetailProductRequestVO> request, ResponseVO<FindDetailProductResponseVO> response) {
 
 		// Recuperar los parametros de entrada
-		FindDetailTipoRolRequestVO parameters = request.getParameters();
+		FindDetailProductRequestVO parameters = request.getParameters();
 
 		// validar que el campo obligatorio
 		if (ValidatorUtil.isNullOrZero(parameters.getId())) {
 			
-			//Buscar por criterio: IdNombre
-			if (ValidatorUtil.isNullOrEmpty(parameters.getIdNombre())) {
+			//Buscar por criterio: Name
+			if (ValidatorUtil.isNullOrEmpty(parameters.getName())) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_ID_ERROR);
 			} 
 		}
@@ -452,8 +442,8 @@ public class TipoRolServiceImpl implements TipoRolService {
 	 * @param request  Objeto con los criterios a buscar
 	 * @param response Respuesta donde se agregan los errores
 	 */
-	private boolean validateParametersFindByList(RequestVO<FindListTipoRolRequestVO> request,
-			ResponseVO<List<FindListTipoRolResponseVO>> response) {
+	private boolean validateParametersFindByList(RequestVO<FindListProductRequestVO> request,
+			ResponseVO<List<FindListProductResponseVO>> response) {
 		
 		// Validar campos obligatorios
 	    ValidatorArqUtil.validateParameters(request, response);
@@ -467,55 +457,54 @@ public class TipoRolServiceImpl implements TipoRolService {
 
 
 	/**
-	 * Obtiene una lista de objetos tipoRolVO a partir de una lista de DO
+	 * Obtiene una lista de objetos productVO a partir de una lista de DO
 	 * 
 	 * @return Lista VO para retorno de resultados
 	 * 
-	 * @param listaTipoRol a transformar
+	 * @param listaProduct a transformar
 	 */
-	private List<FindListTipoRolResponseVO> transformListDO(List<TipoRolDO> listaTipoRol) {
+	private List<FindListProductResponseVO> transformListDO(List<ProductDO> listaProduct) {
 
 		// Declarar variables
-		List<FindListTipoRolResponseVO> listaTipoRolVO = new ArrayList<>();
+		List<FindListProductResponseVO> listaProductVO = new ArrayList<>();
 
 		// recorrer el objeto origen
-		for (TipoRolDO tipoRolDO : listaTipoRol) {
+		for (ProductDO productDO : listaProduct) {
 			// Se hace la declaracion de variables necesarias
-			FindListTipoRolResponseVO tipoRolVO = new FindListTipoRolResponseVO();
+			FindListProductResponseVO productVO = new FindListProductResponseVO();
 			
-			tipoRolVO.setId(tipoRolDO.getId());
-			tipoRolVO.setIdNombre(tipoRolDO.getIdNombre());
-			tipoRolVO.setDescripcion(tipoRolDO.getDescripcion());
-			tipoRolVO.setGlobal(tipoRolDO.getGlobal());
+			productVO.setId(productDO.getId());
+			productVO.setName(productDO.getName());
+			productVO.setDescripcion(productDO.getDescripcion());
 			
-			listaTipoRolVO.add(tipoRolVO);
+			listaProductVO.add(productVO);
 		}
 
-		return listaTipoRolVO;
+		return listaProductVO;
 	}
 	
 
 
 	/*************************************************************************
-	 * Metodo que busca un registro por su id, idNombre
+	 * Metodo que busca un registro por su id, name
 	 * Regresa el objeto de la base de datos o una excepcion con el error
 	 * 
 	 *************************************************************************/
-	public TipoRolDO exists(Long id, String idNombre){
+	public ProductDO exists(Long id, String name){
 
-		TipoRolDO registro = null;
+		ProductDO registro = null;
 		try {
 			//Validacion de datos de entrada
 			if (ValidatorUtil.isNullOrZero(id)) {
-				if (ValidatorUtil.isNullOrEmpty(idNombre)) {
+				if (ValidatorUtil.isNullOrEmpty(name)) {
 					registro = null;
 				} else {
 					//Buscamos por nombre
-					registro = tipoRolRepository.findByIdNombre(idNombre);
+					registro = productRepository.findByName(name);
 				}
 			} else {
 				//Consulta
-				registro = tipoRolRepository.findById(id);
+				registro = productRepository.findById(id);
 			}
 			//Validacion de existencia
 			if (ValidatorUtil.isNull(registro)) {
