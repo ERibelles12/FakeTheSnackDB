@@ -4,7 +4,20 @@ GRANT ALL PRIVILEGES ON DATABASE "PECUS" to pecusApp;
 
 GRANT ALL ON SCHEMA public TO pecusapp;
 
-CREATE TABLE pecus_schema.audit_log (
+DROP INDEX idx_usuario_mobpass;
+DROP INDEX idx_activo_prev_token_usuario;
+DROP INDEX idx_activo_token_token_usuario;
+DROP INDEX uk_dx_user_id_email_usuario;
+DROP INDEX idx_tipo_rol;
+DROP INDEX idx_product_name;
+
+DROP TABLE AUDIT_LOG;
+DROP TABLE ERROR_LOG;
+DROP TABLE USUARIO;
+DROP TABLE TIPO_ROL;
+DROP TABLE PRODUCT;
+
+CREATE TABLE audit_log (
     pk_id BIGSERIAL PRIMARY KEY,
     fk_user_id VARCHAR(50),
     dx_token VARCHAR(4000),
@@ -24,7 +37,7 @@ CREATE TABLE pecus_schema.audit_log (
     dx_status VARCHAR(10)
 );
 
-CREATE TABLE pecus_schema.error_log (
+CREATE TABLE error_log (
     pk_id BIGSERIAL PRIMARY KEY,
     fk_user_id VARCHAR(50),
     dx_token TEXT,
@@ -43,7 +56,7 @@ CREATE TABLE pecus_schema.error_log (
 
 
 -- Tabla USUARIO
-CREATE TABLE pecus_schema.usuario (
+CREATE TABLE usuario (
     pk_id SERIAL PRIMARY KEY,
     dx_imagen_perfil VARCHAR(100),
     dx_user_id_email VARCHAR(50),
@@ -68,20 +81,35 @@ CREATE TABLE pecus_schema.usuario (
     dn_usuario_modificador NUMERIC(19,0)
 );
 
--- Índices
-CREATE INDEX idx_usuario_mobpass ON pecus_schema.usuario (
-    dn_activo ASC, dx_user_id_mobile ASC, dx_password ASC
+
+-- Tabla TIPO ROL
+CREATE TABLE TIPO_ROL (
+    pk_id BIGSERIAL PRIMARY KEY,
+    dx_id_Nombre VARCHAR(26),
+    dx_descripcion VARCHAR(100),
+    dn_global VARCHAR(5),
+    dn_activo NUMERIC(1,0) default 1,
+    dd_fecha_creacion TIMESTAMP,
+    dn_usuario_creador NUMERIC(19,0) ,
+    dd_fecha_modificacion TIMESTAMP,
+    dn_usuario_modificador NUMERIC(19,0)
 );
 
-
-CREATE INDEX idx_activo_prev_token_usuario ON pecus_schema.usuario (
-    dn_activo ASC, dx_refresh_previous_token ASC
+CREATE UNIQUE INDEX idx_tipo_rol ON tipo_rol(
+    dx_id_nombre ASC
 );
 
-CREATE INDEX idx_activo_token_token_usuario ON pecus_schema.usuario (
-    dn_activo ASC, dx_refresh_token_token ASC
+-- Tabla PRODUCT
+CREATE TABLE PRODUCT (
+    pk_id BIGSERIAL PRIMARY KEY,
+    dx_name VARCHAR(26),
+    dx_description VARCHAR(100),
+    dn_activo NUMERIC(1,0) default 1,
+    dd_fecha_creacion TIMESTAMP,
+    dn_usuario_creador NUMERIC(19,0) ,
+    dd_fecha_modificacion TIMESTAMP,
+    dn_usuario_modificador NUMERIC(19,0)
 );
 
-CREATE UNIQUE INDEX uk_dx_user_id_email_usuario ON pecus_schema.usuario (
-    dx_user_id_email DESC
-);
+CREATE UNIQUE INDEX idx_product_name ON product(
+    dx_name ASC);
