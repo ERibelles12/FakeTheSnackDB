@@ -11,7 +11,6 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -245,13 +244,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if(validaParametrosCrearUsuario(request, response)) {
 			// Seteamos la información del usuario
 			UsuarioDO usuarioDO = new UsuarioDO();
-			usuarioDO.setId(RandomUtils.nextLong());
 			usuarioDO.setUserIdEmail(request.getParameters().getEmail());
 			usuarioDO.setUserIdMobileNumber(request.getParameters().getTelefono());
 			usuarioDO.setLadaPais(UsuariosDataConstants.LADA_MEXICO);
 			usuarioDO.setPasswordStatus(UsuariosDataConstants.ESTATUS_PASSWORD_ACTUALIZADO);
 			usuarioDO.setPassword(passwordService.encryptPasswordSHA256(request.getParameters().getPassword()));
-			//usuarioDO.setNotificationsEnabled(request.getParameters().getNotificaciones().toString());
+			usuarioDO.setNotificationsEnabled(request.getParameters().getNotificaciones());
 			usuarioDO.setImagenPerfil(request.getParameters().getImagenPerfil());
 			ServiceUtil.setAuditFields(usuarioDO, request.getToken());
 			usuarioDO = usuarioRepository.saveAndFlush(usuarioDO);
@@ -329,7 +327,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				usuarioDO.setPassword(passwordService.encryptPasswordSHA256(request.getParameters().getPassword()));
 			}
 			if (!ValidatorUtil.isNull(request.getParameters().getNotificaciones())) {
-				usuarioDO.setNotificationsEnabled(Integer.valueOf(request.getParameters().getNotificaciones().toString()));
+				usuarioDO.setNotificationsEnabled(request.getParameters().getNotificaciones());
 			}
 			ServiceUtil.setAuditFields(usuarioDO, request.getToken());
 			// Actualizamos el usuario

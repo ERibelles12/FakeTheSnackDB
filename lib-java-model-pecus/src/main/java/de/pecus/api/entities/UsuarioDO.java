@@ -37,7 +37,7 @@ public class UsuarioDO extends AuditBase<Long> implements Serializable {
     private static final long serialVersionUID = 3736839829404032486L;
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="PK_ID")
     private Long id;
     
@@ -45,7 +45,7 @@ public class UsuarioDO extends AuditBase<Long> implements Serializable {
     @Column(name = "DD_LAST_LOGIN")
     private Date lastLoginActive;
     @Column(name = "DN_NOTIFICATION_ENABLED")
-    private Integer notificationsEnabled;
+    private Boolean notificationsEnabled;
     @Column(name = "DX_PASSWORD")
     private String password;
     @Column(name = "DN_PASSWORD_STATUS")
@@ -101,11 +101,11 @@ public class UsuarioDO extends AuditBase<Long> implements Serializable {
         this.lastLoginActive = lastLoginActive;
     }
 
-    public Integer getNotificationsEnabled() {
+    public Boolean getNotificationsEnabled() {
         return notificationsEnabled;
     }
 
-    public void setNotificationsEnabled(Integer notificationsEnabled) {
+    public void setNotificationsEnabled(Boolean notificationsEnabled) {
         this.notificationsEnabled = notificationsEnabled;
     }
 
@@ -222,7 +222,7 @@ public class UsuarioDO extends AuditBase<Long> implements Serializable {
 	}
 
     public Boolean isNotificationsEnabled() {
-        return this.notificationsEnabled == 1;
+        return this.notificationsEnabled;
     }
 
 }
