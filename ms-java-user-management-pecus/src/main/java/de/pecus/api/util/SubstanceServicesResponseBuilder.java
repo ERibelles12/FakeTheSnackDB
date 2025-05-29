@@ -1,20 +1,19 @@
 package de.pecus.api.util;
 
-import java.util.List;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import de.pecus.api.error.FuncionesBusinessError;
 import de.pecus.api.error.GeneralBusinessErrors;
 import de.pecus.api.vo.ResponseErrorVO;
 import de.pecus.api.vo.ResponseVO;
 import de.pecus.api.vo.funciones.FindDetailFuncionResponseVO;
 import de.pecus.api.vo.funciones.FindListFuncionResponseVO;
-import de.pecus.api.vo.product.FindDetailProductResponseVO;
-import de.pecus.api.vo.product.FindListProductResponseVO;
+import de.pecus.api.vo.substance.FindDetailSubstanceResponseVO;
+import de.pecus.api.vo.substance.FindListSubstanceResponseVO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-public class ProductServicesResponseBuilder {
+import java.util.List;
+
+public class SubstanceServicesResponseBuilder {
 
 	/**
 	 * Método para analizar la respuesta del servicio y transformarla a la respuesta
@@ -80,10 +79,10 @@ public class ProductServicesResponseBuilder {
 	 * del protocolo de salida
 	 * 
 	 */
-	public static final ResponseEntity<ResponseVO<FindDetailProductResponseVO>> buildFindDetailResponse(
-			ResponseVO<FindDetailProductResponseVO> serviceResponse) {
+	public static final ResponseEntity<ResponseVO<FindDetailSubstanceResponseVO>> buildFindDetailResponse(
+			ResponseVO<FindDetailSubstanceResponseVO> serviceResponse) {
 
-		ResponseEntity<ResponseVO<FindDetailProductResponseVO>> response = null;
+		ResponseEntity<ResponseVO<FindDetailSubstanceResponseVO>> response = null;
 
 		if (ValidatorUtil.isSuccessfulResponse(serviceResponse)) {
 			response = ResponseEntity.status(HttpStatus.OK).body(serviceResponse);
@@ -141,10 +140,10 @@ public class ProductServicesResponseBuilder {
 	 * del protocolo de salida
 	 * 
 	 */
-	public static final ResponseEntity<ResponseVO<List<FindListProductResponseVO>>> buildFindListProductResponse
-	(ResponseVO<List<FindListProductResponseVO>> serviceResponse) {
+	public static final ResponseEntity<ResponseVO<List<FindListSubstanceResponseVO>>> buildFindListSubstanceResponse
+	(ResponseVO<List<FindListSubstanceResponseVO>> serviceResponse) {
 		
-		ResponseEntity<ResponseVO<List<FindListProductResponseVO>>> response = null;
+		ResponseEntity<ResponseVO<List<FindListSubstanceResponseVO>>> response = null;
 		
 		if (ValidatorUtil.isSuccessfulResponse(serviceResponse)) {
 			response = ResponseEntity.status(HttpStatus.OK).body(serviceResponse);
@@ -168,6 +167,5 @@ public class ProductServicesResponseBuilder {
 		}
 		return response;
 	}
-	
 	
 }
