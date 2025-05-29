@@ -1,21 +1,20 @@
-CREATE USER pecusapp WITH PASSWORD 'p3cu54pp';
 
-GRANT ALL PRIVILEGES ON DATABASE "PECUS" to pecusApp;
 
-GRANT ALL ON SCHEMA public TO pecusapp;
+---------------------------------------------------------------
+-- SECURITY MODEL
+-- EXAMPLE MODEL
+----------------------------------------------------------------
 
 DROP INDEX idx_usuario_mobpass;
 DROP INDEX idx_activo_prev_token_usuario;
 DROP INDEX idx_activo_token_token_usuario;
 DROP INDEX uk_dx_user_id_email_usuario;
 DROP INDEX idx_tipo_rol;
-DROP INDEX idx_product_name;
 
 DROP TABLE AUDIT_LOG;
 DROP TABLE ERROR_LOG;
 DROP TABLE USUARIO;
 DROP TABLE TIPO_ROL;
-DROP TABLE PRODUCT;
 
 CREATE TABLE audit_log (
     pk_id BIGSERIAL PRIMARY KEY,
@@ -99,8 +98,36 @@ CREATE UNIQUE INDEX idx_tipo_rol ON tipo_rol(
     dx_id_nombre ASC
 );
 
--- Tabla PRODUCT
-CREATE TABLE PRODUCT (
+---------------------------------------------------------------
+---------------------------------------------------------------
+--   EMILIO'S PROJECT
+---------------------------------------------------------------
+---------------------------------------------------------------
+
+-- DESTROY EXISTING DDBB OBJECTS
+
+
+DROP INDEX idx_product_name;
+DROP INDEX idx_brand_name;
+DROP INDEX idx_category_name;
+DROP INDEX idx_subcategory_name;
+
+DROP TABLE RESULT_ITEM;
+DROP TABLE EVALUATION;
+DROP TABLE RECIPE;
+DROP TABLE PRODUCT;
+DROP TABLE SUBSTANCE;
+DROP TABLE SUBCATEGORY;
+DROP TABLE CATEGORY;
+DROP TABLE BRAND;
+
+
+---------------------------------------------------------------
+-- TABLE:  BRAND
+-- DESCRIPTION:  List of brand
+----------------------------------------------------------------
+
+CREATE TABLE BRAND (
     pk_id BIGSERIAL PRIMARY KEY,
     dx_name VARCHAR(26),
     dx_description VARCHAR(100),
@@ -111,5 +138,166 @@ CREATE TABLE PRODUCT (
     dn_usuario_modificador NUMERIC(19,0)
 );
 
+CREATE UNIQUE INDEX idx_brand_name ON BRAND(dx_name ASC);
+
+---------------------------------------------------------------
+-- TABLE:  CATEGORY
+-- DESCRIPTION:  List of categories
+----------------------------------------------------------------
+
+CREATE TABLE CATEGORY (
+    pk_id BIGSERIAL PRIMARY KEY,
+    dx_name VARCHAR(26),
+    dn_general_indicator NUMERIC(1,0) default 1,
+    dn_milk_indicator NUMERIC(1,0) default 0,
+    dn_meat_indicator NUMERIC(1,0) default 0,
+    dn_activo NUMERIC(1,0) default 1,
+    dd_fecha_creacion TIMESTAMP,
+    dn_usuario_creador NUMERIC(19,0) ,
+    dd_fecha_modificacion TIMESTAMP,
+    dn_usuario_modificador NUMERIC(19,0)
+);
+
+CREATE UNIQUE INDEX idx_category_name ON CATEGORY(dx_name ASC);
+
+
+---------------------------------------------------------------
+-- TABLE:  SUBCATEGORY
+-- DESCRIPTION:  List of subcategories
+----------------------------------------------------------------
+
+CREATE TABLE SUBCATEGORY (
+    pk_id BIGSERIAL PRIMARY KEY,
+    fk_category_id BIGSERIAL NOT NULL ,
+    dx_name VARCHAR(26),
+    dn_activo NUMERIC(1,0) default 1,
+    dd_fecha_creacion TIMESTAMP,
+    dn_usuario_creador NUMERIC(19,0),
+    dd_fecha_modificacion TIMESTAMP,
+    dn_usuario_modificador NUMERIC(19,0)
+);
+
+-- foreing key
+ALTER TABLE SUBCATEGORY ADD CONSTRAINT const_fk_category_id FOREIGN KEY (fk_category_id) REFERENCES CATEGORY (pk_id);
+
+-- idex
+CREATE UNIQUE INDEX idx_subcategory_name ON CATEGORY(dx_name ASC);
+
+---------------------------------------------------------------
+-- Tabla PRODUCT
+----------------------------------------------------------------
+
+CREATE TABLE PRODUCT (
+    pk_id BIGSERIAL PRIMARY KEY,
+    fk_brand_id BIGSERIAL ,
+    fk_category_id BIGSERIAL,
+    fk_subcategory_id BIGSERIAL,
+    dx_name VARCHAR(26),
+    dx_description VARCHAR(100),
+    dn_activo NUMERIC(1,0) default 1,
+    dd_fecha_creacion TIMESTAMP,
+    dn_usuario_creador NUMERIC(19,0) ,
+    dd_fecha_modificacion TIMESTAMP,
+    dn_usuario_modificador NUMERIC(19,0)
+);
+
+-- foreing key
+ALTER TABLE PRODUCT ADD CONSTRAINT const_fk_brand_id FOREIGN KEY (fk_brand_id) REFERENCES BRAND (pk_id);
+ALTER TABLE PRODUCT ADD CONSTRAINT const_fk_category_id FOREIGN KEY (fk_category_id) REFERENCES CATEGORY (pk_id);
+ALTER TABLE PRODUCT ADD CONSTRAINT const_fk_subcategory_id FOREIGN KEY (fk_subcategory_id) REFERENCES SUBCATEGORY (pk_id);
+
 CREATE UNIQUE INDEX idx_product_name ON product(
-    dx_name ASC);
+    fk_brand_id ASC, fk_category_id ASC, fk_subcategory_id ASC, dx_name ASC);
+
+---------------------------------------------------------------
+-- TABLE:  SUBSTANCE
+-- DESCRIPTION:  List of substance
+----------------------------------------------------------------
+
+CREATE TABLE SUBSTANCE (
+                       pk_id BIGSERIAL PRIMARY KEY,
+                       dx_name VARCHAR(26),
+                       dx_description VARCHAR(100),
+                       dn_activo NUMERIC(1,0) default 1,
+                       dd_fecha_creacion TIMESTAMP,
+                       dn_usuario_creador NUMERIC(19,0) ,
+                       dd_fecha_modificacion TIMESTAMP,
+                       dn_usuario_modificador NUMERIC(19,0)
+);
+
+CREATE UNIQUE INDEX idx_substance_name ON SUBSTANCE(dx_name ASC);
+
+
+---------------------------------------------------------------
+-- TABLE:  RECIPE
+-- DESCRIPTION:  Composition os a product
+----------------------------------------------------------------
+
+CREATE TABLE RECIPE (
+    pk_id BIGSERIAL PRIMARY KEY,
+    fk_product_id BIGSERIAL NOT NULL,
+    fk_substance_id BIGSERIAL NOT NULL,
+    dd_register_date DATE NOT NULL,
+    dn_activo NUMERIC(1,0) default 1,
+    dd_fecha_creacion TIMESTAMP,
+    dn_usuario_creador NUMERIC(19,0) ,
+    dd_fecha_modificacion TIMESTAMP,
+    dn_usuario_modificador NUMERIC(19,0)
+);
+
+-- foreing key
+ALTER TABLE RECIPE ADD CONSTRAINT const_fk_product_id FOREIGN KEY (fk_product_id) REFERENCES PRODUCT (pk_id);
+ALTER TABLE RECIPE ADD CONSTRAINT const_fk_substance_id FOREIGN KEY (fk_substance_id) REFERENCES SUBSTANCE (pk_id);
+
+
+CREATE UNIQUE INDEX idx_recipe_product ON RECIPE(fk_product_id ASC, fk_substance_id ASC, dd_register_date ASC);
+
+---------------------------------------------------------------
+-- TABLE:  EVALUATION
+-- DESCRIPTION:  List of simulation
+----------------------------------------------------------------
+
+CREATE TABLE EVALUATION (
+    pk_id BIGSERIAL PRIMARY KEY,
+    fk_brand_id BIGSERIAL NOT NULL,
+    fk_category_id BIGSERIAL NOT NULL,
+    fk_subcategory_id BIGSERIAL NOT NULL,
+    fk_product_id BIGSERIAL NOT NULL,
+    fk_recipe_id BIGSERIAL NOT NULL,
+    dn_substance_percentaje NUMERIC(1,0) default 1,
+    dd_evaluation_date DATE NOT NULL,
+    dn_activo NUMERIC(1,0) default 1,
+    dd_fecha_creacion TIMESTAMP,
+    dn_usuario_creador NUMERIC(19,0) ,
+    dd_fecha_modificacion TIMESTAMP,
+    dn_usuario_modificador NUMERIC(19,0)
+);
+
+-- foreing key
+ALTER TABLE EVALUATION ADD CONSTRAINT const_fk_brand_id FOREIGN KEY (fk_brand_id) REFERENCES BRAND (pk_id);
+ALTER TABLE EVALUATION ADD CONSTRAINT const_fk_category_id FOREIGN KEY (fk_category_id) REFERENCES CATEGORY (pk_id);
+ALTER TABLE EVALUATION ADD CONSTRAINT const_fk_subcategory_id FOREIGN KEY (fk_subcategory_id) REFERENCES SUBCATEGORY (pk_id);
+ALTER TABLE EVALUATION ADD CONSTRAINT const_fk_product_id FOREIGN KEY (fk_product_id) REFERENCES PRODUCT (pk_id);
+ALTER TABLE EVALUATION ADD CONSTRAINT const_fk_recipe_id FOREIGN KEY (fk_recipe_id) REFERENCES RECIPE (pk_id);
+
+---------------------------------------------------------------
+-- TABLE:  RESULT_ITEM
+-- DESCRIPTION:  Substance simulation results
+----------------------------------------------------------------
+
+CREATE TABLE RESULT_ITEM (
+    pk_id BIGSERIAL PRIMARY KEY,
+    fk_evaluation_id BIGSERIAL NOT NULL,
+    dd_evaluation_date DATE NOT NULL,
+    fk_recipe_id BIGSERIAL NOT NULL,
+    dn_substance_percentaje NUMERIC(1,0) default 1,
+    dn_activo NUMERIC(1,0) default 1,
+    dd_fecha_creacion TIMESTAMP,
+    dn_usuario_creador NUMERIC(19,0) ,
+    dd_fecha_modificacion TIMESTAMP,
+    dn_usuario_modificador NUMERIC(19,0)
+);
+
+-- foreing key
+ALTER TABLE RESULT_ITEM ADD CONSTRAINT const_fk_evaluation_id FOREIGN KEY (fk_evaluation_id) REFERENCES EVALUATION (pk_id);
+ALTER TABLE RESULT_ITEM ADD CONSTRAINT const_fk_recipe_id FOREIGN KEY (fk_recipe_id) REFERENCES RECIPE (pk_id);
