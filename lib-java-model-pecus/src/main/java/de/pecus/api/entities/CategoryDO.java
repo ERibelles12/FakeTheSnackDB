@@ -31,7 +31,7 @@ public class CategoryDO extends AuditBase<Long> implements Serializable {
 	@Column(name =  "DN_GENERAL_INDICATOR" )
 	private Boolean generalIndicator;
 	@Column(name =  "DN_MILK_INDICATOR" )
-	private Boolean mildIndicator;
+	private Boolean milkIndicator;
 	@Column(name =  "DN_MEAT_INDICATOR" )
 	private Boolean meatIndicator;
 

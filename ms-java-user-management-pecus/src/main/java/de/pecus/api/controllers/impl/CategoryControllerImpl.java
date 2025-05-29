@@ -1,12 +1,12 @@
 package de.pecus.api.controllers.impl;
 
-import de.pecus.api.controllers.BrandController;
+import de.pecus.api.controllers.CategoryController;
 import de.pecus.api.log.SmartLogger;
 import de.pecus.api.log.SmartLoggerFactory;
-import de.pecus.api.services.usuarios.BrandService;
+import de.pecus.api.services.usuarios.CategoryService;
+import de.pecus.api.util.CategoryServicesResponseBuilder;
 import de.pecus.api.util.RequestVOUtil;
 import de.pecus.api.util.ResponseUtil;
-import de.pecus.api.util.BrandServicesResponseBuilder;
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
 import de.pecus.api.vo.category.*;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Clase de controlador para servicio Rest de Brand
+ * Clase de controlador para servicio Rest de Category
  * 
  * @author Jorge Serrano
  * @version 1.0
@@ -30,12 +30,12 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("")
-public class BrandControllerImpl implements BrandController {
+public class CategoryControllerImpl implements CategoryController {
 
-	public static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(BrandController.class);
+	public static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(CategoryController.class);
 
 	@Autowired
-	private BrandService brandService;
+	private CategoryService categoryService;
 
 	/**
 	 * Operation: Operation: create, Method: POST Crea un registro en la BB.DD.
@@ -54,8 +54,8 @@ public class BrandControllerImpl implements BrandController {
 		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@PostMapping(value = "/brand", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<Long>> createBrand(@RequestHeader Map<String, String> headers,
+	@PostMapping(value = "/category", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<Long>> createCategory(@RequestHeader Map<String, String> headers,
 			@RequestBody CreateCategoryRequestVO body) {
 		
 			// Generamos el objeto requestVO
@@ -64,9 +64,9 @@ public class BrandControllerImpl implements BrandController {
 			ResponseEntity<ResponseVO<Long>> response = null;
 			try {
 				// Invocar al servicio
-				ResponseVO<Long> serviceResponse = brandService.create(requestVO);
+				ResponseVO<Long> serviceResponse = categoryService.create(requestVO);
 
-				response  = BrandServicesResponseBuilder.buildCreateOrUpdateResponse(serviceResponse);
+				response  = CategoryServicesResponseBuilder.buildCreateOrUpdateResponse(serviceResponse);
 
 			} catch (Exception exception) {
 				// Excepcion controlada
@@ -95,8 +95,8 @@ public class BrandControllerImpl implements BrandController {
 		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@PutMapping(value = "/brand/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<Long>> updateBrand(@RequestHeader Map<String, String> headers, 
+	@PutMapping(value = "/category/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<Long>> updateCategory(@RequestHeader Map<String, String> headers, 
 			@PathVariable(name = "id", required = false) Long id, 
 			@RequestBody UpdateCategoryRequestVO body) {
 		
@@ -111,9 +111,9 @@ public class BrandControllerImpl implements BrandController {
 			
 			try {
 				// Invocar al servicio
-				ResponseVO<Long> serviceResponse = brandService.update(requestVO);
+				ResponseVO<Long> serviceResponse = categoryService.update(requestVO);
 
-				response = BrandServicesResponseBuilder.buildCreateOrUpdateResponse(serviceResponse);
+				response = CategoryServicesResponseBuilder.buildCreateOrUpdateResponse(serviceResponse);
 
 			} catch (Exception exception) {
 				// Excepcion controlada
@@ -142,8 +142,8 @@ public class BrandControllerImpl implements BrandController {
 		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@DeleteMapping(value = "/brand/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<Boolean>> deleteBrand(@RequestHeader Map<String, String> headers,
+	@DeleteMapping(value = "/category/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<Boolean>> deleteCategory(@RequestHeader Map<String, String> headers,
 			@PathVariable("id") Long id) {
 		// Declaracion de variables
 		ResponseEntity<ResponseVO<Boolean>> response = null;
@@ -151,14 +151,14 @@ public class BrandControllerImpl implements BrandController {
 		// Generamos el objeto requestVO
 		DeleteCategoryRequestVO deleteCategoryRequestVO = new DeleteCategoryRequestVO();
 		deleteCategoryRequestVO.setId(id);
-		RequestVO<DeleteCategoryRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, deleteCategoryRequestVO);
+		RequestVO<DeleteCategoryRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,deleteCategoryRequestVO);
 		
 
 		try {
 			
-			ResponseVO<Boolean> serviceResponse = brandService.delete(requestVO);
+			ResponseVO<Boolean> serviceResponse = categoryService.delete(requestVO);
 
-			response = BrandServicesResponseBuilder.buildDeleteResponse(serviceResponse);
+			response = CategoryServicesResponseBuilder.buildDeleteResponse(serviceResponse);
 
 		} catch (Exception exception) {
 			// Excepcion no controlada
@@ -186,8 +186,8 @@ public class BrandControllerImpl implements BrandController {
 		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@GetMapping(value = "/brand/detail", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<FindDetailCategoryResponseVO>> findDetailBrand(
+	@GetMapping(value = "/category/detail", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<FindDetailCategoryResponseVO>> findDetailCategory(
 			@RequestHeader Map<String, String> headers, 
 			@RequestParam(value = "id", required= false) Long id,
 			@RequestParam(value = "name", required = false) String name) {
@@ -199,14 +199,14 @@ public class BrandControllerImpl implements BrandController {
 		FindDetailCategoryRequestVO findDetailCategoryRequestVO = new FindDetailCategoryRequestVO();
 		findDetailCategoryRequestVO.setId(id);
 		findDetailCategoryRequestVO.setName(name);
-		RequestVO<FindDetailCategoryRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, findDetailCategoryRequestVO);
+		RequestVO<FindDetailCategoryRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,findDetailCategoryRequestVO);
 
 		try {
 			
 			// Invocar al metodo de busqueda
-			ResponseVO<FindDetailCategoryResponseVO> serviceResponse = brandService.findDetail(requestVO);
+			ResponseVO<FindDetailCategoryResponseVO> serviceResponse = categoryService.findDetail(requestVO);
 			
-			response = BrandServicesResponseBuilder.buildFindDetailResponse(serviceResponse);
+			response = CategoryServicesResponseBuilder.buildFindDetailResponse(serviceResponse);
 
 		} catch (Exception exception) {
 			// Excepcion no controlada
@@ -239,8 +239,8 @@ public class BrandControllerImpl implements BrandController {
 		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@GetMapping(value = "/brand/list", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<List<FindListCategoryResponseVO>>> findListBrand(
+	@GetMapping(value = "/category/list", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<List<FindListCategoryResponseVO>>> findListCategory(
 			@RequestHeader Map<String, String> headers, 
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
@@ -250,15 +250,15 @@ public class BrandControllerImpl implements BrandController {
 		// Declarar variables
 		ResponseEntity<ResponseVO<List<FindListCategoryResponseVO>>> response = null;
 
-		FindListCategoryRequestVO findListBrandRequestVO = new FindListCategoryRequestVO();
-		findListBrandRequestVO.setName(name);
+		FindListCategoryRequestVO findListCategoryRequestVO = new FindListCategoryRequestVO();
+		findListCategoryRequestVO.setName(name);
 		RequestVO<FindListCategoryRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, page, size, orderBy,
-				orderType, findListBrandRequestVO);
+				orderType, findListCategoryRequestVO);
 
 		try {
 
-			ResponseVO<List<FindListCategoryResponseVO>> serviceResponse = brandService.findList(requestVO);
-			response = BrandServicesResponseBuilder.buildFindListBrandResponse(serviceResponse);
+			ResponseVO<List<FindListCategoryResponseVO>> serviceResponse = categoryService.findList(requestVO);
+			response = CategoryServicesResponseBuilder.buildFindListCategoryResponse(serviceResponse);
 
 		} catch (Exception exception) {
 			// Excepcion no controlada

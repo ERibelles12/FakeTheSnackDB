@@ -4,15 +4,15 @@ import de.pecus.api.error.FuncionesBusinessError;
 import de.pecus.api.error.GeneralBusinessErrors;
 import de.pecus.api.vo.ResponseErrorVO;
 import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.funciones.FindDetailFuncionResponseVO;
 import de.pecus.api.vo.category.FindDetailCategoryResponseVO;
 import de.pecus.api.vo.category.FindListCategoryResponseVO;
+import de.pecus.api.vo.funciones.FindDetailFuncionResponseVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public class BrandServicesResponseBuilder {
+public class CategoryServicesResponseBuilder {
 
 	/**
 	 * Método para analizar la respuesta del servicio y transformarla a la respuesta
@@ -139,7 +139,7 @@ public class BrandServicesResponseBuilder {
 	 * del protocolo de salida
 	 * 
 	 */
-	public static final ResponseEntity<ResponseVO<List<FindListCategoryResponseVO>>> buildFindListBrandResponse
+	public static final ResponseEntity<ResponseVO<List<FindListCategoryResponseVO>>> buildFindListCategoryResponse
 	(ResponseVO<List<FindListCategoryResponseVO>> serviceResponse) {
 		
 		ResponseEntity<ResponseVO<List<FindListCategoryResponseVO>>> response = null;

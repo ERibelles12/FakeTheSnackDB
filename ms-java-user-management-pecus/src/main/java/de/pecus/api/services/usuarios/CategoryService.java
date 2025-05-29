@@ -7,12 +7,12 @@ import de.pecus.api.vo.category.*;
 import java.util.List;
 
 /**
- * Clase de logica de negocio para administracion de Brandes
+ * Clase de logica de negocio para administracion de Categoryes
  * 
  * @author Proa
  *
  */
-public interface BrandService {
+public interface CategoryService {
 
 	/**
 	 * Crea un nuevo registro 

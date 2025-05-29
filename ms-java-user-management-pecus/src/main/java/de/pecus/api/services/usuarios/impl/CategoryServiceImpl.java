@@ -2,12 +2,12 @@ package de.pecus.api.services.usuarios.impl;
 
 import de.pecus.api.annotation.Auditable;
 import de.pecus.api.constant.DataConstants;
-import de.pecus.api.entities.BrandDO;
+import de.pecus.api.entities.CategoryDO;
 import de.pecus.api.enums.WildcardTypeEnum;
 import de.pecus.api.error.FuncionesBusinessError;
 import de.pecus.api.error.GeneralBusinessErrors;
-import de.pecus.api.repositories.usuarios.BrandRepository;
-import de.pecus.api.services.usuarios.BrandService;
+import de.pecus.api.repositories.usuarios.CategoryRepository;
+import de.pecus.api.services.usuarios.CategoryService;
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
 import de.pecus.api.vo.category.*;
@@ -25,22 +25,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Clase de logica de negocio para administracion de brandes
+ * Clase de logica de negocio para administracion de categoryes
  * 
  * @author Proa
  *
  */
 @Service
-public class BrandServiceImpl implements BrandService {
+public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
-	private BrandRepository brandRepository;
+	private CategoryRepository categoryRepository;
 
 
 	/**
-	 * Crea un nuevo registro de brand
+	 * Crea un nuevo registro de category
 	 * 
-	 * @param request Objeto con parametros de entrada de brand
+	 * @param request Objeto con parametros de entrada de category
 	 * 
 	 * @return Id generado
 	 */
@@ -54,21 +54,23 @@ public class BrandServiceImpl implements BrandService {
 			if (validateParametersCreate(request, response)) {
 		
 				// Preparar los datos para actualizar la BB.DD.
-				BrandDO brandDO = new BrandDO();
+				CategoryDO categoryDO = new CategoryDO();
 				
-				brandDO.setId(RandomUtils.nextLong());
-				brandDO.setName(request.getParameters().getName());
-				brandDO.setDescription(request.getParameters().getDescription());
-				
+				categoryDO.setId(RandomUtils.nextLong());
+				categoryDO.setName(request.getParameters().getName());
+				categoryDO.setGeneralIndicator(request.getParameters().getGeneralIndicator());
+				categoryDO.setMilkIndicator(request.getParameters().getMilkIndicator());
+				categoryDO.setMeatIndicator(request.getParameters().getMeatIndicator());
+
 				// Actualizar los parametros de auditoria
-				ServiceUtil.setAuditFields(brandDO, request.getToken());
+				ServiceUtil.setAuditFields(categoryDO, request.getToken());
 
 				// Insertar el registro
-				brandDO = brandRepository.saveAndFlush(brandDO);
+				categoryDO = categoryRepository.saveAndFlush(categoryDO);
 
 				// Regresar la respuesta correcta y el objeto a regresar
 				response.setSuccess(true);
-				response.setData(brandDO.getId());
+				response.setData(categoryDO.getId());
 				
 			}
 		return response;
@@ -76,9 +78,9 @@ public class BrandServiceImpl implements BrandService {
 
 
 	/**
-	 * Actualiza un registro de brand
+	 * Actualiza un registro de category
 	 * 
-	 * @param request Objeto con parametros de entrada de brand
+	 * @param request Objeto con parametros de entrada de category
 	 * 
 	 * @return Id actualizado
 	 */
@@ -87,7 +89,7 @@ public class BrandServiceImpl implements BrandService {
 
 		// Declarar variables
 		ResponseVO<Long> response = new ResponseVO<>();
-		BrandDO registroDO = new BrandDO();
+		CategoryDO registroDO = new CategoryDO();
 
 		// Validar los campos de entrada
 		if (validateParametersUpdate(request, response)) {
@@ -96,13 +98,15 @@ public class BrandServiceImpl implements BrandService {
 
 			registroDO.setId(parameters.getId());
 			registroDO.setName(parameters.getName());
-			registroDO.setDescripcion(parameters.getDescripcion());
-			
+			registroDO.setGeneralIndicator(parameters.getGeneralIndicator());
+			registroDO.setMilkIndicator(parameters.getMilkIndicator());
+			registroDO.setMeatIndicator(parameters.getMeatIndicator());
+
 			// Actualizar parametros de auditoria
 			ServiceUtil.setAuditFields(registroDO, request.getToken());
 
 			// Actualizar el registro en BB.DD.
-			registroDO = brandRepository.saveAndFlush(registroDO);
+			registroDO = categoryRepository.saveAndFlush(registroDO);
 
 			// Preparar respuesta y objeto actualizado
 			response.setSuccess(true);
@@ -113,9 +117,9 @@ public class BrandServiceImpl implements BrandService {
 
 
 	/**
-	 * Marca un registro como eliminado un registro de brand
+	 * Marca un registro como eliminado un registro de category
 	 * 
-	 * @param request Objeto con parametros de entrada de brand
+	 * @param request Objeto con parametros de entrada de category
 	 * 
 	 * @return Id eliminado
 	 */
@@ -128,16 +132,16 @@ public class BrandServiceImpl implements BrandService {
 		// Validar campos de entrada
 		if (validateParametersDelete(request, response)) {
 
-			BrandDO brandDO = this.exists(request.getParameters().getId(), null);
-			if (ValidatorUtil.isNull(brandDO)) {
+			CategoryDO categoryDO = this.exists(request.getParameters().getId(), null);
+			if (ValidatorUtil.isNull(categoryDO)) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_ERROR, request);
 			}
 			else {
 			// Actualizar la informacion
-			ServiceUtil.setDisabledEntity(brandDO, request.getToken());
+			ServiceUtil.setDisabledEntity(categoryDO, request.getToken());
 			
 			// Actualizar la BB.DD.
-			brandDO = brandRepository.saveAndFlush(brandDO);
+			categoryDO = categoryRepository.saveAndFlush(categoryDO);
 
 			// Preparar respuesta y objeto eliminado
 			response.setSuccess(true);
@@ -148,7 +152,7 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 	/**
-	 * Consulta un brand por Identificador unico
+	 * Consulta un category por Identificador unico
 	 * 
 	 * @return Objeto VO con los datos encontrados
 	 * @param Id      Identificador del registro a buscar
@@ -165,14 +169,16 @@ public class BrandServiceImpl implements BrandService {
 		// validar que se cumplen las condiciones para realizar la consulta
 		if (validateParametersFindDetail(request, response)) {
 
-			BrandDO brandDO = this.exists(request.getParameters().getId(), request.getParameters().getName());
+			CategoryDO categoryDO = this.exists(request.getParameters().getId(), request.getParameters().getName());
 
-			if (ValidatorUtil.isNull(brandDO)) {
+			if (ValidatorUtil.isNull(categoryDO)) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_ERROR, request);
 			} else {
-				salida.setId(brandDO.getId());
-				salida.setName(brandDO.getName());
-				salida.setDescripcion(brandDO.getDescripcion());
+				salida.setId(categoryDO.getId());
+				salida.setName(categoryDO.getName());
+				salida.setGeneralIndicator(categoryDO.getGeneralIndicator());
+				salida.setMilkIndicator(categoryDO.getMilkIndicator());
+				salida.setMeatIndicator(categoryDO.getMeatIndicator());
 
 				response.setData(salida);
 				// regresar la respuesta correcta con los registros obtenidos.
@@ -200,7 +206,7 @@ public class BrandServiceImpl implements BrandService {
 		// declaracion de varables
 		ResponseVO<List<FindListCategoryResponseVO>> response = new ResponseVO<>();
 		
-		Page<BrandDO> listaBrand = null;
+		Page<CategoryDO> listaCategory = null;
 		
 		if (validateParametersFindByList(request, response)) {
 	
@@ -222,16 +228,16 @@ public class BrandServiceImpl implements BrandService {
 			String normalizedName = this.limpiarAcentos(request.getParameters().getName());
 			
 			// ejecucion de la busqueda por el parametro recibido
-			listaBrand = brandRepository.findList(this.cleanString(normalizedName), pageable);
+			listaCategory = categoryRepository.findList(this.cleanString(normalizedName), pageable);
 
 			// Si no se encontro ningun registro que cumpla la condicion generar error.
- 				if (ValidatorUtil.isNullOrEmpty(listaBrand.getContent())) {
+ 				if (ValidatorUtil.isNullOrEmpty(listaCategory.getContent())) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_REGISTER_LIST_ERROR);
 			} else {
 				// Regresar la respuesta correcta con los registros obtenidos.
 				response.setSuccess(true);
-				response.setTotalRows(listaBrand.getTotalElements());
-				response.setData(transformListDO(listaBrand.getContent()));
+				response.setTotalRows(listaCategory.getTotalElements());
+				response.setData(transformListDO(listaCategory.getContent()));
 			}
 		}
 		return response;
@@ -274,7 +280,7 @@ public class BrandServiceImpl implements BrandService {
 			// Validacion de formato
 			parameters.setName(StringUtil.toUpperCase(name));
 
-				BrandDO registroB = this.exists(null,parameters.getName());
+				CategoryDO registroB = this.exists(null,parameters.getName());
 				
 				if (!ValidatorUtil.isNull(registroB)) {
 					ResponseUtil.addError(request, response, 
@@ -306,7 +312,7 @@ public class BrandServiceImpl implements BrandService {
 	private boolean validateParametersUpdate(RequestVO<UpdateCategoryRequestVO> request, ResponseVO<Long> response) {
 		// Recuperar parametros de entrada
 		UpdateCategoryRequestVO parameters = request.getParameters();
-		BrandDO registroUpdate = new BrandDO();
+		CategoryDO registroUpdate = new CategoryDO();
 		
 		// Validar que se informaron los campos de entrada
 		if (ValidatorUtil.isNull(parameters)) {
@@ -339,11 +345,11 @@ public class BrandServiceImpl implements BrandService {
 			parameters.setName(StringUtil.toUpperCase(name));
 			
 				//Validar la posible duplicidad del name
-				BrandDO brandBusqueda = this.exists(null, request.getParameters().getName());
+				CategoryDO categoryBusqueda = this.exists(null, request.getParameters().getName());
 				
-				if (!ValidatorUtil.isNull(brandBusqueda)) {
+				if (!ValidatorUtil.isNull(categoryBusqueda)) {
 					//Si se encuentra el registro validamos que no sea el mismo Id
-					if (registroUpdate.getId() != brandBusqueda.getId()) {
+					if (registroUpdate.getId() != categoryBusqueda.getId()) {
 						ResponseUtil.addError(request, response, FuncionesBusinessError.DUPLICATED_ERROR, request);
 						
 					}
@@ -444,30 +450,32 @@ public class BrandServiceImpl implements BrandService {
 
 
 	/**
-	 * Obtiene una lista de objetos brandVO a partir de una lista de DO
+	 * Obtiene una lista de objetos categoryVO a partir de una lista de DO
 	 * 
 	 * @return Lista VO para retorno de resultados
 	 * 
-	 * @param listaBrand a transformar
+	 * @param listaCategory a transformar
 	 */
-	private List<FindListCategoryResponseVO> transformListDO(List<BrandDO> listaBrand) {
+	private List<FindListCategoryResponseVO> transformListDO(List<CategoryDO> listaCategory) {
 
 		// Declarar variables
-		List<FindListCategoryResponseVO> listaBrandVO = new ArrayList<>();
+		List<FindListCategoryResponseVO> listaCategoryVO = new ArrayList<>();
 
 		// recorrer el objeto origen
-		for (BrandDO brandDO : listaBrand) {
+		for (CategoryDO categoryDO : listaCategory) {
 			// Se hace la declaracion de variables necesarias
-			FindListCategoryResponseVO brandVO = new FindListCategoryResponseVO();
+			FindListCategoryResponseVO categoryVO = new FindListCategoryResponseVO();
 			
-			brandVO.setId(brandDO.getId());
-			brandVO.setName(brandDO.getName());
-			brandVO.setDescripcion(brandDO.getDescripcion());
+			categoryVO.setId(categoryDO.getId());
+			categoryVO.setName(categoryDO.getName());
+			categoryVO.setGeneralIndicator(categoryDO.getGeneralIndicator());
+			categoryVO.setMilkIndicator(categoryDO.getMilkIndicator());
+			categoryVO.setMeatIndicator(categoryDO.getMeatIndicator());
 			
-			listaBrandVO.add(brandVO);
+			listaCategoryVO.add(categoryVO);
 		}
 
-		return listaBrandVO;
+		return listaCategoryVO;
 	}
 	
 
@@ -477,9 +485,9 @@ public class BrandServiceImpl implements BrandService {
 	 * Regresa el objeto de la base de datos o una excepcion con el error
 	 * 
 	 *************************************************************************/
-	public BrandDO exists(Long id, String name){
+	public CategoryDO exists(Long id, String name){
 
-		BrandDO registro = null;
+		CategoryDO registro = null;
 		try {
 			//Validacion de datos de entrada
 			if (ValidatorUtil.isNullOrZero(id)) {
@@ -487,11 +495,11 @@ public class BrandServiceImpl implements BrandService {
 					registro = null;
 				} else {
 					//Buscamos por nombre
-					registro = brandRepository.findByName(name);
+					registro = categoryRepository.findByName(name);
 				}
 			} else {
 				//Consulta
-				registro = brandRepository.findById(id);
+				registro = categoryRepository.findById(id);
 			}
 			//Validacion de existencia
 			if (ValidatorUtil.isNull(registro)) {

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.Map;
 
-public interface BrandController {
+public interface CategoryController {
 
 	/**
 	 * Servicio para crear un registro.
@@ -21,7 +21,7 @@ public interface BrandController {
 	 * 
 	 * @return Responde una entidad de tipo Response el registro creado
 	 */
-	ResponseEntity<ResponseVO<Long>> createBrand(Map<String, String> headers, CreateCategoryRequestVO body);
+	ResponseEntity<ResponseVO<Long>> createCategory(Map<String, String> headers, CreateCategoryRequestVO body);
 
 	/**
 	 * Servicio para actualiza un registro.
@@ -33,7 +33,7 @@ public interface BrandController {
 	 * 
 	 * @return Responde una entidad de tipo Response el registro actualizado
 	 */
-	ResponseEntity<ResponseVO<Long>> updateBrand(Map<String, String> headers, Long id, UpdateCategoryRequestVO body);
+	ResponseEntity<ResponseVO<Long>> updateCategory(Map<String, String> headers, Long id, UpdateCategoryRequestVO body);
 
 	/**
 	 * Servicio para elimina un registro.
@@ -43,7 +43,7 @@ public interface BrandController {
 	 * 
 	 * @return Responde una entidad de tipo Response el booleano del resultado
 	 */
-	ResponseEntity<ResponseVO<Boolean>> deleteBrand(Map<String, String> headers, Long id);
+	ResponseEntity<ResponseVO<Boolean>> deleteCategory(Map<String, String> headers, Long id);
 
 	/**
 	 * Servicio consulta un registro
@@ -54,7 +54,7 @@ public interface BrandController {
 	 * 
 	 * @return Responde una entidad de tipo Response con los datos del registro
 	 */
-	ResponseEntity<ResponseVO<FindDetailCategoryResponseVO>> findDetailBrand(Map<String, String> headers, Long id, String name);
+	ResponseEntity<ResponseVO<FindDetailCategoryResponseVO>> findDetailCategory(Map<String, String> headers, Long id, String name);
 
 	
 	/**
@@ -65,8 +65,8 @@ public interface BrandController {
 	 * 
 	 * @return Responde una lista de registros encontrados
 	 */
-	ResponseEntity<ResponseVO<List<FindListCategoryResponseVO>>> findListBrand(Map<String, String> headers, Integer page,
-																			   Integer size, String orderBy, String orderType, String name);
+	ResponseEntity<ResponseVO<List<FindListCategoryResponseVO>>> findListCategory(Map<String, String> headers, Integer page,
+                                                                            Integer size, String orderBy, String orderType, String name);
 
 
 	
