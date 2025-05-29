@@ -1,60 +1,47 @@
 package de.pecus.api.entities;
 
 /******************** SECCION IMPORTS ***************************************/
-import java.io.Serializable;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
- * El tipo de rol determinara ciertos comportamientos, por ejemplo,
+ * Recipe object Daba Base
  * 
- * - El tipo de Rol "Admin", "adminCondo",  no son editable.
- * 
- * - En cambio el administrador puede generar diferentes perfiles que si pueden
- * ser modificables.
- * 
- * Tipo:
- * Publico
- * KrisnaGarcia
  * @author jose.ribelles
  * @version 1.0
  * @created 24-jul.-2019 11:27:46 a. m.
  */
 @Entity
-@Table(name = "PRODUCT")
-public class ProductDO extends AuditBase<Long> implements Serializable {
+@Table(name = "RECIPE")
+public class RecipeDO extends AuditBase<Long> implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -5382607608047169433L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="PK_ID")
 	private Long id;
-	@Column(name =  "DX_NAME" )
-	private String name;
-	@Column(name =  "DX_DESCRIPTION" )
-	private String descripcion;
+
+	@Column(name =  "DD_REGISTER_DATE" )
+	private Date registerDate;
+
 
 	/****************************  RELACION 1..N ******************************/
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "FK_BRAND_ID" , referencedColumnName = "PK_ID")
-	private BrandDO brand;
+	@JoinColumn(name = "FK_PRODUCT_ID" , referencedColumnName = "PK_ID")
+	private ProductDO product;
 
 	/****************************  RELACION 1..N ******************************/
 	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn(name = "FK_CATEGORY_ID" , referencedColumnName = "PK_ID")
-	private CategoryDO category;
-
-	/****************************  RELACION 1..N ******************************/
-	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn(name = "FK_SUBCATEGORY_ID" , referencedColumnName = "PK_ID")
-	private SubCategoryDO subCategory;
+	@JoinColumn(name = "FK_SUBSTANCE_ID" , referencedColumnName = "PK_ID")
+	private SubstanceDO substance;
 
 
-	public ProductDO(){
+	public RecipeDO(){
 
 	}
 

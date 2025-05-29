@@ -1,42 +1,39 @@
 package de.pecus.api.entities;
 
 /******************** SECCION IMPORTS ***************************************/
-import java.io.Serializable;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
- * El tipo de rol determinara ciertos comportamientos, por ejemplo,
- * 
- * - El tipo de Rol "Admin", "adminCondo",  no son editable.
- * 
- * - En cambio el administrador puede generar diferentes perfiles que si pueden
- * ser modificables.
- * 
- * Tipo:
- * Publico
- * KrisnaGarcia
+ * Evaluation
+ *
+ * For each evaluation we are going to execute, we create a register in the
+ * database to keep de evaluations results
+ *
  * @author jose.ribelles
  * @version 1.0
  * @created 24-jul.-2019 11:27:46 a. m.
  */
 @Entity
 @Table(name = "PRODUCT")
-public class ProductDO extends AuditBase<Long> implements Serializable {
+public class EvaluationDO extends AuditBase<Long> implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -5382607608047169433L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="PK_ID")
 	private Long id;
-	@Column(name =  "DX_NAME" )
-	private String name;
-	@Column(name =  "DX_DESCRIPTION" )
-	private String descripcion;
+
+
+	@Column(name =  "DD_EVALUATION_DATE" )
+	private Date evaluationDate;
+	@Column(name =  "DN_SUBSTANCE_PERCENTAJE" )
+	private Double substancePercentaje;
 
 	/****************************  RELACION 1..N ******************************/
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -53,8 +50,18 @@ public class ProductDO extends AuditBase<Long> implements Serializable {
 	@JoinColumn(name = "FK_SUBCATEGORY_ID" , referencedColumnName = "PK_ID")
 	private SubCategoryDO subCategory;
 
+	/****************************  RELACION 1..N ******************************/
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name = "FK_PRODUCT_ID" , referencedColumnName = "PK_ID")
+	private ProductDO product;
 
-	public ProductDO(){
+	/****************************  RELACION 1..N ******************************/
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name = "FK_RECIPE_ID" , referencedColumnName = "PK_ID")
+	private RecipeDO recipe;
+
+
+	public EvaluationDO(){
 
 	}
 
