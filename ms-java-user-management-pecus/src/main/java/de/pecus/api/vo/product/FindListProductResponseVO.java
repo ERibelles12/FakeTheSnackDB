@@ -27,6 +27,10 @@ public class FindListProductResponseVO {
 	private Integer idCategory;
 	private String nameCategory;
 
+	//SubCategory
+	private Integer idSubCategory;
+	private String nameSubCategory;
+
 
 	public Long getId() {
 		return id;
@@ -59,5 +63,10 @@ public class FindListProductResponseVO {
 	public String getNameCategory() {return this.nameCategory;}
 	public void setNameCategory(String nameCategory) {this.nameCategory = nameCategory;}
 
+	public Integer getIdSubCategory() {return this.idSubCategory;}
+	public void setIdSubCategory(Integer idSubCategory) {this.idSubCategory = idSubCategory;}
+
+	public String getNameSubCategory() {return this.nameSubCategory;}
+	public void setNameSubCategory(String nameSubCategory) {this.nameSubCategory = nameSubCategory;}
 
 }

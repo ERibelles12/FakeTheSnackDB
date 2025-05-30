@@ -24,6 +24,9 @@ public class CreateProductRequestVO {
 	// Product Id Category
 	private Integer idCategory;
 
+	// Product Id Subcategory
+	private Integer idSubCategory;
+
 	public String getName() {
 		return name;
 	}
@@ -43,5 +46,8 @@ public class CreateProductRequestVO {
 
 	public Integer getIdCategory() {return idCategory;}
 	public void setIdCategory() {this.idCategory = idCategory;}
+
+	public Integer getIdSubCategory() {return idSubCategory;}
+	public void setIdSubCategory() {this.idSubCategory = idSubCategory;}
 
 }

@@ -28,6 +28,10 @@ public class FindDetailProductResponseVO {
 	private Integer idCategory;
 	private String nameCategory;
 
+	//SubCategory
+	private Integer idSubCategory;
+	private String nameSubCategory;
+
 	public Long getId() {
 		return id;
 	}
@@ -51,10 +55,16 @@ public class FindDetailProductResponseVO {
 	public Integer getIdCategory() {return this.idCategory;}
 	public void setIdCategory(Integer idCategory) {this.idCategory = idCategory;}
 
+	public Integer getIdSubCategory() {return this.idSubCategory;}
+	public void setIdSubCategory(Integer idSubCategory) {this.idSubCategory = idSubCategory;}
+
 	public String getNameBrand() {return this.nameBrand;}
 	public void setNameBrand(String nameBrand) {this.nameBrand = nameBrand;}
 
 	public String getNameCategory() {return this.nameCategory;}
 	public void setNameCategory(String nameCategory) {this.nameCategory = nameCategory;}
+
+	public String getNameSubCategory() {return this.nameSubCategory;}
+	public void setNameSubCategory(String nameSubCategory) {this.nameSubCategory = nameSubCategory;}
 
 }

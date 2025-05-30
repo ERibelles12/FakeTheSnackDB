@@ -72,7 +72,20 @@ public class ProductServiceImpl implements ProductService {
 				productDO.setId(RandomUtils.nextLong());
 				productDO.setName(request.getParameters().getName());
 				productDO.setDescripcion(request.getParameters().getDescripcion());
-				
+
+				//Creamos las referencias a brand, category y subcategory
+				BrandDO brandDO = new BrandDO();
+				CategoryDO categoryDO = new CategoryDO();
+				SubCategoryDO subCategoryDO = new SubCategoryDO();
+
+				brandDO.setId(request.getParameters().getIdBrand());
+				categoryDO.setId(request.getParameters().getIdCategory());
+				subCategoryDO.setId(request.getParameters().getIdSubCategory());
+
+				productDO.setBrand(brandDO);
+				productDO.setCategory(categoryDO);
+				productDO.setSubCategory(subCategoryDO);
+
 				// Actualizar los parametros de auditoria
 				ServiceUtil.setAuditFields(productDO, request.getToken());
 
@@ -110,7 +123,20 @@ public class ProductServiceImpl implements ProductService {
 			registroDO.setId(parameters.getId());
 			registroDO.setName(parameters.getName());
 			registroDO.setDescripcion(parameters.getDescripcion());
-			
+
+			//Creamos las referencias a brand, category y subcategory
+			BrandDO brandDO = new BrandDO();
+			CategoryDO categoryDO = new CategoryDO();
+			SubCategoryDO subCategoryDO = new SubCategoryDO();
+
+			brandDO.setId(request.getParameters().getIdBrand());
+			categoryDO.setId(request.getParameters().getIdCategory());
+			subCategoryDO.setId(request.getParameters().getIdSubCategory());
+
+			productDO.setBrand(brandDO);
+			productDO.setCategory(categoryDO);
+			productDO.setSubCategory(subCategoryDO);
+
 			// Actualizar parametros de auditoria
 			ServiceUtil.setAuditFields(registroDO, request.getToken());
 
@@ -186,6 +212,12 @@ public class ProductServiceImpl implements ProductService {
 				salida.setId(productDO.getId());
 				salida.setName(productDO.getName());
 				salida.setDescripcion(productDO.getDescripcion());
+				salida.setIdBrand(productoDO.getBrand().getId());
+				salida.setNameBrand(productoDO.getBrand().getName());
+				salida.setIdCategory(productoDO.getCategory().getId());
+				salida.setNameCategory(productoDO.getCategory().getName());
+				salida.setIdSubCategory(productoDO.getSubCategory().getId());
+				salida.setNameSubCategory(productDO.getSubCategory().getName());
 
 				response.setData(salida);
 				// regresar la respuesta correcta con los registros obtenidos.
@@ -476,7 +508,12 @@ public class ProductServiceImpl implements ProductService {
 			productVO.setId(productDO.getId());
 			productVO.setName(productDO.getName());
 			productVO.setDescripcion(productDO.getDescripcion());
-			
+			productVO.setNameBrand(productoDO.getBrand().getName());
+			productVO.setIdCategory(productoDO.getCategory().getId());
+			productVO.setNameCategory(productoDO.getCategory().getName());
+			productVO.setIdSubCategory(productoDO.getSubCategory().getId());
+			productVO.setNameSubCategory(productDO.getSubCategory().getName());
+
 			listaProductVO.add(productVO);
 		}
 

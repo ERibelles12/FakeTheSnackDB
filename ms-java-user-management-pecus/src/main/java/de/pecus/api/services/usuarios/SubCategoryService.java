@@ -12,7 +12,7 @@ import java.util.List;
  * @author Proa
  *
  */
-public interface SubSubCategoryService {
+public interface SubCategoryService {
 
 	/**
 	 * Crea un nuevo registro 
