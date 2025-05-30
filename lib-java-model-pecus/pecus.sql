@@ -314,3 +314,9 @@ INSERT INTO CATEGORY (pk_id, dx_name, dn_general_indicator, dn_milk_indicator, d
                 (1,'GENERAL CATEGORY',1,0,0,1,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
                 (2,'GENERAL MILK CATEGORY',0,1,0,1,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
                 (3,'GENERAL MEAT CATEGORY',0,0,1,1,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+
+INSERT INTO SUBCATEGORY (PK_ID, FK_CATEGORY_ID, DX_NAME, dn_activo, dn_usuario_creador, dd_fecha_creacion, dn_usuario_modificador, dd_fecha_modificacion) VALUES
+    (1,2,'PRODUCT ENTERA',1, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (2,2,'PRODUCT DESCREMADOS',1, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (3,3,'PIG',1, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (4,3,'COWN',1, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
