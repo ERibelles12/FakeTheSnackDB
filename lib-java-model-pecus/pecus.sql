@@ -307,10 +307,10 @@ ALTER TABLE RESULT_ITEM ADD CONSTRAINT const_fk_recipe_id FOREIGN KEY (fk_recipe
 --------------------  EXAMPLE DATA ---------------------------
 --------------------------------------------------------------
 
-INSERT INTO BRAND VALUES (pk_id, dx_name, dx_description, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
+INSERT INTO BRAND (pk_id, dx_name, dx_description, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
                   (1,'GENERAL BRAND','DEFAULT BRAND',1,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
 
-INSERT INTO CATEGORY VALUES (pk_id, dx_name, dn_general_indicator, dn_milk_indicator, dn_meat_indicator, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
+INSERT INTO CATEGORY (pk_id, dx_name, dn_general_indicator, dn_milk_indicator, dn_meat_indicator, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
                 (1,'GENERAL CATEGORY',1,0,0,1,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
                 (2,'GENERAL MILK CATEGORY',0,1,0,1,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
                 (3,'GENERAL MEAT CATEGORY',0,0,1,1,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
