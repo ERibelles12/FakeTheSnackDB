@@ -11,7 +11,6 @@ package de.pecus.api.vo.product;
  */
 public class FindDetailProductResponseVO {
 
-
 	// Identificador de registro
 	private Long id;
 
@@ -21,10 +20,17 @@ public class FindDetailProductResponseVO {
 	// Descripcion del registro
 	private String descripcion;
 
+	// Brand
+	private Integer idBrand;
+	private String nameBrand;
+
+	//Category
+	private Integer idCategory;
+	private String nameCategory;
+
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -32,17 +38,23 @@ public class FindDetailProductResponseVO {
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
-	}
+	public String getDescripcion() {return descripcion;}
+	public void setDescripcion(String descripcion) {this.descripcion = descripcion;}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-	
+	public Integer getIdBrand() {return this.idBrand;}
+	public void setIdBrand(Integer idBrand) {this.idBrand = idBrand;}
+
+	public Integer getIdCategory() {return this.idCategory;}
+	public void setIdCategory(Integer idCategory) {this.idCategory = idCategory;}
+
+	public String getNameBrand() {return this.nameBrand;}
+	public void setNameBrand(String nameBrand) {this.nameBrand = nameBrand;}
+
+	public String getNameCategory() {return this.nameCategory;}
+	public void setNameCategory(String nameCategory) {this.nameCategory = nameCategory;}
+
 }
