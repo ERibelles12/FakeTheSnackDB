@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.pecus.api.controllers.ProductController;
-import de.pecus.api.log.SmartLogger;
-import de.pecus.api.log.SmartLoggerFactory;
+//import de.pecus.api.log.SmartLogger;
+//import de.pecus.api.log.SmartLoggerFactory;
 import de.pecus.api.services.usuarios.ProductService;
 import de.pecus.api.util.ProductServicesResponseBuilder;
 import de.pecus.api.util.RequestVOUtil;
@@ -48,7 +48,7 @@ import io.swagger.annotations.ApiImplicitParams;
 @RequestMapping("")
 public class ProductControllerImpl implements ProductController {
 
-	public static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(ProductController.class);
+	//public static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(ProductController.class);
 
 	@Autowired
 	private ProductService productService;

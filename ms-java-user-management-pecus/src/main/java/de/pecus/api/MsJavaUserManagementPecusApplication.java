@@ -21,11 +21,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import de.pecus.api.aspect.SmartLoggerAspect;
-import de.pecus.api.aspect.SystemArchitecture;
-import de.pecus.api.config.SecurityRolMenuProperties;
 import de.pecus.api.configprops.PecusDataSourceConfigProps;
-import de.pecus.api.configprops.EnvironmentSourceConfigProps;
 import de.pecus.api.configprops.HibernateConfigProps;
 import de.pecus.api.configprops.JdbcConfigProps;
 import springfox.documentation.builders.PathSelectors;
@@ -46,7 +42,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableAsync
 @EnableSpringConfigured
 @EnableConfigurationProperties({
-	SecurityRolMenuProperties.class,
 	HibernateConfigProps.class,
 	PecusDataSourceConfigProps.class,
 	JdbcConfigProps.class
@@ -64,9 +59,6 @@ public class MsJavaUserManagementPecusApplication {
 	@Autowired
 	private Environment env;
 	
-	@Autowired
-	private EnvironmentSourceConfigProps environmentSourceConfigProps;
-
 	public static void main(String[] args) {
 		SpringApplication.run(MsJavaUserManagementPecusApplication.class, args);
 	}
@@ -80,21 +72,6 @@ public class MsJavaUserManagementPecusApplication {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
 
-	@Bean
-	public CacheManager cacheManager() {
-		return new ConcurrentMapCacheManager();
-	}
-	
-	@Bean
-	public SystemArchitecture systemArchitecture() {
-		return new SystemArchitecture();
-	}
-	
-	@Bean
-	public SmartLoggerAspect aroundAspect() {
-		return new SmartLoggerAspect();
-	}
-	
 	@Bean
 	public TaskExecutor taskExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -120,7 +97,6 @@ public class MsJavaUserManagementPecusApplication {
 
 	@SuppressWarnings("rawtypes")
 	private ApiInfo buildApiInfo() {
-		System.out.println("->"+ environmentSourceConfigProps.getDb().toString());
 		return new ApiInfo(env.getProperty(MICROSERVICE_TITLE), env.getProperty(MICROSERVICE_DESCRIPTION),
 				env.getProperty(PROJECT_VERSION), StringUtils.EMPTY/* termsOfServiceUrl */,
 				new Contact(env.getProperty(MICROSERVICE_CONTACT_NAME), env.getProperty(MICROSERVICE_CONTACT_URL),

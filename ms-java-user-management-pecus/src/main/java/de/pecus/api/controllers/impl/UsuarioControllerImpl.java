@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.pecus.api.controllers.UsuarioController;
-import de.pecus.api.log.SmartLogger;
-import de.pecus.api.log.SmartLoggerFactory;
+//import de.pecus.api.log.SmartLogger;
+//import de.pecus.api.log.SmartLoggerFactory;
 import de.pecus.api.services.usuarios.UsuarioService;
 import de.pecus.api.util.RequestVOUtil;
 import de.pecus.api.util.ResponseUtil;
@@ -49,7 +49,7 @@ import io.swagger.annotations.ApiImplicitParams;
 public class UsuarioControllerImpl implements UsuarioController {
 
 	/** Logger */
-	private static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(UsuarioControllerImpl.class);
+	//private static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(UsuarioControllerImpl.class);
 
 	@Autowired
 	private UsuarioService usuarioService;
@@ -148,7 +148,7 @@ public class UsuarioControllerImpl implements UsuarioController {
 			// Generamos el objeto requestVO
 			RequestVO<CrearUsuarioRequestVO> request = RequestVOUtil.setNewRequestVO(headers, body);
 
-			LOGGER.debug(request, "Registrando un nuevo usuario sin rol");
+//			LOGGER.debug(request, "Registrando un nuevo usuario sin rol");
 			ResponseVO<Long> serviceResponse = usuarioService.crearUsuario(request);
 			response = UsuarioMobileResponseBuilder.buildCreateUserResponse(serviceResponse);
 

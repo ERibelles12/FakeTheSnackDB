@@ -11,15 +11,19 @@ package de.pecus.api.vo.product;
 public class FindListProductRequestVO {
 
 	private String name;
+	private Integer idBrand;
+	private Integer idCategory;
 
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 
-	
+	public Integer getIdBrand() {return this.idBrand;}
+	public Integer getIdCategory() {return this.idCategory;}
+	public void setIdBrand(Integer idBrand) {this.idBrand = idBrand;}
+	public void setIdCategory(Integer idCategory) {this.idCategory = idCategory;}
+
 }

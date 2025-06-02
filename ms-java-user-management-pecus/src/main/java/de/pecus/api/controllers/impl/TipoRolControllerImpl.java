@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.pecus.api.controllers.TipoRolController;
-import de.pecus.api.log.SmartLogger;
-import de.pecus.api.log.SmartLoggerFactory;
+//import de.pecus.api.log.SmartLogger;
+//import de.pecus.api.log.SmartLoggerFactory;
 import de.pecus.api.services.usuarios.TipoRolService;
 import de.pecus.api.util.RequestVOUtil;
 import de.pecus.api.util.ResponseUtil;
@@ -48,7 +48,7 @@ import io.swagger.annotations.ApiImplicitParams;
 @RequestMapping("")
 public class TipoRolControllerImpl implements TipoRolController {
 
-	public static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(TipoRolController.class);
+	//public static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(TipoRolController.class);
 
 	@Autowired
 	private TipoRolService tipoRolService;

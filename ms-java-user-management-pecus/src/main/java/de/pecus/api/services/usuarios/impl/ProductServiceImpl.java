@@ -13,9 +13,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import de.pecus.api.annotation.Auditable;
 import de.pecus.api.constant.DataConstants;
+import de.pecus.api.entities.BrandDO;
+import de.pecus.api.entities.CategoryDO;
 import de.pecus.api.entities.ProductDO;
+import de.pecus.api.entities.SubCategoryDO;
 import de.pecus.api.enums.WildcardTypeEnum;
 import de.pecus.api.error.FuncionesBusinessError;
 import de.pecus.api.error.GeneralBusinessErrors;
@@ -57,7 +59,6 @@ public class ProductServiceImpl implements ProductService {
 	 * 
 	 * @return Id generado
 	 */
-	@Auditable
 	public ResponseVO<Long> create(RequestVO<de.pecus.api.vo.product.CreateProductRequestVO> request) {
 
 		// Declarar variables
@@ -72,7 +73,20 @@ public class ProductServiceImpl implements ProductService {
 				productDO.setId(RandomUtils.nextLong());
 				productDO.setName(request.getParameters().getName());
 				productDO.setDescripcion(request.getParameters().getDescripcion());
-				
+
+				//Creamos las referencias a brand, category y subcategory
+				BrandDO brandDO = new BrandDO();
+				CategoryDO categoryDO = new CategoryDO();
+				SubCategoryDO subCategoryDO = new SubCategoryDO();
+
+				brandDO.setId(request.getParameters().getIdBrand());
+				categoryDO.setId(request.getParameters().getIdCategory());
+				subCategoryDO.setId(request.getParameters().getIdSubCategory());
+
+				productDO.setBrand(brandDO);
+				productDO.setCategory(categoryDO);
+				productDO.setSubCategory(subCategoryDO);
+
 				// Actualizar los parametros de auditoria
 				ServiceUtil.setAuditFields(productDO, request.getToken());
 
@@ -95,7 +109,6 @@ public class ProductServiceImpl implements ProductService {
 	 * 
 	 * @return Id actualizado
 	 */
-	@Auditable
 	public ResponseVO<Long> update(RequestVO<UpdateProductRequestVO> request) {
 
 		// Declarar variables
@@ -110,7 +123,20 @@ public class ProductServiceImpl implements ProductService {
 			registroDO.setId(parameters.getId());
 			registroDO.setName(parameters.getName());
 			registroDO.setDescripcion(parameters.getDescripcion());
-			
+
+			//Creamos las referencias a brand, category y subcategory
+			BrandDO brandDO = new BrandDO();
+			CategoryDO categoryDO = new CategoryDO();
+			SubCategoryDO subCategoryDO = new SubCategoryDO();
+
+			brandDO.setId(request.getParameters().getIdBrand());
+			categoryDO.setId(request.getParameters().getIdCategory());
+			subCategoryDO.setId(request.getParameters().getIdSubCategory());
+
+			registroDO.setBrand(brandDO);
+			registroDO.setCategory(categoryDO);
+			registroDO.setSubCategory(subCategoryDO);
+
 			// Actualizar parametros de auditoria
 			ServiceUtil.setAuditFields(registroDO, request.getToken());
 
@@ -132,7 +158,6 @@ public class ProductServiceImpl implements ProductService {
 	 * 
 	 * @return Id eliminado
 	 */
-	@Auditable
 	public ResponseVO<Boolean> delete(RequestVO<DeleteProductRequestVO> request) {
 
 		// Declarar variables
@@ -168,7 +193,6 @@ public class ProductServiceImpl implements ProductService {
 	 * 
 	 * @param request Objeto con los datos de busqueda
 	 */
-	@Auditable
 	public ResponseVO<FindDetailProductResponseVO> findDetail(RequestVO<FindDetailProductRequestVO> request) {
 
 		// declaracion de varables
@@ -186,6 +210,12 @@ public class ProductServiceImpl implements ProductService {
 				salida.setId(productDO.getId());
 				salida.setName(productDO.getName());
 				salida.setDescripcion(productDO.getDescripcion());
+				salida.setIdBrand(productDO.getBrand().getId());
+				salida.setNameBrand(productDO.getBrand().getName());
+				salida.setIdCategory(productDO.getCategory().getId());
+				salida.setNameCategory(productDO.getCategory().getName());
+				salida.setIdSubCategory(productDO.getSubCategory().getId());
+				salida.setNameSubCategory(productDO.getSubCategory().getName());
 
 				response.setData(salida);
 				// regresar la respuesta correcta con los registros obtenidos.
@@ -207,7 +237,6 @@ public class ProductServiceImpl implements ProductService {
 	 * 
 	 * @param request Objeto con parametros de entrada de banner
 	 */
-	@Auditable
 	public ResponseVO<List<FindListProductResponseVO>> findList(RequestVO<FindListProductRequestVO> request) {
 
 		// declaracion de varables
@@ -476,7 +505,12 @@ public class ProductServiceImpl implements ProductService {
 			productVO.setId(productDO.getId());
 			productVO.setName(productDO.getName());
 			productVO.setDescripcion(productDO.getDescripcion());
-			
+			productVO.setNameBrand(productDO.getBrand().getName());
+			productVO.setIdCategory(productDO.getCategory().getId());
+			productVO.setNameCategory(productDO.getCategory().getName());
+			productVO.setIdSubCategory(productDO.getSubCategory().getId());
+			productVO.setNameSubCategory(productDO.getSubCategory().getName());
+
 			listaProductVO.add(productVO);
 		}
 

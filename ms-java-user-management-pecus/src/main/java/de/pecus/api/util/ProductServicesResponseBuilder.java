@@ -168,39 +168,6 @@ public class ProductServicesResponseBuilder {
 		}
 		return response;
 	}
-
-	/**
-	 * Método para analizar la respuesta del servicio y transformarla a la respuesta
-	 * del protocolo de salida
-	 * 
-	 */
-	public static final ResponseEntity<ResponseVO<List<FindListFuncionResponseVO>>> buildFindListFuncionResponse
-	(ResponseVO<List<FindListFuncionResponseVO>> serviceResponse) {
-		
-		ResponseEntity<ResponseVO<List<FindListFuncionResponseVO>>> response = null;
-		
-		if (ValidatorUtil.isSuccessfulResponse(serviceResponse)) {
-			response = ResponseEntity.status(HttpStatus.OK).body(serviceResponse);
-		} else {
-			for (ResponseErrorVO responseErrorVO : serviceResponse.getErrors()) {
-				if (responseErrorVO.getKey().equals(GeneralBusinessErrors.REQUIRED_PAGE_NUMBER_ERROR)
-						|| responseErrorVO.getKey().equals(GeneralBusinessErrors.MIN_VALUE_PAGE_NUMBER_ERROR)
-						|| responseErrorVO.getKey().equals(GeneralBusinessErrors.REQUIRED_PAGE_SIZE_ERROR)
-						|| responseErrorVO.getKey().equals(GeneralBusinessErrors.MIN_VALUE_PAGE_SIZE_ERROR)
-						|| responseErrorVO.getKey().equals(FuncionesBusinessError.REQUIRED_ID_ERROR)) {
-					response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse);
-					break;
-				} else if (responseErrorVO.getKey().equals(FuncionesBusinessError.NOT_FOUND_REGISTER_LIST_ERROR)) {
-					response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(serviceResponse);
-					break;
-				} else {
-					response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(serviceResponse);
-					break;
-				}
-			}
-		}
-		return response;
-	}
 	
 	
 }
