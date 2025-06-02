@@ -33,7 +33,7 @@ public interface SubCategoryRepository extends JpaRepository<SubCategoryDO, Seri
 	@Query(value = " SELECT r" 
 			+ " FROM  SubCategoryDO r"
 			+ " JOIN FETCH r.category c"
-			+ " WHERE r.active = 1 "
+			+ " WHERE r.active = true "
 			+ " AND r.id = :id")
 	SubCategoryDO findById(@Param("id") Long id);
 	
@@ -48,13 +48,13 @@ public interface SubCategoryRepository extends JpaRepository<SubCategoryDO, Seri
 	@Query(value = " SELECT r" 
 			+ " FROM  SubCategoryDO r"
 			+ " JOIN FETCH r.category c"
-			+ " WHERE r.active = 1 "
+			+ " WHERE r.active = true "
 			+ " AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))"
 			+ " AND (:idCategory IS NULL OR r.category.id = :idCategory) ", 
 			countQuery="SELECT r "
 					+ "   FROM  SubCategoryDO r"
 					+ "   JOIN FETCH r.category c"
-					+ "   WHERE r.active = 1 "
+					+ "   WHERE r.active = true "
 					+ "   AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))"
 					+ "   AND (:idCategory IS NULL OR r.category.id = :idCategory) ")
 	Page<SubCategoryDO> findList(@Param("name") String name,@Param("idCategory") Integer idCategory,

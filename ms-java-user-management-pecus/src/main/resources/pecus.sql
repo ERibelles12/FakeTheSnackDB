@@ -87,7 +87,7 @@ CREATE TABLE TIPO_ROL (
     dx_id_Nombre VARCHAR(26),
     dx_descripcion VARCHAR(100),
     dn_global VARCHAR(5),
-    dn_activo NUMERIC(1,0) default 1,
+    dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
     dn_usuario_creador NUMERIC(19,0) ,
     dd_fecha_modificacion TIMESTAMP,
@@ -131,7 +131,7 @@ CREATE TABLE BRAND (
     pk_id BIGSERIAL PRIMARY KEY,
     dx_name VARCHAR(26),
     dx_description VARCHAR(100),
-    dn_activo NUMERIC(1,0) default 1,
+    dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
     dn_usuario_creador NUMERIC(19,0) ,
     dd_fecha_modificacion TIMESTAMP,
@@ -148,10 +148,10 @@ CREATE UNIQUE INDEX idx_brand_name ON BRAND(dx_name ASC);
 CREATE TABLE CATEGORY (
     pk_id BIGSERIAL PRIMARY KEY,
     dx_name VARCHAR(26),
-    dn_general_indicator NUMERIC(1,0) default 1,
-    dn_milk_indicator NUMERIC(1,0) default 0,
-    dn_meat_indicator NUMERIC(1,0) default 0,
-    dn_activo NUMERIC(1,0) default 1,
+    dn_general_indicator BOOLEAN default true,
+    dn_milk_indicator BOOLEAN default false,
+    dn_meat_indicator BOOLEAN default false,
+    dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
     dn_usuario_creador NUMERIC(19,0) ,
     dd_fecha_modificacion TIMESTAMP,
@@ -170,7 +170,7 @@ CREATE TABLE SUBCATEGORY (
     pk_id BIGSERIAL PRIMARY KEY,
     fk_category_id BIGSERIAL NOT NULL ,
     dx_name VARCHAR(26),
-    dn_activo NUMERIC(1,0) default 1,
+    dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
     dn_usuario_creador NUMERIC(19,0),
     dd_fecha_modificacion TIMESTAMP,
@@ -194,7 +194,7 @@ CREATE TABLE PRODUCT (
     fk_subcategory_id BIGSERIAL,
     dx_name VARCHAR(26),
     dx_description VARCHAR(100),
-    dn_activo NUMERIC(1,0) default 1,
+    dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
     dn_usuario_creador NUMERIC(19,0) ,
     dd_fecha_modificacion TIMESTAMP,
@@ -218,7 +218,7 @@ CREATE TABLE SUBSTANCE (
                        pk_id BIGSERIAL PRIMARY KEY,
                        dx_name VARCHAR(26),
                        dx_description VARCHAR(100),
-                       dn_activo NUMERIC(1,0) default 1,
+                       dn_activo BOOLEAN default true,
                        dd_fecha_creacion TIMESTAMP,
                        dn_usuario_creador NUMERIC(19,0) ,
                        dd_fecha_modificacion TIMESTAMP,
@@ -238,7 +238,7 @@ CREATE TABLE RECIPE (
     fk_product_id BIGSERIAL NOT NULL,
     fk_substance_id BIGSERIAL NOT NULL,
     dd_register_date DATE NOT NULL,
-    dn_activo NUMERIC(1,0) default 1,
+    dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
     dn_usuario_creador NUMERIC(19,0) ,
     dd_fecha_modificacion TIMESTAMP,
@@ -266,7 +266,7 @@ CREATE TABLE EVALUATION (
     fk_recipe_id BIGSERIAL NOT NULL,
     dn_substance_percentaje NUMERIC(1,0) default 1,
     dd_evaluation_date DATE NOT NULL,
-    dn_activo NUMERIC(1,0) default 1,
+    dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
     dn_usuario_creador NUMERIC(19,0) ,
     dd_fecha_modificacion TIMESTAMP,
@@ -291,7 +291,7 @@ CREATE TABLE RESULT_ITEM (
     dd_evaluation_date DATE NOT NULL,
     fk_recipe_id BIGSERIAL NOT NULL,
     dn_substance_percentaje NUMERIC(1,0) default 1,
-    dn_activo NUMERIC(1,0) default 1,
+    dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
     dn_usuario_creador NUMERIC(19,0) ,
     dd_fecha_modificacion TIMESTAMP,
@@ -308,20 +308,20 @@ ALTER TABLE RESULT_ITEM ADD CONSTRAINT const_fk_recipe_id FOREIGN KEY (fk_recipe
 --------------------------------------------------------------
 
 INSERT INTO BRAND (pk_id, dx_name, dx_description, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
-                  (1,'GENERAL BRAND','DEFAULT BRAND',1,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+                  (1,'GENERAL BRAND','DEFAULT BRAND',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
 
 INSERT INTO CATEGORY (pk_id, dx_name, dn_general_indicator, dn_milk_indicator, dn_meat_indicator, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
-                (1,'GENERAL CATEGORY',1,0,0,1,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-                (2,'GENERAL MILK CATEGORY',0,1,0,1,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-                (3,'GENERAL MEAT CATEGORY',0,0,1,1,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+                (1,'GENERAL CATEGORY',true,false,false,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+                (2,'GENERAL MILK CATEGORY',false,true,false,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+                (3,'GENERAL MEAT CATEGORY',false,false,true,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
 
 INSERT INTO SUBCATEGORY (PK_ID, FK_CATEGORY_ID, DX_NAME, dn_activo, dn_usuario_creador, dd_fecha_creacion, dn_usuario_modificador, dd_fecha_modificacion) VALUES
-    (1,2,'PRODUCT ENTERA',1, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (2,2,'PRODUCT DESCREMADOS',1, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (3,3,'PIG',1, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (4,3,'COWN',1, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+    (1,2,'PRODUCT ENTERA',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (2,2,'PRODUCT DESCREMADOS',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (3,3,'PIG',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (4,3,'COWN',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
 
-INSERT INTO PRODUCT (PK_ID, FK_BRAND_ID, FK_CATEGORY_ID, FK_SUBCATEGORY_ID, DX_NAME, DX_DESCRIPTION, dn_activo, DN_USUARIO_CREADOR, DD_FECHA_MODIFICACION, DN_USUARIO_MODIFICADOR) VALUES
-    (1,1,1,1,'PRODUCTO GENERICO','NOMBRE DEL PRODUCTO GENERICO',1, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (2,1,2,1,'YOGURT DESCREMADO','NOMBRE DEL YOGURT DESCREMADO',1, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (3,1,3,3,'PIG PRODUCT','NOMBRE DEL PRODUCTO DE CERDO',1, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+INSERT INTO PRODUCT (PK_ID, FK_BRAND_ID, FK_CATEGORY_ID, FK_SUBCATEGORY_ID, DX_NAME, DX_DESCRIPTION, dn_activo, DN_USUARIO_CREADOR, dd_fecha_creacion, DN_USUARIO_MODIFICADOR,dd_fecha_modificacion) VALUES
+    (1,1,1,1,'PRODUCTO GENERICO','NOMBRE DEL PRODUCTO GENERICO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (2,1,2,1,'YOGURT DESCREMADO','NOMBRE DEL YOGURT DESCREMADO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (3,1,3,3,'PIG PRODUCT','NOMBRE DEL PRODUCTO DE CERDO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');

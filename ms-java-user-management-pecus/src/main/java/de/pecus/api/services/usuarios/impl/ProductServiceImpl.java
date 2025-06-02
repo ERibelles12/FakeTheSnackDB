@@ -70,7 +70,6 @@ public class ProductServiceImpl implements ProductService {
 				// Preparar los datos para actualizar la BB.DD.
 				ProductDO productDO = new ProductDO();
 				
-				productDO.setId(RandomUtils.nextLong());
 				productDO.setName(request.getParameters().getName());
 				productDO.setDescripcion(request.getParameters().getDescripcion());
 

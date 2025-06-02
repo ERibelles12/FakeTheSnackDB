@@ -3,13 +3,7 @@ package de.pecus.api.entities;
 /******************** SECCION IMPORTS ***************************************/
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * El tipo de rol determinara ciertos comportamientos, por ejemplo,
@@ -34,8 +28,9 @@ public class ProductDO extends AuditBase<Long> implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5382607608047169433L;
-	
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="PK_ID")
 	private Long id;
 	@Column(name =  "DX_NAME" )
