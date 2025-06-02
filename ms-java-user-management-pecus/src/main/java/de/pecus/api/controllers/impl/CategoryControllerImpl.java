@@ -1,25 +1,39 @@
 package de.pecus.api.controllers.impl;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import de.pecus.api.controllers.CategoryController;
-import de.pecus.api.log.SmartLogger;
-import de.pecus.api.log.SmartLoggerFactory;
 import de.pecus.api.services.usuarios.CategoryService;
 import de.pecus.api.util.CategoryServicesResponseBuilder;
 import de.pecus.api.util.RequestVOUtil;
 import de.pecus.api.util.ResponseUtil;
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.category.*;
+import de.pecus.api.vo.category.CreateCategoryRequestVO;
+import de.pecus.api.vo.category.DeleteCategoryRequestVO;
+import de.pecus.api.vo.category.FindDetailCategoryRequestVO;
+import de.pecus.api.vo.category.FindDetailCategoryResponseVO;
+import de.pecus.api.vo.category.FindListCategoryRequestVO;
+import de.pecus.api.vo.category.FindListCategoryResponseVO;
+import de.pecus.api.vo.category.UpdateCategoryRequestVO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Clase de controlador para servicio Rest de Category
@@ -31,8 +45,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("")
 public class CategoryControllerImpl implements CategoryController {
-
-	public static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(CategoryController.class);
 
 	@Autowired
 	private CategoryService categoryService;

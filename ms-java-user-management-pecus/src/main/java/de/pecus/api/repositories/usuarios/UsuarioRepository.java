@@ -25,7 +25,7 @@ public interface UsuarioRepository extends JpaRepository<UsuarioDO, Serializable
 	 *            Identificador de registro buscado
 	 */
 	@Query(" SELECT u FROM UsuarioDO u WHERE u.id = :id AND u.active = :active ")
-	UsuarioDO findByIdAndActive(@Param("id") Long id, @Param("active") Integer active);
+	UsuarioDO findByIdAndActive(@Param("id") Long id, @Param("active") Boolean active);
 
 	/**
 	 * Consulta por id sin implementacion de query especifico

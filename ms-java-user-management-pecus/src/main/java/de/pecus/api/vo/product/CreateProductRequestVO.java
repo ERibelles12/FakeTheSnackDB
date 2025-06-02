@@ -19,13 +19,13 @@ public class CreateProductRequestVO {
 	private String descripcion;
 
 	// Product Id Brand
-	private Integer idBrand;
+	private Long idBrand;
 
 	// Product Id Category
-	private Integer idCategory;
+	private Long idCategory;
 
 	// Product Id Subcategory
-	private Integer idSubCategory;
+	private Long idSubCategory;
 
 	public String getName() {
 		return name;
@@ -41,13 +41,13 @@ public class CreateProductRequestVO {
 		this.descripcion = descripcion;
 	}
 
-	public Integer getIdBrand() { return idBrand;}
-	public void setIdBrand(Integer idBrand) { this.idBrand = idBrand;}
+	public Long getIdBrand() { return idBrand;}
+	public void setIdBrand(Long idBrand) { this.idBrand = idBrand;}
 
-	public Integer getIdCategory() {return idCategory;}
+	public Long getIdCategory() {return idCategory;}
 	public void setIdCategory() {this.idCategory = idCategory;}
 
-	public Integer getIdSubCategory() {return idSubCategory;}
+	public Long getIdSubCategory() {return idSubCategory;}
 	public void setIdSubCategory() {this.idSubCategory = idSubCategory;}
 
 }

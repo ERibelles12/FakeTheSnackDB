@@ -1,16 +1,9 @@
 package de.pecus.api.services.usuarios.impl;
 
-import de.pecus.api.annotation.Auditable;
-import de.pecus.api.constant.DataConstants;
-import de.pecus.api.entities.SubCategoryDO;
-import de.pecus.api.enums.WildcardTypeEnum;
-import de.pecus.api.error.FuncionesBusinessError;
-import de.pecus.api.error.GeneralBusinessErrors;
-import de.pecus.api.repositories.usuarios.SubCategoryRepository;
-import de.pecus.api.services.usuarios.SubCategoryService;
-import de.pecus.api.vo.RequestVO;
-import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.subCategory.*;
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,9 +13,29 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.List;
+import de.pecus.api.constant.DataConstants;
+import de.pecus.api.entities.CategoryDO;
+import de.pecus.api.entities.SubCategoryDO;
+import de.pecus.api.enums.WildcardTypeEnum;
+import de.pecus.api.error.FuncionesBusinessError;
+import de.pecus.api.error.GeneralBusinessErrors;
+import de.pecus.api.repositories.usuarios.SubCategoryRepository;
+import de.pecus.api.services.usuarios.SubCategoryService;
+import de.pecus.api.util.CriteriaUtil;
+import de.pecus.api.util.ResponseUtil;
+import de.pecus.api.util.ServiceUtil;
+import de.pecus.api.util.StringUtil;
+import de.pecus.api.util.ValidatorArqUtil;
+import de.pecus.api.util.ValidatorUtil;
+import de.pecus.api.vo.RequestVO;
+import de.pecus.api.vo.ResponseVO;
+import de.pecus.api.vo.subCategory.CreateSubCategoryRequestVO;
+import de.pecus.api.vo.subCategory.DeleteSubCategoryRequestVO;
+import de.pecus.api.vo.subCategory.FindDetailSubCategoryRequestVO;
+import de.pecus.api.vo.subCategory.FindDetailSubCategoryResponseVO;
+import de.pecus.api.vo.subCategory.FindListSubCategoryRequestVO;
+import de.pecus.api.vo.subCategory.FindListSubCategoryResponseVO;
+import de.pecus.api.vo.subCategory.UpdateSubCategoryRequestVO;
 
 /**
  * Clase de logica de negocio para administracion de subCategoryes
@@ -44,7 +57,6 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 	 * 
 	 * @return Id generado
 	 */
-	@Auditable
 	public ResponseVO<Long> create(RequestVO<CreateSubCategoryRequestVO> request) {
 
 		// Declarar variables
@@ -86,7 +98,6 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 	 * 
 	 * @return Id actualizado
 	 */
-	@Auditable
 	public ResponseVO<Long> update(RequestVO<UpdateSubCategoryRequestVO> request) {
 
 		// Declarar variables
@@ -126,7 +137,6 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 	 * 
 	 * @return Id eliminado
 	 */
-	@Auditable
 	public ResponseVO<Boolean> delete(RequestVO<DeleteSubCategoryRequestVO> request) {
 
 		// Declarar variables
@@ -162,7 +172,6 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 	 * 
 	 * @param request Objeto con los datos de busqueda
 	 */
-	@Auditable
 	public ResponseVO<FindDetailSubCategoryResponseVO> findDetail(RequestVO<FindDetailSubCategoryRequestVO> request) {
 
 		// declaracion de varables
@@ -201,7 +210,6 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 	 * 
 	 * @param request Objeto con parametros de entrada de banner
 	 */
-	@Auditable
 	public ResponseVO<List<FindListSubCategoryResponseVO>> findList(RequestVO<FindListSubCategoryRequestVO> request) {
 
 		// declaracion de varables
@@ -290,14 +298,6 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 			}
 		}
 		
-		// Validaciones de campos obligatorios
-		if (StringUtil.isNullOrEmpty(parameters.getDescripcion())) {
-			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_DESCRIPCION_ERROR,request);
-		} else {
-			// Validacion de tamano
-			parameters.setDescripcion(StringUtil.substring(parameters.getDescripcion(), DataConstants.MAX_SIZE_DESCRIPCION));
-		}
-		
 				
 		// Regresar el resultado de la validacion
 		return ValidatorUtil.isSuccessfulResponse(response);
@@ -360,16 +360,6 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 			parameters.setName(registroUpdate.getName());
 		}
 		
-		// Validaciones de campos obligatorios: DESCRIPCION
-		if (!StringUtil.isNullOrEmpty(parameters.getDescripcion())) {
-			// Validacion de tamano
-			parameters.setDescripcion(
-					StringUtil.substring(parameters.getDescripcion(), DataConstants.MAX_SIZE_DESCRIPCION));
-
-		} else {
-			parameters.setDescripcion(registroUpdate.getDescripcion());
-		}
-					
 		// Retorna el resultado de la validacion.
 		return ValidatorUtil.isSuccessfulResponse(response);
 		

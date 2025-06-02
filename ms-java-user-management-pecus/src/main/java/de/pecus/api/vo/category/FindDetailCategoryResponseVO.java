@@ -35,6 +35,38 @@ public class FindDetailCategoryResponseVO {
 		this.id = id;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Boolean getGeneralIndicator() {
+		return generalIndicator;
+	}
+
+	public void setGeneralIndicator(Boolean generalIndicator) {
+		this.generalIndicator = generalIndicator;
+	}
+
+	public Boolean getMilkIndicator() {
+		return milkIndicator;
+	}
+
+	public void setMilkIndicator(Boolean milkIndicator) {
+		this.milkIndicator = milkIndicator;
+	}
+
+	public boolean isMeatIndicator() {
+		return meatIndicator;
+	}
+
+	public void setMeatIndicator(boolean meatIndicator) {
+		this.meatIndicator = meatIndicator;
+	}
+
 
 }
 

@@ -13,7 +13,7 @@ public class CreateSubCategoryRequestVO {
 
 
 	// id Category
-	private Integer idCategory;
+	private Long idCategory;
 
 	// Identificador alfanumerico
 	private String name;
@@ -25,7 +25,7 @@ public class CreateSubCategoryRequestVO {
 		this.name = name;
 	}
 
-	public Integer getIdCategory() { return idCategory;}
-	public void setIdCategory(Integer idCategory) { this.idCategory = idCategory;}
+	public Long getIdCategory() { return idCategory;}
+	public void setIdCategory(Long idCategory) { this.idCategory = idCategory;}
 
 }

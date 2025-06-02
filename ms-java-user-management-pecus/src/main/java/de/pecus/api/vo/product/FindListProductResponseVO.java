@@ -20,15 +20,15 @@ public class FindListProductResponseVO {
 	private String descripcion;
 
 	// Brand
-	private Integer idBrand;
+	private Long idBrand;
 	private String nameBrand;
 
 	// Category
-	private Integer idCategory;
+	private Long idCategory;
 	private String nameCategory;
 
 	//SubCategory
-	private Integer idSubCategory;
+	private Long idSubCategory;
 	private String nameSubCategory;
 
 
@@ -53,18 +53,18 @@ public class FindListProductResponseVO {
 		this.descripcion = descripcion;
 	}
 
-	public Integer getIdBrand() {return this.idBrand;}
-	public void setIdBrand(Integer idBrand) {this.idBrand = idBrand;}
+	public Long getIdBrand() {return this.idBrand;}
+	public void setIdBrand(Long idBrand) {this.idBrand = idBrand;}
 	public String getNameBrand() {return this.nameBrand;}
 	public void setNameBrand(String nameBrand) {this.nameBrand = nameBrand;}
 
-	public Integer getIdCategory() {return this.idCategory;}
-	public void setIdCategory(Integer idCategory) {this.idCategory = idCategory;}
+	public Long getIdCategory() {return this.idCategory;}
+	public void setIdCategory(Long idCategory) {this.idCategory = idCategory;}
 	public String getNameCategory() {return this.nameCategory;}
 	public void setNameCategory(String nameCategory) {this.nameCategory = nameCategory;}
 
-	public Integer getIdSubCategory() {return this.idSubCategory;}
-	public void setIdSubCategory(Integer idSubCategory) {this.idSubCategory = idSubCategory;}
+	public Long getIdSubCategory() {return this.idSubCategory;}
+	public void setIdSubCategory(Long idSubCategory) {this.idSubCategory = idSubCategory;}
 
 	public String getNameSubCategory() {return this.nameSubCategory;}
 	public void setNameSubCategory(String nameSubCategory) {this.nameSubCategory = nameSubCategory;}

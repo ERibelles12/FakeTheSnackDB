@@ -1,16 +1,9 @@
 package de.pecus.api.services.usuarios.impl;
 
-import de.pecus.api.annotation.Auditable;
-import de.pecus.api.constant.DataConstants;
-import de.pecus.api.entities.CategoryDO;
-import de.pecus.api.enums.WildcardTypeEnum;
-import de.pecus.api.error.FuncionesBusinessError;
-import de.pecus.api.error.GeneralBusinessErrors;
-import de.pecus.api.repositories.usuarios.CategoryRepository;
-import de.pecus.api.services.usuarios.CategoryService;
-import de.pecus.api.vo.RequestVO;
-import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.category.*;
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,9 +13,28 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.List;
+import de.pecus.api.constant.DataConstants;
+import de.pecus.api.entities.CategoryDO;
+import de.pecus.api.enums.WildcardTypeEnum;
+import de.pecus.api.error.FuncionesBusinessError;
+import de.pecus.api.error.GeneralBusinessErrors;
+import de.pecus.api.repositories.usuarios.CategoryRepository;
+import de.pecus.api.services.usuarios.CategoryService;
+import de.pecus.api.util.CriteriaUtil;
+import de.pecus.api.util.ResponseUtil;
+import de.pecus.api.util.ServiceUtil;
+import de.pecus.api.util.StringUtil;
+import de.pecus.api.util.ValidatorArqUtil;
+import de.pecus.api.util.ValidatorUtil;
+import de.pecus.api.vo.RequestVO;
+import de.pecus.api.vo.ResponseVO;
+import de.pecus.api.vo.category.CreateCategoryRequestVO;
+import de.pecus.api.vo.category.DeleteCategoryRequestVO;
+import de.pecus.api.vo.category.FindDetailCategoryRequestVO;
+import de.pecus.api.vo.category.FindDetailCategoryResponseVO;
+import de.pecus.api.vo.category.FindListCategoryRequestVO;
+import de.pecus.api.vo.category.FindListCategoryResponseVO;
+import de.pecus.api.vo.category.UpdateCategoryRequestVO;
 
 /**
  * Clase de logica de negocio para administracion de categoryes
@@ -44,7 +56,6 @@ public class CategoryServiceImpl implements CategoryService {
 	 * 
 	 * @return Id generado
 	 */
-	@Auditable
 	public ResponseVO<Long> create(RequestVO<CreateCategoryRequestVO> request) {
 
 		// Declarar variables
@@ -58,9 +69,9 @@ public class CategoryServiceImpl implements CategoryService {
 				
 				categoryDO.setId(RandomUtils.nextLong());
 				categoryDO.setName(request.getParameters().getName());
-				categoryDO.setGeneralIndicator(request.getParameters().getGeneralIndicator());
-				categoryDO.setMilkIndicator(request.getParameters().getMilkIndicator());
-				categoryDO.setMeatIndicator(request.getParameters().getMeatIndicator());
+				categoryDO.setGeneralIndicator(request.getParameters().isGeneralIndicator());
+				categoryDO.setMilkIndicator(request.getParameters().isMilkIndicator());
+				categoryDO.setMeatIndicator(request.getParameters().isMeatIndicator());
 
 				// Actualizar los parametros de auditoria
 				ServiceUtil.setAuditFields(categoryDO, request.getToken());
@@ -84,7 +95,6 @@ public class CategoryServiceImpl implements CategoryService {
 	 * 
 	 * @return Id actualizado
 	 */
-	@Auditable
 	public ResponseVO<Long> update(RequestVO<UpdateCategoryRequestVO> request) {
 
 		// Declarar variables
@@ -123,7 +133,6 @@ public class CategoryServiceImpl implements CategoryService {
 	 * 
 	 * @return Id eliminado
 	 */
-	@Auditable
 	public ResponseVO<Boolean> delete(RequestVO<DeleteCategoryRequestVO> request) {
 
 		// Declarar variables
@@ -159,7 +168,6 @@ public class CategoryServiceImpl implements CategoryService {
 	 * 
 	 * @param request Objeto con los datos de busqueda
 	 */
-	@Auditable
 	public ResponseVO<FindDetailCategoryResponseVO> findDetail(RequestVO<FindDetailCategoryRequestVO> request) {
 
 		// declaracion de varables
@@ -200,7 +208,6 @@ public class CategoryServiceImpl implements CategoryService {
 	 * 
 	 * @param request Objeto con parametros de entrada de banner
 	 */
-	@Auditable
 	public ResponseVO<List<FindListCategoryResponseVO>> findList(RequestVO<FindListCategoryRequestVO> request) {
 
 		// declaracion de varables
@@ -288,14 +295,6 @@ public class CategoryServiceImpl implements CategoryService {
 			}
 		}
 		
-		// Validaciones de campos obligatorios
-		if (StringUtil.isNullOrEmpty(parameters.getDescripcion())) {
-			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_DESCRIPCION_ERROR,request);
-		} else {
-			// Validacion de tamano
-			parameters.setDescripcion(StringUtil.substring(parameters.getDescripcion(), DataConstants.MAX_SIZE_DESCRIPCION));
-		}
-		
 				
 		// Regresar el resultado de la validacion
 		return ValidatorUtil.isSuccessfulResponse(response);
@@ -358,15 +357,6 @@ public class CategoryServiceImpl implements CategoryService {
 			parameters.setName(registroUpdate.getName());
 		}
 		
-		// Validaciones de campos obligatorios: DESCRIPCION
-		if (!StringUtil.isNullOrEmpty(parameters.getDescripcion())) {
-			// Validacion de tamano
-			parameters.setDescripcion(
-					StringUtil.substring(parameters.getDescripcion(), DataConstants.MAX_SIZE_DESCRIPCION));
-
-		} else {
-			parameters.setDescripcion(registroUpdate.getDescripcion());
-		}
 					
 		// Retorna el resultado de la validacion.
 		return ValidatorUtil.isSuccessfulResponse(response);

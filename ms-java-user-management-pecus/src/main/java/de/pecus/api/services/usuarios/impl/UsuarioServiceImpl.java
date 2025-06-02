@@ -17,7 +17,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.pecus.api.annotation.Auditable;
 import de.pecus.api.constant.GeneralConstants;
 import de.pecus.api.constant.UsuariosDataConstants;
 import de.pecus.api.entities.UsuarioDO;
@@ -25,8 +24,8 @@ import de.pecus.api.enums.WildcardTypeEnum;
 import de.pecus.api.error.GeneralBusinessErrors;
 import de.pecus.api.error.UsuarioBusinessErrors;
 import de.pecus.api.exception.PecusException;
-import de.pecus.api.log.SmartLogger;
-import de.pecus.api.log.SmartLoggerFactory;
+//import de.pecus.api.log.SmartLogger;
+//import de.pecus.api.log.SmartLoggerFactory;
 import de.pecus.api.repositories.usuarios.UsuarioRepository;
 import de.pecus.api.security.services.PasswordService;
 import de.pecus.api.services.usuarios.UsuarioService;
@@ -55,7 +54,7 @@ import de.pecus.api.vo.usuarios.UpdateUsuarioRequestVO;
 public class UsuarioServiceImpl implements UsuarioService {
 
 	/** Logger */
-	private static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(UsuarioServiceImpl.class);
+	//private static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(UsuarioServiceImpl.class);
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -80,7 +79,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 
 		// Consulta
-		UsuarioDO usuario = usuarioRepository.findByIdAndActive(idUsuario, GeneralConstants.ONE);
+		UsuarioDO usuario = usuarioRepository.findByIdAndActive(idUsuario, Boolean.TRUE);
 
 		// Validacion de existencia
 		if (ValidatorUtil.isNull(usuario)) {
@@ -90,7 +89,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuario;
 	}
 
-	@Auditable
 	@Override
 	public ResponseVO<List<FindListUsuarioResponseVO>> findListUsuario(RequestVO<FindListUsuarioRequestVO> request) {
 		ResponseVO<List<FindListUsuarioResponseVO>> response  = new ResponseVO<List<FindListUsuarioResponseVO>>();
@@ -201,7 +199,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
 	@Transactional
-	@Auditable
 	@Override
 	public ResponseVO<Boolean> deleteUsuario(RequestVO<DeleteUsuarioRequestVO> request) {
 		ResponseVO<Boolean> response = new ResponseVO<Boolean>();
@@ -235,7 +232,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Transactional
-	@Auditable
 	@Override
 	public ResponseVO<Long> crearUsuario(RequestVO<CrearUsuarioRequestVO> request) {
 		
@@ -272,21 +268,21 @@ public class UsuarioServiceImpl implements UsuarioService {
 				// Validacion de formato de correo electronico valido
 				if (!StringUtil.isValidEmail(request.getParameters().getEmail())) {
 					ResponseUtil.addError(request, response, UsuarioBusinessErrors.INVALID_EMAIL_FORMAT_ERROR);
-					LOGGER.debug(request, UsuarioBusinessErrors.INVALID_EMAIL_FORMAT_ERROR);
+					//LOGGER.debug(request, UsuarioBusinessErrors.INVALID_EMAIL_FORMAT_ERROR);
 				}
 
 				// Validacion duplicidad de correo electronico
 				UsuarioDO usuarioDO = usuarioRepository.findByUserIdEmail(request.getParameters().getEmail());
 				if (!ValidatorUtil.isNull(usuarioDO)) {
 					ResponseUtil.addError(request, response, UsuarioBusinessErrors.DUPLICATED_USER_ID_EMAIL_ERROR);
-					LOGGER.debug(request, UsuarioBusinessErrors.DUPLICATED_USER_ID_EMAIL_ERROR);
+					//LOGGER.debug(request, UsuarioBusinessErrors.DUPLICATED_USER_ID_EMAIL_ERROR);
 				}
 			}
 
 			// Valida que el numero movil sea informado y este no se haya registrado
 			if (StringUtil.isNullOrEmpty(request.getParameters().getTelefono())) {
 				ResponseUtil.addError(request, response, UsuarioBusinessErrors.REQUIRED_USER_ID_MOBILE_NUMBER_ERROR);
-				LOGGER.debug(request, UsuarioBusinessErrors.REQUIRED_USER_ID_MOBILE_NUMBER_ERROR);
+				//LOGGER.debug(request, UsuarioBusinessErrors.REQUIRED_USER_ID_MOBILE_NUMBER_ERROR);
 			} else {
 				// Validacion duplicidad
 				String numeroTelefonico = CriteriaUtil.validateNullLike(request.getParameters().getTelefono().trim(),
@@ -295,7 +291,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 						numeroTelefonico);
 				if (!ValidatorUtil.isNull(usuarioDO)) {
 					ResponseUtil.addError(request, response, UsuarioBusinessErrors.DUPLICATED_USER_MOBILE_NUMBER_ERROR);
-					LOGGER.debug(request, UsuarioBusinessErrors.DUPLICATED_USER_MOBILE_NUMBER_ERROR);
+					//LOGGER.debug(request, UsuarioBusinessErrors.DUPLICATED_USER_MOBILE_NUMBER_ERROR);
 				}
 			}
 			
@@ -305,7 +301,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Transactional
-	@Auditable
 	@Override
 	public ResponseVO<Long> updateUsuario(RequestVO<UpdateUsuarioRequestVO> request) {
 
@@ -350,7 +345,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			}else {
 				
 				// Buscamos el usuario original
-				UsuarioDO originalUsuarioDO = usuarioRepository.findByIdAndActive(request.getParameters().getId(), GeneralConstants.ONE);
+				UsuarioDO originalUsuarioDO = usuarioRepository.findByIdAndActive(request.getParameters().getId(), Boolean.TRUE);
 				
 				// Valida el correo electronico registrado.
 				if (!ValidatorUtil.isNullOrEmpty(request.getParameters().getEmail())) {
@@ -358,7 +353,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 					// Validacion de formato de correo electronico valido
 					if (!StringUtil.isValidEmail(request.getParameters().getEmail())) {
 						ResponseUtil.addError(request, response, UsuarioBusinessErrors.INVALID_EMAIL_FORMAT_ERROR);
-						LOGGER.debug(request, UsuarioBusinessErrors.INVALID_EMAIL_FORMAT_ERROR);
+						//LOGGER.debug(request, UsuarioBusinessErrors.INVALID_EMAIL_FORMAT_ERROR);
 					}
 					
 					// Validacion duplicidad de correo electronico
@@ -366,14 +361,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 					if (!ValidatorUtil.isNull(usuarioDO)
 							&& !originalUsuarioDO.getUserIdEmail().equals(request.getParameters().getEmail())) {
 						ResponseUtil.addError(request, response, UsuarioBusinessErrors.DUPLICATED_USER_ID_EMAIL_ERROR);
-						LOGGER.debug(request, UsuarioBusinessErrors.DUPLICATED_USER_ID_EMAIL_ERROR);
+						//LOGGER.debug(request, UsuarioBusinessErrors.DUPLICATED_USER_ID_EMAIL_ERROR);
 					}
 				}
 				
 				// Valida que el numero movil sea informado y este no se haya registrado
 				if (StringUtil.isNullOrEmpty(request.getParameters().getTelefono())) {
 					ResponseUtil.addError(request, response, UsuarioBusinessErrors.REQUIRED_USER_ID_MOBILE_NUMBER_ERROR);
-					LOGGER.debug(request, UsuarioBusinessErrors.REQUIRED_USER_ID_MOBILE_NUMBER_ERROR);
+					//LOGGER.debug(request, UsuarioBusinessErrors.REQUIRED_USER_ID_MOBILE_NUMBER_ERROR);
 				} else {
 					// Validacion duplicidad
 					String numeroTelefonico = CriteriaUtil.validateNullLike(request.getParameters().getTelefono().trim(),
@@ -384,7 +379,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 							.equals(request.getParameters().getTelefono().trim())) {
 						ResponseUtil.addError(request, response,
 								UsuarioBusinessErrors.DUPLICATED_USER_MOBILE_NUMBER_ERROR);
-						LOGGER.debug(request, UsuarioBusinessErrors.DUPLICATED_USER_MOBILE_NUMBER_ERROR);
+						//LOGGER.debug(request, UsuarioBusinessErrors.DUPLICATED_USER_MOBILE_NUMBER_ERROR);
 					}
 				}
 			}
@@ -393,12 +388,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return ValidatorUtil.isSuccessfulResponse(response);
 	}
 
-	@Auditable
 	@Override
 	public ResponseVO<FindDetailUsuarioResponseVO> findDetailUsuario(RequestVO<FindDetailUsuarioRequestVO> request) {
 		ResponseVO<FindDetailUsuarioResponseVO> response = new ResponseVO<FindDetailUsuarioResponseVO>();
 		if (validaParametrosFindDetailUsuario(request, response)) {
-			UsuarioDO usuarioDO = usuarioRepository.findByIdAndActive(request.getParameters().getIdUsuario(), GeneralConstants.ONE);
+			UsuarioDO usuarioDO = usuarioRepository.findByIdAndActive(request.getParameters().getIdUsuario(), Boolean.TRUE);
 			if (ValidatorUtil.isNull(usuarioDO)) {
 				ResponseUtil.addError(request, response, UsuarioBusinessErrors.NOT_FOUND_USUARIO_ERROR);
 			} else {

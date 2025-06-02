@@ -1,25 +1,39 @@
 package de.pecus.api.controllers.impl;
 
-import de.pecus.api.controllers.BrandController;
-import de.pecus.api.log.SmartLogger;
-import de.pecus.api.log.SmartLoggerFactory;
-import de.pecus.api.services.usuarios.BrandService;
-import de.pecus.api.util.RequestVOUtil;
-import de.pecus.api.util.ResponseUtil;
-import de.pecus.api.util.BrandServicesResponseBuilder;
-import de.pecus.api.vo.RequestVO;
-import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.category.*;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
+import de.pecus.api.controllers.BrandController;
+import de.pecus.api.services.usuarios.BrandService;
+import de.pecus.api.util.BrandServicesResponseBuilder;
+import de.pecus.api.util.RequestVOUtil;
+import de.pecus.api.util.ResponseUtil;
+import de.pecus.api.vo.RequestVO;
+import de.pecus.api.vo.ResponseVO;
+import de.pecus.api.vo.brand.CreateBrandRequestVO;
+import de.pecus.api.vo.brand.DeleteBrandRequestVO;
+import de.pecus.api.vo.brand.FindDetailBrandRequestVO;
+import de.pecus.api.vo.brand.FindDetailBrandResponseVO;
+import de.pecus.api.vo.brand.FindListBrandRequestVO;
+import de.pecus.api.vo.brand.FindListBrandResponseVO;
+import de.pecus.api.vo.brand.UpdateBrandRequestVO;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 
 /**
  * Clase de controlador para servicio Rest de Brand
@@ -31,8 +45,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("")
 public class BrandControllerImpl implements BrandController {
-
-	public static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(BrandController.class);
 
 	@Autowired
 	private BrandService brandService;
@@ -56,10 +68,10 @@ public class BrandControllerImpl implements BrandController {
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
 	@PostMapping(value = "/brand", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseVO<Long>> createBrand(@RequestHeader Map<String, String> headers,
-			@RequestBody CreateCategoryRequestVO body) {
+			@RequestBody CreateBrandRequestVO body) {
 		
 			// Generamos el objeto requestVO
-			RequestVO<CreateCategoryRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
+			RequestVO<CreateBrandRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
 
 			ResponseEntity<ResponseVO<Long>> response = null;
 			try {
@@ -98,7 +110,7 @@ public class BrandControllerImpl implements BrandController {
 	@PutMapping(value = "/brand/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseVO<Long>> updateBrand(@RequestHeader Map<String, String> headers, 
 			@PathVariable(name = "id", required = false) Long id, 
-			@RequestBody UpdateCategoryRequestVO body) {
+			@RequestBody UpdateBrandRequestVO body) {
 		
 		
 			// Declaracion de variable
@@ -107,7 +119,7 @@ public class BrandControllerImpl implements BrandController {
 			body.setId(id);
 
 			// Generamos el objeto requestVO
-			RequestVO<UpdateCategoryRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
+			RequestVO<UpdateBrandRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
 			
 			try {
 				// Invocar al servicio
@@ -149,9 +161,9 @@ public class BrandControllerImpl implements BrandController {
 		ResponseEntity<ResponseVO<Boolean>> response = null;
 		
 		// Generamos el objeto requestVO
-		DeleteCategoryRequestVO deleteCategoryRequestVO = new DeleteCategoryRequestVO();
-		deleteCategoryRequestVO.setId(id);
-		RequestVO<DeleteCategoryRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, deleteCategoryRequestVO);
+		DeleteBrandRequestVO deleteBrandRequestVO = new DeleteBrandRequestVO();
+		deleteBrandRequestVO.setId(id);
+		RequestVO<DeleteBrandRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, deleteBrandRequestVO);
 		
 
 		try {
@@ -187,30 +199,30 @@ public class BrandControllerImpl implements BrandController {
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
 	@GetMapping(value = "/brand/detail", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<FindDetailCategoryResponseVO>> findDetailBrand(
+	public ResponseEntity<ResponseVO<FindDetailBrandResponseVO>> findDetailBrand(
 			@RequestHeader Map<String, String> headers, 
 			@RequestParam(value = "id", required= false) Long id,
 			@RequestParam(value = "name", required = false) String name) {
 
 		// Declaracion de variables
-		ResponseEntity<ResponseVO<FindDetailCategoryResponseVO>> response = null;
+		ResponseEntity<ResponseVO<FindDetailBrandResponseVO>> response = null;
 
 		// Crear el objeto requestVO
-		FindDetailCategoryRequestVO findDetailCategoryRequestVO = new FindDetailCategoryRequestVO();
-		findDetailCategoryRequestVO.setId(id);
-		findDetailCategoryRequestVO.setName(name);
-		RequestVO<FindDetailCategoryRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, findDetailCategoryRequestVO);
+		FindDetailBrandRequestVO findDetailBrandRequestVO = new FindDetailBrandRequestVO();
+		findDetailBrandRequestVO.setId(id);
+		findDetailBrandRequestVO.setName(name);
+		RequestVO<FindDetailBrandRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, findDetailBrandRequestVO);
 
 		try {
 			
 			// Invocar al metodo de busqueda
-			ResponseVO<FindDetailCategoryResponseVO> serviceResponse = brandService.findDetail(requestVO);
+			ResponseVO<FindDetailBrandResponseVO> serviceResponse = brandService.findDetail(requestVO);
 			
 			response = BrandServicesResponseBuilder.buildFindDetailResponse(serviceResponse);
 
 		} catch (Exception exception) {
 			// Excepcion no controlada
-			ResponseVO<FindDetailCategoryResponseVO> exceptionResponse = ResponseUtil.getErrorResponse(exception);
+			ResponseVO<FindDetailBrandResponseVO> exceptionResponse = ResponseUtil.getErrorResponse(exception);
 			response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
 		}
 		return response;
@@ -240,7 +252,7 @@ public class BrandControllerImpl implements BrandController {
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
 	@GetMapping(value = "/brand/list", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<List<FindListCategoryResponseVO>>> findListBrand(
+	public ResponseEntity<ResponseVO<List<FindListBrandResponseVO>>> findListBrand(
 			@RequestHeader Map<String, String> headers, 
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
@@ -248,21 +260,21 @@ public class BrandControllerImpl implements BrandController {
 			@RequestParam(value = "orderType", required = false) String orderType,
 			@RequestParam(value = "name", required = false) String name){
 		// Declarar variables
-		ResponseEntity<ResponseVO<List<FindListCategoryResponseVO>>> response = null;
+		ResponseEntity<ResponseVO<List<FindListBrandResponseVO>>> response = null;
 
-		FindListCategoryRequestVO findListBrandRequestVO = new FindListCategoryRequestVO();
+		FindListBrandRequestVO findListBrandRequestVO = new FindListBrandRequestVO();
 		findListBrandRequestVO.setName(name);
-		RequestVO<FindListCategoryRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, page, size, orderBy,
+		RequestVO<FindListBrandRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, page, size, orderBy,
 				orderType, findListBrandRequestVO);
 
 		try {
 
-			ResponseVO<List<FindListCategoryResponseVO>> serviceResponse = brandService.findList(requestVO);
+			ResponseVO<List<FindListBrandResponseVO>> serviceResponse = brandService.findList(requestVO);
 			response = BrandServicesResponseBuilder.buildFindListBrandResponse(serviceResponse);
 
 		} catch (Exception exception) {
 			// Excepcion no controlada
-			ResponseVO<List<FindListCategoryResponseVO>> exceptionResponse = ResponseUtil
+			ResponseVO<List<FindListBrandResponseVO>> exceptionResponse = ResponseUtil
 					.getErrorResponse(exception);
 			response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
 		}

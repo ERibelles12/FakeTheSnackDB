@@ -1,25 +1,39 @@
 package de.pecus.api.controllers.impl;
 
-import de.pecus.api.controllers.SubstanceController;
-import de.pecus.api.log.SmartLogger;
-import de.pecus.api.log.SmartLoggerFactory;
-import de.pecus.api.services.usuarios.SubstanceService;
-import de.pecus.api.util.SubstanceServicesResponseBuilder;
-import de.pecus.api.util.RequestVOUtil;
-import de.pecus.api.util.ResponseUtil;
-import de.pecus.api.vo.RequestVO;
-import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.substance.*;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
+import de.pecus.api.controllers.SubstanceController;
+import de.pecus.api.services.usuarios.SubstanceService;
+import de.pecus.api.util.RequestVOUtil;
+import de.pecus.api.util.ResponseUtil;
+import de.pecus.api.util.SubstanceServicesResponseBuilder;
+import de.pecus.api.vo.RequestVO;
+import de.pecus.api.vo.ResponseVO;
+import de.pecus.api.vo.substance.CreateSubstanceRequestVO;
+import de.pecus.api.vo.substance.DeleteSubstanceRequestVO;
+import de.pecus.api.vo.substance.FindDetailSubstanceRequestVO;
+import de.pecus.api.vo.substance.FindDetailSubstanceResponseVO;
+import de.pecus.api.vo.substance.FindListSubstanceRequestVO;
+import de.pecus.api.vo.substance.FindListSubstanceResponseVO;
+import de.pecus.api.vo.substance.UpdateSubstanceRequestVO;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 
 /**
  * Clase de controlador para servicio Rest de Substance
@@ -31,8 +45,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("")
 public class SubstanceControllerImpl implements SubstanceController {
-
-	public static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(SubstanceController.class);
 
 	@Autowired
 	private SubstanceService substanceService;

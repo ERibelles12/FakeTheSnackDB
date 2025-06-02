@@ -1,10 +1,16 @@
 package de.pecus.api.services.usuarios;
 
+import java.util.List;
+
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.category.*;
-
-import java.util.List;
+import de.pecus.api.vo.brand.CreateBrandRequestVO;
+import de.pecus.api.vo.brand.DeleteBrandRequestVO;
+import de.pecus.api.vo.brand.FindDetailBrandRequestVO;
+import de.pecus.api.vo.brand.FindDetailBrandResponseVO;
+import de.pecus.api.vo.brand.FindListBrandRequestVO;
+import de.pecus.api.vo.brand.FindListBrandResponseVO;
+import de.pecus.api.vo.brand.UpdateBrandRequestVO;
 
 /**
  * Clase de logica de negocio para administracion de Brandes
@@ -21,7 +27,7 @@ public interface BrandService {
 	 * 
 	 * @return Id generado
 	 */
-	ResponseVO<Long> create(RequestVO<CreateCategoryRequestVO> request);
+	ResponseVO<Long> create(RequestVO<CreateBrandRequestVO> request);
 
 	/**
 	 * Actualiza un registro 
@@ -30,7 +36,7 @@ public interface BrandService {
 	 * 
 	 * @return Id actualizado
 	 */
-	ResponseVO<Long> update(RequestVO<UpdateCategoryRequestVO> request);
+	ResponseVO<Long> update(RequestVO<UpdateBrandRequestVO> request);
 
 	/**
 	 * Marca un registro como eliminado un registro 
@@ -39,7 +45,7 @@ public interface BrandService {
 	 * 
 	 * @return Id eliminado
 	 */
-	ResponseVO<Boolean> delete(RequestVO<DeleteCategoryRequestVO> request);
+	ResponseVO<Boolean> delete(RequestVO<DeleteBrandRequestVO> request);
 
 	/**
 	 * Consulta un registro
@@ -48,7 +54,7 @@ public interface BrandService {
 	 * 
 	 * @return Objeto VO con los datos encontrados
 	 */
-	ResponseVO<FindDetailCategoryResponseVO> findDetail(RequestVO<FindDetailCategoryRequestVO> request);
+	ResponseVO<FindDetailBrandResponseVO> findDetail(RequestVO<FindDetailBrandRequestVO> request);
 
 	
 	/**
@@ -58,7 +64,7 @@ public interface BrandService {
 	 * 
 	 * @param request Objeto con parametros de entrada 
 	 */
-	ResponseVO<List<FindListCategoryResponseVO>> findList(RequestVO<FindListCategoryRequestVO> request);
+	ResponseVO<List<FindListBrandResponseVO>> findList(RequestVO<FindListBrandRequestVO> request);
 
 
 

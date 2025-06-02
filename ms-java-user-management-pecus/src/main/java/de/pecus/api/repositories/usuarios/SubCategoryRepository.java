@@ -47,7 +47,7 @@ public interface SubCategoryRepository extends JpaRepository<SubCategoryDO, Seri
 			+ " FROM  SubCategoryDO r"
 			+ " WHERE r.active = 1 "
 			+ " AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))"
-			+ " AND (:idCategory IS NULL OR r.category.id = %idCategory%")
+			+ " AND (:idCategory IS NULL OR r.category.id = :idCategory) ")
 	Page<SubCategoryDO> findList(@Param("name") String name,@Param("idCategory") Integer idCategory,
                               Pageable pageable);
 	

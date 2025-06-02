@@ -1,17 +1,9 @@
 package de.pecus.api.services.usuarios.impl;
 
-import de.pecus.api.annotation.Auditable;
-import de.pecus.api.constant.DataConstants;
-import de.pecus.api.entities.SubstanceDO;
-import de.pecus.api.enums.WildcardTypeEnum;
-import de.pecus.api.error.FuncionesBusinessError;
-import de.pecus.api.error.GeneralBusinessErrors;
-import de.pecus.api.repositories.usuarios.SubstanceRepository;
-import de.pecus.api.services.usuarios.SubstanceService;
-import de.pecus.api.util.*;
-import de.pecus.api.vo.RequestVO;
-import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.substance.*;
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,9 +13,28 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.List;
+import de.pecus.api.constant.DataConstants;
+import de.pecus.api.entities.SubstanceDO;
+import de.pecus.api.enums.WildcardTypeEnum;
+import de.pecus.api.error.FuncionesBusinessError;
+import de.pecus.api.error.GeneralBusinessErrors;
+import de.pecus.api.repositories.usuarios.SubstanceRepository;
+import de.pecus.api.services.usuarios.SubstanceService;
+import de.pecus.api.util.CriteriaUtil;
+import de.pecus.api.util.ResponseUtil;
+import de.pecus.api.util.ServiceUtil;
+import de.pecus.api.util.StringUtil;
+import de.pecus.api.util.ValidatorArqUtil;
+import de.pecus.api.util.ValidatorUtil;
+import de.pecus.api.vo.RequestVO;
+import de.pecus.api.vo.ResponseVO;
+import de.pecus.api.vo.substance.CreateSubstanceRequestVO;
+import de.pecus.api.vo.substance.DeleteSubstanceRequestVO;
+import de.pecus.api.vo.substance.FindDetailSubstanceRequestVO;
+import de.pecus.api.vo.substance.FindDetailSubstanceResponseVO;
+import de.pecus.api.vo.substance.FindListSubstanceRequestVO;
+import de.pecus.api.vo.substance.FindListSubstanceResponseVO;
+import de.pecus.api.vo.substance.UpdateSubstanceRequestVO;
 
 /**
  * Clase de logica de negocio para administracion de substancees
@@ -45,7 +56,6 @@ public class SubstanceServiceImpl implements SubstanceService {
 	 * 
 	 * @return Id generado
 	 */
-	@Auditable
 	public ResponseVO<Long> create(RequestVO<CreateSubstanceRequestVO> request) {
 
 		// Declarar variables
@@ -83,7 +93,6 @@ public class SubstanceServiceImpl implements SubstanceService {
 	 * 
 	 * @return Id actualizado
 	 */
-	@Auditable
 	public ResponseVO<Long> update(RequestVO<UpdateSubstanceRequestVO> request) {
 
 		// Declarar variables
@@ -97,7 +106,7 @@ public class SubstanceServiceImpl implements SubstanceService {
 
 			registroDO.setId(parameters.getId());
 			registroDO.setName(parameters.getName());
-			registroDO.setDescripcion(parameters.getDescripcion());
+			registroDO.setDescription(parameters.getDescription());
 			
 			// Actualizar parametros de auditoria
 			ServiceUtil.setAuditFields(registroDO, request.getToken());
@@ -120,7 +129,6 @@ public class SubstanceServiceImpl implements SubstanceService {
 	 * 
 	 * @return Id eliminado
 	 */
-	@Auditable
 	public ResponseVO<Boolean> delete(RequestVO<DeleteSubstanceRequestVO> request) {
 
 		// Declarar variables
@@ -156,7 +164,6 @@ public class SubstanceServiceImpl implements SubstanceService {
 	 * 
 	 * @param request Objeto con los datos de busqueda
 	 */
-	@Auditable
 	public ResponseVO<FindDetailSubstanceResponseVO> findDetail(RequestVO<FindDetailSubstanceRequestVO> request) {
 
 		// declaracion de varables
@@ -173,7 +180,7 @@ public class SubstanceServiceImpl implements SubstanceService {
 			} else {
 				salida.setId(substanceDO.getId());
 				salida.setName(substanceDO.getName());
-				salida.setDescripcion(substanceDO.getDescripcion());
+				salida.setDescription(substanceDO.getDescription());
 
 				response.setData(salida);
 				// regresar la respuesta correcta con los registros obtenidos.
@@ -195,7 +202,6 @@ public class SubstanceServiceImpl implements SubstanceService {
 	 * 
 	 * @param request Objeto con parametros de entrada de banner
 	 */
-	@Auditable
 	public ResponseVO<List<FindListSubstanceResponseVO>> findList(RequestVO<FindListSubstanceRequestVO> request) {
 
 		// declaracion de varables
@@ -284,11 +290,11 @@ public class SubstanceServiceImpl implements SubstanceService {
 		}
 		
 		// Validaciones de campos obligatorios
-		if (StringUtil.isNullOrEmpty(parameters.getDescripcion())) {
+		if (StringUtil.isNullOrEmpty(parameters.getDescription())) {
 			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_DESCRIPCION_ERROR,request);
 		} else {
 			// Validacion de tamano
-			parameters.setDescripcion(StringUtil.substring(parameters.getDescripcion(), DataConstants.MAX_SIZE_DESCRIPCION));
+			parameters.setDescription(StringUtil.substring(parameters.getDescription(), DataConstants.MAX_SIZE_ID_NOMBRE));
 		}
 		
 				
@@ -353,14 +359,14 @@ public class SubstanceServiceImpl implements SubstanceService {
 			parameters.setName(registroUpdate.getName());
 		}
 		
-		// Validaciones de campos obligatorios: DESCRIPCION
-		if (!StringUtil.isNullOrEmpty(parameters.getDescripcion())) {
+		// Validaciones de campos obligatorios: Description
+		if (!StringUtil.isNullOrEmpty(parameters.getDescription())) {
 			// Validacion de tamano
-			parameters.setDescripcion(
-					StringUtil.substring(parameters.getDescripcion(), DataConstants.MAX_SIZE_DESCRIPCION));
+			parameters.setDescription(
+					StringUtil.substring(parameters.getDescription(), DataConstants.MAX_SIZE_ID_NOMBRE));
 
 		} else {
-			parameters.setDescripcion(registroUpdate.getDescripcion());
+			parameters.setDescription(registroUpdate.getDescription());
 		}
 					
 		// Retorna el resultado de la validacion.
@@ -463,7 +469,7 @@ public class SubstanceServiceImpl implements SubstanceService {
 			
 			substanceVO.setId(substanceDO.getId());
 			substanceVO.setName(substanceDO.getName());
-			substanceVO.setDescripcion(substanceDO.getDescripcion());
+			substanceVO.setDescription(substanceDO.getDescription());
 			
 			listaSubstanceVO.add(substanceVO);
 		}

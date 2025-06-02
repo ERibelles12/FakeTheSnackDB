@@ -1,16 +1,17 @@
 package de.pecus.api.util;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import de.pecus.api.error.FuncionesBusinessError;
 import de.pecus.api.error.GeneralBusinessErrors;
 import de.pecus.api.vo.ResponseErrorVO;
 import de.pecus.api.vo.ResponseVO;
+import de.pecus.api.vo.brand.FindDetailBrandResponseVO;
+import de.pecus.api.vo.brand.FindListBrandResponseVO;
 import de.pecus.api.vo.funciones.FindDetailFuncionResponseVO;
-import de.pecus.api.vo.category.FindDetailCategoryResponseVO;
-import de.pecus.api.vo.category.FindListCategoryResponseVO;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 public class BrandServicesResponseBuilder {
 
@@ -78,10 +79,10 @@ public class BrandServicesResponseBuilder {
 	 * del protocolo de salida
 	 * 
 	 */
-	public static final ResponseEntity<ResponseVO<FindDetailCategoryResponseVO>> buildFindDetailResponse(
-			ResponseVO<FindDetailCategoryResponseVO> serviceResponse) {
+	public static final ResponseEntity<ResponseVO<FindDetailBrandResponseVO>> buildFindDetailResponse(
+			ResponseVO<FindDetailBrandResponseVO> serviceResponse) {
 
-		ResponseEntity<ResponseVO<FindDetailCategoryResponseVO>> response = null;
+		ResponseEntity<ResponseVO<FindDetailBrandResponseVO>> response = null;
 
 		if (ValidatorUtil.isSuccessfulResponse(serviceResponse)) {
 			response = ResponseEntity.status(HttpStatus.OK).body(serviceResponse);
@@ -139,10 +140,10 @@ public class BrandServicesResponseBuilder {
 	 * del protocolo de salida
 	 * 
 	 */
-	public static final ResponseEntity<ResponseVO<List<FindListCategoryResponseVO>>> buildFindListBrandResponse
-	(ResponseVO<List<FindListCategoryResponseVO>> serviceResponse) {
+	public static final ResponseEntity<ResponseVO<List<FindListBrandResponseVO>>> buildFindListBrandResponse
+	(ResponseVO<List<FindListBrandResponseVO>> serviceResponse) {
 		
-		ResponseEntity<ResponseVO<List<FindListCategoryResponseVO>>> response = null;
+		ResponseEntity<ResponseVO<List<FindListBrandResponseVO>>> response = null;
 		
 		if (ValidatorUtil.isSuccessfulResponse(serviceResponse)) {
 			response = ResponseEntity.status(HttpStatus.OK).body(serviceResponse);

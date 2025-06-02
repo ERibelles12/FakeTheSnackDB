@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.apache.commons.lang.math.RandomUtils;
 
-import de.pecus.api.annotation.Auditable;
 import de.pecus.api.constant.DataConstants;
 import de.pecus.api.entities.TipoRolDO;
 import de.pecus.api.enums.WildcardTypeEnum;
@@ -57,7 +56,6 @@ public class TipoRolServiceImpl implements TipoRolService {
 	 * 
 	 * @return Id generado
 	 */
-	@Auditable
 	public ResponseVO<Long> create(RequestVO<de.pecus.api.vo.roles.CreateTipoRolRequestVO> request) {
 
 		// Declarar variables
@@ -96,7 +94,6 @@ public class TipoRolServiceImpl implements TipoRolService {
 	 * 
 	 * @return Id actualizado
 	 */
-	@Auditable
 	public ResponseVO<Long> update(RequestVO<UpdateTipoRolRequestVO> request) {
 
 		// Declarar variables
@@ -134,7 +131,6 @@ public class TipoRolServiceImpl implements TipoRolService {
 	 * 
 	 * @return Id eliminado
 	 */
-	@Auditable
 	public ResponseVO<Boolean> delete(RequestVO<DeleteTipoRolRequestVO> request) {
 
 		// Declarar variables
@@ -170,7 +166,6 @@ public class TipoRolServiceImpl implements TipoRolService {
 	 * 
 	 * @param request Objeto con los datos de busqueda
 	 */
-	@Auditable
 	public ResponseVO<FindDetailTipoRolResponseVO> findDetail(RequestVO<FindDetailTipoRolRequestVO> request) {
 
 		// declaracion de varables
@@ -210,7 +205,6 @@ public class TipoRolServiceImpl implements TipoRolService {
 	 * 
 	 * @param request Objeto con parametros de entrada de banner
 	 */
-	@Auditable
 	public ResponseVO<List<FindListTipoRolResponseVO>> findList(RequestVO<FindListTipoRolRequestVO> request) {
 
 		// declaracion de varables

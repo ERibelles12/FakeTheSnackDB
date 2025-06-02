@@ -1,14 +1,15 @@
 package de.pecus.api.controllers;
 
-import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.category.CreateCategoryRequestVO;
-import de.pecus.api.vo.category.FindDetailCategoryResponseVO;
-import de.pecus.api.vo.category.FindListCategoryResponseVO;
-import de.pecus.api.vo.category.UpdateCategoryRequestVO;
-import org.springframework.http.ResponseEntity;
-
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
+
+import de.pecus.api.vo.ResponseVO;
+import de.pecus.api.vo.brand.CreateBrandRequestVO;
+import de.pecus.api.vo.brand.FindDetailBrandResponseVO;
+import de.pecus.api.vo.brand.FindListBrandResponseVO;
+import de.pecus.api.vo.brand.UpdateBrandRequestVO;
 
 public interface BrandController {
 
@@ -21,7 +22,7 @@ public interface BrandController {
 	 * 
 	 * @return Responde una entidad de tipo Response el registro creado
 	 */
-	ResponseEntity<ResponseVO<Long>> createBrand(Map<String, String> headers, CreateCategoryRequestVO body);
+	ResponseEntity<ResponseVO<Long>> createBrand(Map<String, String> headers, CreateBrandRequestVO body);
 
 	/**
 	 * Servicio para actualiza un registro.
@@ -33,7 +34,7 @@ public interface BrandController {
 	 * 
 	 * @return Responde una entidad de tipo Response el registro actualizado
 	 */
-	ResponseEntity<ResponseVO<Long>> updateBrand(Map<String, String> headers, Long id, UpdateCategoryRequestVO body);
+	ResponseEntity<ResponseVO<Long>> updateBrand(Map<String, String> headers, Long id, UpdateBrandRequestVO body);
 
 	/**
 	 * Servicio para elimina un registro.
@@ -54,7 +55,7 @@ public interface BrandController {
 	 * 
 	 * @return Responde una entidad de tipo Response con los datos del registro
 	 */
-	ResponseEntity<ResponseVO<FindDetailCategoryResponseVO>> findDetailBrand(Map<String, String> headers, Long id, String name);
+	ResponseEntity<ResponseVO<FindDetailBrandResponseVO>> findDetailBrand(Map<String, String> headers, Long id, String name);
 
 	
 	/**
@@ -65,7 +66,7 @@ public interface BrandController {
 	 * 
 	 * @return Responde una lista de registros encontrados
 	 */
-	ResponseEntity<ResponseVO<List<FindListCategoryResponseVO>>> findListBrand(Map<String, String> headers, Integer page,
+	ResponseEntity<ResponseVO<List<FindListBrandResponseVO>>> findListBrand(Map<String, String> headers, Integer page,
 																			   Integer size, String orderBy, String orderType, String name);
 
 

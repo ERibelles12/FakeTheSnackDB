@@ -18,7 +18,7 @@ public class FindDetailSubCategoryResponseVO {
 	// Identificador alfanumerico
 	private String name;
 
-	private Integer idCategory;
+	private Long idCategory;
 	private String nameCategory;
 
 	public Long getId() {
@@ -28,11 +28,17 @@ public class FindDetailSubCategoryResponseVO {
 		this.id = id;
 	}
 
-	public Integer getIdCategory() { return this.idCategory; }
-	public void setIdCategory(Integer idCategory) { this.idCategory = idCategory; }
+	public Long getIdCategory() { return this.idCategory; }
+	public void setIdCategory(Long idCategory) { this.idCategory = idCategory; }
 
 	public String getNameCategory() { return this.nameCategory; }
 	public void setNameCategory(String nameCategory) { this.nameCategory = nameCategory; }
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 
 }
 

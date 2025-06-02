@@ -1,16 +1,9 @@
 package de.pecus.api.services.usuarios.impl;
 
-import de.pecus.api.annotation.Auditable;
-import de.pecus.api.constant.DataConstants;
-import de.pecus.api.entities.BrandDO;
-import de.pecus.api.enums.WildcardTypeEnum;
-import de.pecus.api.error.FuncionesBusinessError;
-import de.pecus.api.error.GeneralBusinessErrors;
-import de.pecus.api.repositories.usuarios.BrandRepository;
-import de.pecus.api.services.usuarios.BrandService;
-import de.pecus.api.vo.RequestVO;
-import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.category.*;
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,9 +13,28 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.List;
+import de.pecus.api.constant.DataConstants;
+import de.pecus.api.entities.BrandDO;
+import de.pecus.api.enums.WildcardTypeEnum;
+import de.pecus.api.error.FuncionesBusinessError;
+import de.pecus.api.error.GeneralBusinessErrors;
+import de.pecus.api.repositories.usuarios.BrandRepository;
+import de.pecus.api.services.usuarios.BrandService;
+import de.pecus.api.util.CriteriaUtil;
+import de.pecus.api.util.ResponseUtil;
+import de.pecus.api.util.ServiceUtil;
+import de.pecus.api.util.StringUtil;
+import de.pecus.api.util.ValidatorArqUtil;
+import de.pecus.api.util.ValidatorUtil;
+import de.pecus.api.vo.RequestVO;
+import de.pecus.api.vo.ResponseVO;
+import de.pecus.api.vo.brand.CreateBrandRequestVO;
+import de.pecus.api.vo.brand.DeleteBrandRequestVO;
+import de.pecus.api.vo.brand.FindDetailBrandRequestVO;
+import de.pecus.api.vo.brand.FindDetailBrandResponseVO;
+import de.pecus.api.vo.brand.FindListBrandRequestVO;
+import de.pecus.api.vo.brand.FindListBrandResponseVO;
+import de.pecus.api.vo.brand.UpdateBrandRequestVO;
 
 /**
  * Clase de logica de negocio para administracion de brandes
@@ -44,8 +56,7 @@ public class BrandServiceImpl implements BrandService {
 	 * 
 	 * @return Id generado
 	 */
-	@Auditable
-	public ResponseVO<Long> create(RequestVO<CreateCategoryRequestVO> request) {
+	public ResponseVO<Long> create(RequestVO<CreateBrandRequestVO> request) {
 
 		// Declarar variables
 		ResponseVO<Long> response = new ResponseVO<>();
@@ -82,8 +93,7 @@ public class BrandServiceImpl implements BrandService {
 	 * 
 	 * @return Id actualizado
 	 */
-	@Auditable
-	public ResponseVO<Long> update(RequestVO<UpdateCategoryRequestVO> request) {
+	public ResponseVO<Long> update(RequestVO<UpdateBrandRequestVO> request) {
 
 		// Declarar variables
 		ResponseVO<Long> response = new ResponseVO<>();
@@ -92,11 +102,11 @@ public class BrandServiceImpl implements BrandService {
 		// Validar los campos de entrada
 		if (validateParametersUpdate(request, response)) {
 			
-			UpdateCategoryRequestVO parameters = request.getParameters();
+			UpdateBrandRequestVO parameters = request.getParameters();
 
 			registroDO.setId(parameters.getId());
 			registroDO.setName(parameters.getName());
-			registroDO.setDescripcion(parameters.getDescripcion());
+			registroDO.setDescription(parameters.getDescription());
 			
 			// Actualizar parametros de auditoria
 			ServiceUtil.setAuditFields(registroDO, request.getToken());
@@ -119,8 +129,7 @@ public class BrandServiceImpl implements BrandService {
 	 * 
 	 * @return Id eliminado
 	 */
-	@Auditable
-	public ResponseVO<Boolean> delete(RequestVO<DeleteCategoryRequestVO> request) {
+	public ResponseVO<Boolean> delete(RequestVO<DeleteBrandRequestVO> request) {
 
 		// Declarar variables
 		ResponseVO<Boolean> response = new ResponseVO<>();
@@ -155,12 +164,11 @@ public class BrandServiceImpl implements BrandService {
 	 * 
 	 * @param request Objeto con los datos de busqueda
 	 */
-	@Auditable
-	public ResponseVO<FindDetailCategoryResponseVO> findDetail(RequestVO<FindDetailCategoryRequestVO> request) {
+	public ResponseVO<FindDetailBrandResponseVO> findDetail(RequestVO<FindDetailBrandRequestVO> request) {
 
 		// declaracion de varables
-		ResponseVO<FindDetailCategoryResponseVO> response = new ResponseVO<>();
-		FindDetailCategoryResponseVO salida = new FindDetailCategoryResponseVO();
+		ResponseVO<FindDetailBrandResponseVO> response = new ResponseVO<>();
+		FindDetailBrandResponseVO salida = new FindDetailBrandResponseVO();
 		
 		// validar que se cumplen las condiciones para realizar la consulta
 		if (validateParametersFindDetail(request, response)) {
@@ -172,7 +180,7 @@ public class BrandServiceImpl implements BrandService {
 			} else {
 				salida.setId(brandDO.getId());
 				salida.setName(brandDO.getName());
-				salida.setDescripcion(brandDO.getDescripcion());
+				salida.setDescription(brandDO.getDescription());
 
 				response.setData(salida);
 				// regresar la respuesta correcta con los registros obtenidos.
@@ -194,17 +202,16 @@ public class BrandServiceImpl implements BrandService {
 	 * 
 	 * @param request Objeto con parametros de entrada de banner
 	 */
-	@Auditable
-	public ResponseVO<List<FindListCategoryResponseVO>> findList(RequestVO<FindListCategoryRequestVO> request) {
+	public ResponseVO<List<FindListBrandResponseVO>> findList(RequestVO<FindListBrandRequestVO> request) {
 
 		// declaracion de varables
-		ResponseVO<List<FindListCategoryResponseVO>> response = new ResponseVO<>();
+		ResponseVO<List<FindListBrandResponseVO>> response = new ResponseVO<>();
 		
 		Page<BrandDO> listaBrand = null;
 		
 		if (validateParametersFindByList(request, response)) {
 	
-			FindListCategoryRequestVO parameters = request.getParameters();
+			FindListBrandRequestVO parameters = request.getParameters();
 			// Se obtiene el idioma
 			
 			String  name 	= CriteriaUtil.validateNullLike(parameters.getName(), WildcardTypeEnum.BOTH_SIDES);
@@ -258,10 +265,10 @@ public class BrandServiceImpl implements BrandService {
 	 * @param response Respuesta donde se agregan los errores
 	 * @return true si todos los parametros son correctos
 	 */
-	private boolean validateParametersCreate(RequestVO<CreateCategoryRequestVO> request, ResponseVO<Long> response) {
+	private boolean validateParametersCreate(RequestVO<CreateBrandRequestVO> request, ResponseVO<Long> response) {
 		
 		// Obtener los parametros de entrada
-		CreateCategoryRequestVO parameters = request.getParameters();
+		CreateBrandRequestVO parameters = request.getParameters();
 
 		// Validaciones de campos obligatorios
 		if (StringUtil.isNullOrEmpty(parameters.getName())) {
@@ -283,11 +290,11 @@ public class BrandServiceImpl implements BrandService {
 		}
 		
 		// Validaciones de campos obligatorios
-		if (StringUtil.isNullOrEmpty(parameters.getDescripcion())) {
+		if (StringUtil.isNullOrEmpty(parameters.getDescription())) {
 			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_DESCRIPCION_ERROR,request);
 		} else {
 			// Validacion de tamano
-			parameters.setDescripcion(StringUtil.substring(parameters.getDescripcion(), DataConstants.MAX_SIZE_DESCRIPCION));
+			parameters.setDescription(StringUtil.substring(parameters.getDescription(), DataConstants.MAX_SIZE_DESCRIPCION));
 		}
 		
 				
@@ -303,9 +310,9 @@ public class BrandServiceImpl implements BrandService {
 	 * @param response Respuesta donde se agregan los errores
 	 * @return true si todos los parametros son correctos
 	 */
-	private boolean validateParametersUpdate(RequestVO<UpdateCategoryRequestVO> request, ResponseVO<Long> response) {
+	private boolean validateParametersUpdate(RequestVO<UpdateBrandRequestVO> request, ResponseVO<Long> response) {
 		// Recuperar parametros de entrada
-		UpdateCategoryRequestVO parameters = request.getParameters();
+		UpdateBrandRequestVO parameters = request.getParameters();
 		BrandDO registroUpdate = new BrandDO();
 		
 		// Validar que se informaron los campos de entrada
@@ -352,14 +359,14 @@ public class BrandServiceImpl implements BrandService {
 			parameters.setName(registroUpdate.getName());
 		}
 		
-		// Validaciones de campos obligatorios: DESCRIPCION
-		if (!StringUtil.isNullOrEmpty(parameters.getDescripcion())) {
+		// Validaciones de campos obligatorios: Description
+		if (!StringUtil.isNullOrEmpty(parameters.getDescription())) {
 			// Validacion de tamano
-			parameters.setDescripcion(
-					StringUtil.substring(parameters.getDescripcion(), DataConstants.MAX_SIZE_DESCRIPCION));
+			parameters.setDescription(
+					StringUtil.substring(parameters.getDescription(), DataConstants.MAX_SIZE_DESCRIPCION));
 
 		} else {
-			parameters.setDescripcion(registroUpdate.getDescripcion());
+			parameters.setDescription(registroUpdate.getDescription());
 		}
 					
 		// Retorna el resultado de la validacion.
@@ -374,7 +381,7 @@ public class BrandServiceImpl implements BrandService {
 	 * @param response Respuesta donde se agregan los errores
 	 * @return true si todos los parametros son correctos
 	 */
-	private boolean validateParametersDelete(RequestVO<DeleteCategoryRequestVO> request, ResponseVO<Boolean> response) {
+	private boolean validateParametersDelete(RequestVO<DeleteBrandRequestVO> request, ResponseVO<Boolean> response) {
 
 		// Validar que se han informado los parametros de entrada
 		if (ValidatorUtil.isNull(request.getParameters())) {
@@ -402,10 +409,10 @@ public class BrandServiceImpl implements BrandService {
 	 * @param request  Objeto con los parametros a valida
 	 * @param response Respuesta donde se agregan los errores
 	 */
-	private boolean validateParametersFindDetail(RequestVO<FindDetailCategoryRequestVO> request, ResponseVO<FindDetailCategoryResponseVO> response) {
+	private boolean validateParametersFindDetail(RequestVO<FindDetailBrandRequestVO> request, ResponseVO<FindDetailBrandResponseVO> response) {
 
 		// Recuperar los parametros de entrada
-		FindDetailCategoryRequestVO parameters = request.getParameters();
+		FindDetailBrandRequestVO parameters = request.getParameters();
 
 		// validar que el campo obligatorio
 		if (ValidatorUtil.isNullOrZero(parameters.getId())) {
@@ -429,8 +436,8 @@ public class BrandServiceImpl implements BrandService {
 	 * @param request  Objeto con los criterios a buscar
 	 * @param response Respuesta donde se agregan los errores
 	 */
-	private boolean validateParametersFindByList(RequestVO<FindListCategoryRequestVO> request,
-			ResponseVO<List<FindListCategoryResponseVO>> response) {
+	private boolean validateParametersFindByList(RequestVO<FindListBrandRequestVO> request,
+			ResponseVO<List<FindListBrandResponseVO>> response) {
 		
 		// Validar campos obligatorios
 	    ValidatorArqUtil.validateParameters(request, response);
@@ -450,19 +457,19 @@ public class BrandServiceImpl implements BrandService {
 	 * 
 	 * @param listaBrand a transformar
 	 */
-	private List<FindListCategoryResponseVO> transformListDO(List<BrandDO> listaBrand) {
+	private List<FindListBrandResponseVO> transformListDO(List<BrandDO> listaBrand) {
 
 		// Declarar variables
-		List<FindListCategoryResponseVO> listaBrandVO = new ArrayList<>();
+		List<FindListBrandResponseVO> listaBrandVO = new ArrayList<>();
 
 		// recorrer el objeto origen
 		for (BrandDO brandDO : listaBrand) {
 			// Se hace la declaracion de variables necesarias
-			FindListCategoryResponseVO brandVO = new FindListCategoryResponseVO();
+			FindListBrandResponseVO brandVO = new FindListBrandResponseVO();
 			
 			brandVO.setId(brandDO.getId());
 			brandVO.setName(brandDO.getName());
-			brandVO.setDescripcion(brandDO.getDescripcion());
+			brandVO.setDescription(brandDO.getDescription());
 			
 			listaBrandVO.add(brandVO);
 		}
