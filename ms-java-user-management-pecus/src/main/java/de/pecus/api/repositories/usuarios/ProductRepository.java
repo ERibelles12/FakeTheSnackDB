@@ -19,6 +19,9 @@ public interface ProductRepository extends JpaRepository<ProductDO, Serializable
 	 */
 	@Query(value = " SELECT r" 
 			+ " FROM  ProductDO r"
+			+ " JOIN FETCH r.brand b"
+			+ " JOIN FETCH r.category c"
+			+ " JOIN FETCH r.subCategory sc"
 			+ " WHERE r.active = 1 "
 			+ " AND r.name = :name")
 	ProductDO findByName(@Param("name") String name);
@@ -32,6 +35,9 @@ public interface ProductRepository extends JpaRepository<ProductDO, Serializable
 	 */
 	@Query(value = " SELECT r" 
 			+ " FROM  ProductDO r"
+			+ " JOIN FETCH r.brand b"
+			+ " JOIN FETCH r.category c"
+			+ " JOIN FETCH r.subCategory sc"
 			+ " WHERE r.active = 1 "
 			+ " AND r.id = :id")
 	ProductDO findById(@Param("id") Long id);
@@ -46,6 +52,9 @@ public interface ProductRepository extends JpaRepository<ProductDO, Serializable
 	 */
 	@Query(value = " SELECT r" 
 			+ " FROM  ProductDO r"
+			+ " JOIN FETCH r.brand b"
+			+ " JOIN FETCH r.category c"
+			+ " JOIN FETCH r.subCategory sc"
 			+ " WHERE r.active = 1 "
 			+ " AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))")
 	Page<ProductDO> findList(@Param("name") String name, 
