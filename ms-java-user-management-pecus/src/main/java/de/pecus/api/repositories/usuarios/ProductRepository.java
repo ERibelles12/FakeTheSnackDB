@@ -56,7 +56,14 @@ public interface ProductRepository extends JpaRepository<ProductDO, Serializable
 			+ " JOIN FETCH r.category c"
 			+ " JOIN FETCH r.subCategory sc"
 			+ " WHERE r.active = 1 "
-			+ " AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))")
+			+ " AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))", 
+			countQuery="SELECT r "
+					+ " FROM  ProductDO r "
+					+ "	JOIN FETCH r.brand b "
+					+ " JOIN FETCH r.category c "
+					+ "	JOIN FETCH r.subCategory sc "
+					+ "	WHERE r.active = 1 "
+					+ "	AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))")
 	Page<ProductDO> findList(@Param("name") String name, 
 			Pageable pageable);
 	
