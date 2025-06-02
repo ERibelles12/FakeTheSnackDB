@@ -18,6 +18,7 @@ public interface SubCategoryRepository extends JpaRepository<SubCategoryDO, Seri
 	 */
 	@Query(value = " SELECT r" 
 			+ " FROM  SubCategoryDO r"
+			+ " JOIN FETCH r.category c"
 			+ " WHERE r.active = 1 "
 			+ " AND r.name = :name")
 	SubCategoryDO findByName(@Param("name") String name);
@@ -31,6 +32,7 @@ public interface SubCategoryRepository extends JpaRepository<SubCategoryDO, Seri
 	 */
 	@Query(value = " SELECT r" 
 			+ " FROM  SubCategoryDO r"
+			+ " JOIN FETCH r.category c"
 			+ " WHERE r.active = 1 "
 			+ " AND r.id = :id")
 	SubCategoryDO findById(@Param("id") Long id);
@@ -45,6 +47,7 @@ public interface SubCategoryRepository extends JpaRepository<SubCategoryDO, Seri
 	 */
 	@Query(value = " SELECT r" 
 			+ " FROM  SubCategoryDO r"
+			+ " JOIN FETCH r.category c"
 			+ " WHERE r.active = 1 "
 			+ " AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))"
 			+ " AND (:idCategory IS NULL OR r.category.id = :idCategory) ")
