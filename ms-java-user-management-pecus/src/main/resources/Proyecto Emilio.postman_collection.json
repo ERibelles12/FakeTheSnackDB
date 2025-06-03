@@ -187,6 +187,146 @@
 			"response": []
 		},
 		{
+			"name": "SubCategory-Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idCategory\":1,\r\n    \"name\":\"Subcategoria POSTMAN2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8087/user-management/subCategory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"user-management",
+						"subCategory"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "MARCA NUEVA",
+							"disabled": true
+						},
+						{
+							"key": "description",
+							"value": "LA MARCA CREADA DESDE POSTMAN",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SubCategory-FindDetail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":4,\r\n    \"name\":\"categoria UPDATE\",\r\n    \"generalIndicator\":true,\r\n    \"milkIndicator\":false,\r\n    \"meatIndicator\":false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8087/user-management/subCategory/detail?name=PIG",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"user-management",
+						"subCategory",
+						"detail"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "name",
+							"value": "PIG"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SubCategory-FindList",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":4,\r\n    \"name\":\"categoria UPDATE\",\r\n    \"generalIndicator\":true,\r\n    \"milkIndicator\":false,\r\n    \"meatIndicator\":false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8087/user-management/subCategory/list?page=1&size=8&orderBy&orderType&name=",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"user-management",
+						"subCategory",
+						"list"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "8"
+						},
+						{
+							"key": "orderBy",
+							"value": null
+						},
+						{
+							"key": "orderType",
+							"value": null
+						},
+						{
+							"key": "name",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Brand-Create",
 			"request": {
 				"method": "POST",

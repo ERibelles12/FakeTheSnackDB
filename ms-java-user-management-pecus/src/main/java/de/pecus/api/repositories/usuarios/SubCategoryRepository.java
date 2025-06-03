@@ -19,7 +19,7 @@ public interface SubCategoryRepository extends JpaRepository<SubCategoryDO, Seri
 	@Query(value = " SELECT r" 
 			+ " FROM  SubCategoryDO r"
 			+ " JOIN FETCH r.category c"
-			+ " WHERE r.active = 1 "
+			+ " WHERE r.active = true "
 			+ " AND r.name = :name")
 	SubCategoryDO findByName(@Param("name") String name);
 	
