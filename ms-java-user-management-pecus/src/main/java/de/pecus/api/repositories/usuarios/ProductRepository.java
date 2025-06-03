@@ -57,11 +57,11 @@ public interface ProductRepository extends JpaRepository<ProductDO, Serializable
 			+ " JOIN FETCH r.subCategory sc"
 			+ " WHERE r.active = true "
 			+ " AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))", 
-			countQuery="SELECT r "
+			countQuery="SELECT COUNT(r) "
 					+ " FROM  ProductDO r "
-					+ "	JOIN FETCH r.brand b "
-					+ " JOIN FETCH r.category c "
-					+ "	JOIN FETCH r.subCategory sc "
+					+ "	INNER JOIN r.brand b "
+					+ " INNER JOIN r.category c "
+					+ "	INNER JOIN r.subCategory sc "
 					+ "	WHERE r.active = true "
 					+ "	AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))")
 	Page<ProductDO> findList(@Param("name") String name, 

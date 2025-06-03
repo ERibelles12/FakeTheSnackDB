@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import de.pecus.api.entities.ProductDO;
 import de.pecus.api.entities.RecipeDO;
 
 public interface RecipeRepository extends JpaRepository<RecipeDO, Serializable> {
@@ -19,10 +18,10 @@ public interface RecipeRepository extends JpaRepository<RecipeDO, Serializable> 
 			+ " JOIN FETCH r.substance s"
 			+ " WHERE r.active = true "
 			+ " AND p.id = :idProduct",
-			countQuery="SELECT r "
+			countQuery="SELECT COUNT(r) "
 					+ " FROM  RecipeDO r"
-					+ " JOIN FETCH r.product p"
-					+ " JOIN FETCH r.substance s"
+					+ " INNER JOIN r.product p"
+					+ " INNER JOIN r.substance s"
 					+ " WHERE r.active = true "
 				+ "	AND p.id = :idProduct")
 	Page<RecipeDO> findListByProduct(@Param("idProduct") Long idProduct,
@@ -38,10 +37,10 @@ public interface RecipeRepository extends JpaRepository<RecipeDO, Serializable> 
 			+ " JOIN FETCH r.substance s"
 			+ " WHERE r.active = true "
 			+ " AND s.id = :idSubstance",
-			countQuery="SELECT r "
+			countQuery="SELECT COUNT(r) "
 					+ " FROM  RecipeDO r"
-					+ " JOIN FETCH r.product p"
-					+ " JOIN FETCH r.substance s"
+					+ " INNER JOIN r.product p"
+					+ " INNER JOIN r.substance s"
 					+ " WHERE r.active = true "
 					+ "	AND s.id = :idSubstance")
 	Page<RecipeDO> findListBySubstance(@Param("idSubstance") Long idSubstance,

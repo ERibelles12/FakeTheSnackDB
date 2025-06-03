@@ -51,9 +51,9 @@ public interface SubCategoryRepository extends JpaRepository<SubCategoryDO, Seri
 			+ " WHERE r.active = true "
 			+ " AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))"
 			+ " AND (:idCategory IS NULL OR r.category.id = :idCategory) ", 
-			countQuery="SELECT r "
+			countQuery="SELECT COUNT(r) "
 					+ "   FROM  SubCategoryDO r"
-					+ "   JOIN FETCH r.category c"
+					+ "   INNER JOIN r.category c"
 					+ "   WHERE r.active = true "
 					+ "   AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))"
 					+ "   AND (:idCategory IS NULL OR r.category.id = :idCategory) ")
