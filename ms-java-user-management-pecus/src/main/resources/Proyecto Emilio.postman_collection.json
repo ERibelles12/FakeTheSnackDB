@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "abb23572-1f75-446b-845a-b11075d32eab",
+		"_postman_id": "35360e08-e05a-43e2-a137-9d78ffac757c",
 		"name": "Proyecto Emilio",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "45522105"
+		"_exporter_id": "1018931",
+		"_collection_link": "https://dark-crater-243278.postman.co/workspace/PECUS~dd7a7368-2975-44ac-8b95-2afc85eb8e5f/collection/1018931-35360e08-e05a-43e2-a137-9d78ffac757c?action=share&source=collection_link&creator=1018931"
 	},
 	"item": [
 		{
@@ -62,7 +63,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8087/user-management/category?id=4",
+					"raw": "http://localhost:8087/user-management/category/:id",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -70,17 +71,20 @@
 					"port": "8087",
 					"path": [
 						"user-management",
-						"category"
+						"category",
+						":id"
 					],
 					"query": [
-						{
-							"key": "id",
-							"value": "4"
-						},
 						{
 							"key": "description",
 							"value": "LA MARCA CREADA DESDE POSTMAN",
 							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "4"
 						}
 					]
 				}
@@ -242,7 +246,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8087/user-management/brand?id=2",
+					"raw": "http://localhost:8087/user-management/brand/:id",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -250,9 +254,10 @@
 					"port": "8087",
 					"path": [
 						"user-management",
-						"brand"
+						"brand",
+						":id"
 					],
-					"query": [
+					"variable": [
 						{
 							"key": "id",
 							"value": "2"
@@ -301,7 +306,10 @@
 			"name": "Brand-findList",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": ""
+				}
 			},
 			"response": []
 		},
