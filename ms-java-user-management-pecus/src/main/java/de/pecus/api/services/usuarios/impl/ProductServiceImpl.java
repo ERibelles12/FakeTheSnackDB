@@ -4,6 +4,8 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.pecus.api.repositories.usuarios.RecipeRepository;
+import de.pecus.api.repositories.usuarios.SubstanceRepository;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -51,6 +53,11 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductRepository productRepository;
 
+	@Autowired
+	private SubstanceRepository substanceRepository;
+
+	@Autowired
+	private RecipeRepository recipeRepository;
 
 	/**
 	 * Crea un nuevo registro de product
@@ -188,8 +195,7 @@ public class ProductServiceImpl implements ProductService {
 	 * Consulta un product por Identificador unico
 	 * 
 	 * @return Objeto VO con los datos encontrados
-	 * @param Id      Identificador del registro a buscar
-	 * 
+	 *
 	 * @param request Objeto con los datos de busqueda
 	 */
 	public ResponseVO<FindDetailProductResponseVO> findDetail(RequestVO<FindDetailProductRequestVO> request) {
@@ -437,7 +443,6 @@ public class ProductServiceImpl implements ProductService {
 	 * Valida que los parametros para la operacion de consulta por nombre sean
 	 * correctos
 	 * 
-	 * @param Id Identificador del registro a buscar
 	 * @return true si el nombre no esta vacio
 	 * 
 	 * @param request  Objeto con los parametros a valida

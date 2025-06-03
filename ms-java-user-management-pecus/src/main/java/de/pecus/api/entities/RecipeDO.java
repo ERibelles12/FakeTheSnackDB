@@ -68,6 +68,6 @@ public class RecipeDO extends AuditBase<Long> implements Serializable {
 	}
 
 	public Date getFechaRegistro() { return this.fechaRegistro;}
-
+	public void setFechaRegistro(Date fechaRegistro) {this.fechaRegistro = fechaRegistro;}
 
 }
