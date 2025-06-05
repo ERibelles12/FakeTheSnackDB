@@ -35,6 +35,7 @@ public class RecipeDO extends AuditBase<Long> implements Serializable {
 	@JoinColumn(name = "FK_SUBSTANCE_ID" , referencedColumnName = "PK_ID")
 	private SubstanceDO substance;
 
+	@Column(name="DD_REGISTER_DATE")
 	private Date fechaRegistro;
 
 
@@ -56,15 +57,15 @@ public class RecipeDO extends AuditBase<Long> implements Serializable {
 	public ProductDO getProduct() {
 		return product;
 	}
-	public void setProduct(Long id) {
-		this.id = id;
+	public void setProduct(ProductDO id) {
+		this.product = id;
 	}
 
 	public SubstanceDO getSubstance() {
 		return substance;
 	}
-	public void setSubstance(Long id) {
-		this.id = id;
+	public void setSubstance(SubstanceDO id) {
+		this.substance = id;
 	}
 
 	public Date getFechaRegistro() { return this.fechaRegistro;}

@@ -30,9 +30,9 @@ spring:
     allow-bean-definition-overriding: true
     banner-mode: off
   datasource:
-    jdbcUrl: jdbc:postgresql://localhost:13579/postgres
+    jdbcUrl: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: admin
+    password: adminpecus
     driverClassName: org.postgresql.Driver
     hikari:
      maximum-pool-size: 4

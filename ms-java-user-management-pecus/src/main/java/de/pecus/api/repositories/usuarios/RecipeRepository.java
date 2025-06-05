@@ -2,6 +2,7 @@ package de.pecus.api.repositories.usuarios;
 
 import java.io.Serializable;
 
+import de.pecus.api.entities.BrandDO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +12,19 @@ import org.springframework.data.repository.query.Param;
 import de.pecus.api.entities.RecipeDO;
 
 public interface RecipeRepository extends JpaRepository<RecipeDO, Serializable> {
+
+	/**
+	 * Consulta por producto y sustacia
+	 * @return Objeto de mapeo a la entidad
+	 */
+	@Query(value = " SELECT r"
+			+ " FROM  RecipeDO r"
+			+ " WHERE r.active = true "
+			+ " AND r.product.id = :idProduct"
+			+ " AND r.substance.id = :idSubstance")
+	RecipeDO findByProductAndSubstance(@Param("idProduct") Long idProduct, @Param("idSubstance") Long idSubstance);
+
+
 
 	@Query(value = " SELECT r"
 			+ " FROM  RecipeDO r"
