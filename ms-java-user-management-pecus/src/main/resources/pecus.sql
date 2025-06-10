@@ -100,7 +100,7 @@ CREATE UNIQUE INDEX idx_tipo_rol ON tipo_rol(
 
 ---------------------------------------------------------------
 ---------------------------------------------------------------
---   EMILIO'S PROJECT
+--   FAKE THE SNACK PROJECT
 ---------------------------------------------------------------
 ---------------------------------------------------------------
 
@@ -116,7 +116,7 @@ DROP TABLE RESULT_ITEM;
 DROP TABLE EVALUATION;
 DROP TABLE RECIPE;
 DROP TABLE PRODUCT;
-DROP TABLE SUBSTANCE;
+DROP TABLE INGREDIENT;
 DROP TABLE SUBCATEGORY;
 DROP TABLE CATEGORY;
 DROP TABLE BRAND;
@@ -210,11 +210,11 @@ CREATE UNIQUE INDEX idx_product_name ON product(
     fk_brand_id ASC, fk_category_id ASC, fk_subcategory_id ASC, dx_name ASC);
 
 ---------------------------------------------------------------
--- TABLE:  SUBSTANCE
--- DESCRIPTION:  List of substance
+-- TABLE:  INGREDIENT
+-- DESCRIPTION:  List of ingredient
 ----------------------------------------------------------------
 
-CREATE TABLE SUBSTANCE (
+CREATE TABLE INGREDIENT (
                        pk_id BIGSERIAL PRIMARY KEY,
                        dx_name VARCHAR(26),
                        dx_description VARCHAR(100),
@@ -225,7 +225,7 @@ CREATE TABLE SUBSTANCE (
                        dn_usuario_modificador NUMERIC(19,0)
 );
 
-CREATE UNIQUE INDEX idx_substance_name ON SUBSTANCE(dx_name ASC);
+CREATE UNIQUE INDEX idx_ingredient_name ON INGREDIENT(dx_name ASC);
 
 
 ---------------------------------------------------------------
@@ -236,7 +236,7 @@ CREATE UNIQUE INDEX idx_substance_name ON SUBSTANCE(dx_name ASC);
 CREATE TABLE RECIPE (
     pk_id BIGSERIAL PRIMARY KEY,
     fk_product_id BIGSERIAL NOT NULL,
-    fk_substance_id BIGSERIAL NOT NULL,
+    fk_ingredient_id BIGSERIAL NOT NULL,
     dd_register_date DATE NOT NULL,
     dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
@@ -247,10 +247,10 @@ CREATE TABLE RECIPE (
 
 -- foreing key
 ALTER TABLE RECIPE ADD CONSTRAINT const_fk_product_id FOREIGN KEY (fk_product_id) REFERENCES PRODUCT (pk_id);
-ALTER TABLE RECIPE ADD CONSTRAINT const_fk_substance_id FOREIGN KEY (fk_substance_id) REFERENCES SUBSTANCE (pk_id);
+ALTER TABLE RECIPE ADD CONSTRAINT const_fk_ingredient_id FOREIGN KEY (fk_ingredient_id) REFERENCES INGREDIENT (pk_id);
 
 
-CREATE UNIQUE INDEX idx_recipe_product ON RECIPE(fk_product_id ASC, fk_substance_id ASC, dd_register_date ASC);
+CREATE UNIQUE INDEX idx_recipe_product ON RECIPE(fk_product_id ASC, fk_ingredient_id ASC, dd_register_date ASC);
 
 ---------------------------------------------------------------
 -- TABLE:  EVALUATION
@@ -264,7 +264,7 @@ CREATE TABLE EVALUATION (
     fk_subcategory_id BIGSERIAL NOT NULL,
     fk_product_id BIGSERIAL NOT NULL,
     fk_recipe_id BIGSERIAL NOT NULL,
-    dn_substance_percentaje NUMERIC(1,0) default 1,
+    dn_ingredient_percentaje NUMERIC(1,0) default 1,
     dd_evaluation_date DATE NOT NULL,
     dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
@@ -282,7 +282,7 @@ ALTER TABLE EVALUATION ADD CONSTRAINT const_fk_recipe_id FOREIGN KEY (fk_recipe_
 
 ---------------------------------------------------------------
 -- TABLE:  RESULT_ITEM
--- DESCRIPTION:  Substance simulation results
+-- DESCRIPTION:  Ingredient simulation results
 ----------------------------------------------------------------
 
 CREATE TABLE RESULT_ITEM (
@@ -290,7 +290,7 @@ CREATE TABLE RESULT_ITEM (
     fk_evaluation_id BIGSERIAL NOT NULL,
     dd_evaluation_date DATE NOT NULL,
     fk_recipe_id BIGSERIAL NOT NULL,
-    dn_substance_percentaje NUMERIC(1,0) default 1,
+    dn_ingredient_percentaje NUMERIC(1,0) default 1,
     dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
     dn_usuario_creador NUMERIC(19,0) ,

@@ -14,12 +14,12 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import de.pecus.api.constant.DataConstants;
-import de.pecus.api.entities.SubstanceDO;
+import de.pecus.api.entities.IngredientDO;
 import de.pecus.api.enums.WildcardTypeEnum;
 import de.pecus.api.error.FuncionesBusinessError;
 import de.pecus.api.error.GeneralBusinessErrors;
-import de.pecus.api.repositories.usuarios.SubstanceRepository;
-import de.pecus.api.services.usuarios.SubstanceService;
+import de.pecus.api.repositories.usuarios.IngredientRepository;
+import de.pecus.api.services.usuarios.IngredientService;
 import de.pecus.api.util.CriteriaUtil;
 import de.pecus.api.util.ResponseUtil;
 import de.pecus.api.util.ServiceUtil;
@@ -28,35 +28,35 @@ import de.pecus.api.util.ValidatorArqUtil;
 import de.pecus.api.util.ValidatorUtil;
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.substance.CreateSubstanceRequestVO;
-import de.pecus.api.vo.substance.DeleteSubstanceRequestVO;
-import de.pecus.api.vo.substance.FindDetailSubstanceRequestVO;
-import de.pecus.api.vo.substance.FindDetailSubstanceResponseVO;
-import de.pecus.api.vo.substance.FindListSubstanceRequestVO;
-import de.pecus.api.vo.substance.FindListSubstanceResponseVO;
-import de.pecus.api.vo.substance.UpdateSubstanceRequestVO;
+import de.pecus.api.vo.ingredient.CreateIngredientRequestVO;
+import de.pecus.api.vo.ingredient.DeleteIngredientRequestVO;
+import de.pecus.api.vo.ingredient.FindDetailIngredientRequestVO;
+import de.pecus.api.vo.ingredient.FindDetailIngredientResponseVO;
+import de.pecus.api.vo.ingredient.FindListIngredientRequestVO;
+import de.pecus.api.vo.ingredient.FindListIngredientResponseVO;
+import de.pecus.api.vo.ingredient.UpdateIngredientRequestVO;
 
 /**
- * Clase de logica de negocio para administracion de substancees
+ * Clase de logica de negocio para administracion de ingredientes
  * 
  * @author Proa
  *
  */
 @Service
-public class SubstanceServiceImpl implements SubstanceService {
+public class IngredientServiceImpl implements IngredientService {
 
 	@Autowired
-	private SubstanceRepository substanceRepository;
+	private IngredientRepository ingredientRepository;
 
 
 	/**
-	 * Crea un nuevo registro de substance
+	 * Crea un nuevo registro de ingredient
 	 * 
-	 * @param request Objeto con parametros de entrada de substance
+	 * @param request Objeto con parametros de entrada de ingredient
 	 * 
 	 * @return Id generado
 	 */
-	public ResponseVO<Long> create(RequestVO<CreateSubstanceRequestVO> request) {
+	public ResponseVO<Long> create(RequestVO<CreateIngredientRequestVO> request) {
 
 		// Declarar variables
 		ResponseVO<Long> response = new ResponseVO<>();
@@ -65,21 +65,21 @@ public class SubstanceServiceImpl implements SubstanceService {
 			if (validateParametersCreate(request, response)) {
 		
 				// Preparar los datos para actualizar la BB.DD.
-				SubstanceDO substanceDO = new SubstanceDO();
+				IngredientDO ingredientDO = new IngredientDO();
 				
-				substanceDO.setId(RandomUtils.nextLong());
-				substanceDO.setName(request.getParameters().getName());
-				substanceDO.setDescription(request.getParameters().getDescription());
+				ingredientDO.setId(RandomUtils.nextLong());
+				ingredientDO.setName(request.getParameters().getName());
+				ingredientDO.setDescription(request.getParameters().getDescription());
 				
 				// Actualizar los parametros de auditoria
-				ServiceUtil.setAuditFields(substanceDO, request.getToken());
+				ServiceUtil.setAuditFields(ingredientDO, request.getToken());
 
 				// Insertar el registro
-				substanceDO = substanceRepository.saveAndFlush(substanceDO);
+				ingredientDO = ingredientRepository.saveAndFlush(ingredientDO);
 
 				// Regresar la respuesta correcta y el objeto a regresar
 				response.setSuccess(true);
-				response.setData(substanceDO.getId());
+				response.setData(ingredientDO.getId());
 				
 			}
 		return response;
@@ -87,22 +87,22 @@ public class SubstanceServiceImpl implements SubstanceService {
 
 
 	/**
-	 * Actualiza un registro de substance
+	 * Actualiza un registro de ingredient
 	 * 
-	 * @param request Objeto con parametros de entrada de substance
+	 * @param request Objeto con parametros de entrada de ingredient
 	 * 
 	 * @return Id actualizado
 	 */
-	public ResponseVO<Long> update(RequestVO<UpdateSubstanceRequestVO> request) {
+	public ResponseVO<Long> update(RequestVO<UpdateIngredientRequestVO> request) {
 
 		// Declarar variables
 		ResponseVO<Long> response = new ResponseVO<>();
-		SubstanceDO registroDO = new SubstanceDO();
+		IngredientDO registroDO = new IngredientDO();
 
 		// Validar los campos de entrada
 		if (validateParametersUpdate(request, response)) {
 			
-			UpdateSubstanceRequestVO parameters = request.getParameters();
+			UpdateIngredientRequestVO parameters = request.getParameters();
 
 			registroDO.setId(parameters.getId());
 			registroDO.setName(parameters.getName());
@@ -112,7 +112,7 @@ public class SubstanceServiceImpl implements SubstanceService {
 			ServiceUtil.setAuditFields(registroDO, request.getToken());
 
 			// Actualizar el registro en BB.DD.
-			registroDO = substanceRepository.saveAndFlush(registroDO);
+			registroDO = ingredientRepository.saveAndFlush(registroDO);
 
 			// Preparar respuesta y objeto actualizado
 			response.setSuccess(true);
@@ -123,13 +123,13 @@ public class SubstanceServiceImpl implements SubstanceService {
 
 
 	/**
-	 * Marca un registro como eliminado un registro de substance
+	 * Marca un registro como eliminado un registro de ingredient
 	 * 
-	 * @param request Objeto con parametros de entrada de substance
+	 * @param request Objeto con parametros de entrada de ingredient
 	 * 
 	 * @return Id eliminado
 	 */
-	public ResponseVO<Boolean> delete(RequestVO<DeleteSubstanceRequestVO> request) {
+	public ResponseVO<Boolean> delete(RequestVO<DeleteIngredientRequestVO> request) {
 
 		// Declarar variables
 		ResponseVO<Boolean> response = new ResponseVO<>();
@@ -137,16 +137,16 @@ public class SubstanceServiceImpl implements SubstanceService {
 		// Validar campos de entrada
 		if (validateParametersDelete(request, response)) {
 
-			SubstanceDO substanceDO = this.exists(request.getParameters().getId(), null);
-			if (ValidatorUtil.isNull(substanceDO)) {
+			IngredientDO ingredientDO = this.exists(request.getParameters().getId(), null);
+			if (ValidatorUtil.isNull(ingredientDO)) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_ERROR, request);
 			}
 			else {
 			// Actualizar la informacion
-			ServiceUtil.setDisabledEntity(substanceDO, request.getToken());
+			ServiceUtil.setDisabledEntity(ingredientDO, request.getToken());
 			
 			// Actualizar la BB.DD.
-			substanceDO = substanceRepository.saveAndFlush(substanceDO);
+			ingredientDO = ingredientRepository.saveAndFlush(ingredientDO);
 
 			// Preparar respuesta y objeto eliminado
 			response.setSuccess(true);
@@ -157,30 +157,30 @@ public class SubstanceServiceImpl implements SubstanceService {
 	}
 
 	/**
-	 * Consulta un substance por Identificador unico
+	 * Consulta un ingredient por Identificador unico
 	 * 
 	 * @return Objeto VO con los datos encontrados
 	 * @param Id      Identificador del registro a buscar
 	 * 
 	 * @param request Objeto con los datos de busqueda
 	 */
-	public ResponseVO<FindDetailSubstanceResponseVO> findDetail(RequestVO<FindDetailSubstanceRequestVO> request) {
+	public ResponseVO<FindDetailIngredientResponseVO> findDetail(RequestVO<FindDetailIngredientRequestVO> request) {
 
 		// declaracion de varables
-		ResponseVO<FindDetailSubstanceResponseVO> response = new ResponseVO<>();
-		FindDetailSubstanceResponseVO salida = new FindDetailSubstanceResponseVO();
+		ResponseVO<FindDetailIngredientResponseVO> response = new ResponseVO<>();
+		FindDetailIngredientResponseVO salida = new FindDetailIngredientResponseVO();
 		
 		// validar que se cumplen las condiciones para realizar la consulta
 		if (validateParametersFindDetail(request, response)) {
 
-			SubstanceDO substanceDO = this.exists(request.getParameters().getId(), request.getParameters().getName());
+			IngredientDO ingredientDO = this.exists(request.getParameters().getId(), request.getParameters().getName());
 
-			if (ValidatorUtil.isNull(substanceDO)) {
+			if (ValidatorUtil.isNull(ingredientDO)) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_ERROR, request);
 			} else {
-				salida.setId(substanceDO.getId());
-				salida.setName(substanceDO.getName());
-				salida.setDescription(substanceDO.getDescription());
+				salida.setId(ingredientDO.getId());
+				salida.setName(ingredientDO.getName());
+				salida.setDescription(ingredientDO.getDescription());
 
 				response.setData(salida);
 				// regresar la respuesta correcta con los registros obtenidos.
@@ -202,16 +202,16 @@ public class SubstanceServiceImpl implements SubstanceService {
 	 * 
 	 * @param request Objeto con parametros de entrada de banner
 	 */
-	public ResponseVO<List<FindListSubstanceResponseVO>> findList(RequestVO<FindListSubstanceRequestVO> request) {
+	public ResponseVO<List<FindListIngredientResponseVO>> findList(RequestVO<FindListIngredientRequestVO> request) {
 
 		// declaracion de varables
-		ResponseVO<List<FindListSubstanceResponseVO>> response = new ResponseVO<>();
+		ResponseVO<List<FindListIngredientResponseVO>> response = new ResponseVO<>();
 		
-		Page<SubstanceDO> listaSubstance = null;
+		Page<IngredientDO> listaIngredient = null;
 		
 		if (validateParametersFindByList(request, response)) {
 	
-			FindListSubstanceRequestVO parameters = request.getParameters();
+			FindListIngredientRequestVO parameters = request.getParameters();
 			// Se obtiene el idioma
 			
 			String  name 	= CriteriaUtil.validateNullLike(parameters.getName(), WildcardTypeEnum.BOTH_SIDES);
@@ -229,16 +229,16 @@ public class SubstanceServiceImpl implements SubstanceService {
 			String normalizedName = this.limpiarAcentos(request.getParameters().getName());
 			
 			// ejecucion de la busqueda por el parametro recibido
-			listaSubstance = substanceRepository.findList(this.cleanString(normalizedName), pageable);
+			listaIngredient = ingredientRepository.findList(this.cleanString(normalizedName), pageable);
 
 			// Si no se encontro ningun registro que cumpla la condicion generar error.
- 				if (ValidatorUtil.isNullOrEmpty(listaSubstance.getContent())) {
+ 				if (ValidatorUtil.isNullOrEmpty(listaIngredient.getContent())) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_REGISTER_LIST_ERROR);
 			} else {
 				// Regresar la respuesta correcta con los registros obtenidos.
 				response.setSuccess(true);
-				response.setTotalRows(listaSubstance.getTotalElements());
-				response.setData(transformListDO(listaSubstance.getContent()));
+				response.setTotalRows(listaIngredient.getTotalElements());
+				response.setData(transformListDO(listaIngredient.getContent()));
 			}
 		}
 		return response;
@@ -265,10 +265,10 @@ public class SubstanceServiceImpl implements SubstanceService {
 	 * @param response Respuesta donde se agregan los errores
 	 * @return true si todos los parametros son correctos
 	 */
-	private boolean validateParametersCreate(RequestVO<CreateSubstanceRequestVO> request, ResponseVO<Long> response) {
+	private boolean validateParametersCreate(RequestVO<CreateIngredientRequestVO> request, ResponseVO<Long> response) {
 		
 		// Obtener los parametros de entrada
-		CreateSubstanceRequestVO parameters = request.getParameters();
+		CreateIngredientRequestVO parameters = request.getParameters();
 
 		// Validaciones de campos obligatorios
 		if (StringUtil.isNullOrEmpty(parameters.getName())) {
@@ -281,7 +281,7 @@ public class SubstanceServiceImpl implements SubstanceService {
 			// Validacion de formato
 			parameters.setName(StringUtil.toUpperCase(name));
 
-				SubstanceDO registroB = this.exists(null,parameters.getName());
+				IngredientDO registroB = this.exists(null,parameters.getName());
 				
 				if (!ValidatorUtil.isNull(registroB)) {
 					ResponseUtil.addError(request, response, 
@@ -310,10 +310,10 @@ public class SubstanceServiceImpl implements SubstanceService {
 	 * @param response Respuesta donde se agregan los errores
 	 * @return true si todos los parametros son correctos
 	 */
-	private boolean validateParametersUpdate(RequestVO<UpdateSubstanceRequestVO> request, ResponseVO<Long> response) {
+	private boolean validateParametersUpdate(RequestVO<UpdateIngredientRequestVO> request, ResponseVO<Long> response) {
 		// Recuperar parametros de entrada
-		UpdateSubstanceRequestVO parameters = request.getParameters();
-		SubstanceDO registroUpdate = new SubstanceDO();
+		UpdateIngredientRequestVO parameters = request.getParameters();
+		IngredientDO registroUpdate = new IngredientDO();
 		
 		// Validar que se informaron los campos de entrada
 		if (ValidatorUtil.isNull(parameters)) {
@@ -346,11 +346,11 @@ public class SubstanceServiceImpl implements SubstanceService {
 			parameters.setName(StringUtil.toUpperCase(name));
 			
 				//Validar la posible duplicidad del name
-				SubstanceDO substanceBusqueda = this.exists(null, request.getParameters().getName());
+				IngredientDO ingredientBusqueda = this.exists(null, request.getParameters().getName());
 				
-				if (!ValidatorUtil.isNull(substanceBusqueda)) {
+				if (!ValidatorUtil.isNull(ingredientBusqueda)) {
 					//Si se encuentra el registro validamos que no sea el mismo Id
-					if (registroUpdate.getId() != substanceBusqueda.getId()) {
+					if (registroUpdate.getId() != ingredientBusqueda.getId()) {
 						ResponseUtil.addError(request, response, FuncionesBusinessError.DUPLICATED_ERROR, request);
 						
 					}
@@ -381,7 +381,7 @@ public class SubstanceServiceImpl implements SubstanceService {
 	 * @param response Respuesta donde se agregan los errores
 	 * @return true si todos los parametros son correctos
 	 */
-	private boolean validateParametersDelete(RequestVO<DeleteSubstanceRequestVO> request, ResponseVO<Boolean> response) {
+	private boolean validateParametersDelete(RequestVO<DeleteIngredientRequestVO> request, ResponseVO<Boolean> response) {
 
 		// Validar que se han informado los parametros de entrada
 		if (ValidatorUtil.isNull(request.getParameters())) {
@@ -409,10 +409,10 @@ public class SubstanceServiceImpl implements SubstanceService {
 	 * @param request  Objeto con los parametros a valida
 	 * @param response Respuesta donde se agregan los errores
 	 */
-	private boolean validateParametersFindDetail(RequestVO<FindDetailSubstanceRequestVO> request, ResponseVO<FindDetailSubstanceResponseVO> response) {
+	private boolean validateParametersFindDetail(RequestVO<FindDetailIngredientRequestVO> request, ResponseVO<FindDetailIngredientResponseVO> response) {
 
 		// Recuperar los parametros de entrada
-		FindDetailSubstanceRequestVO parameters = request.getParameters();
+		FindDetailIngredientRequestVO parameters = request.getParameters();
 
 		// validar que el campo obligatorio
 		if (ValidatorUtil.isNullOrZero(parameters.getId())) {
@@ -436,8 +436,8 @@ public class SubstanceServiceImpl implements SubstanceService {
 	 * @param request  Objeto con los criterios a buscar
 	 * @param response Respuesta donde se agregan los errores
 	 */
-	private boolean validateParametersFindByList(RequestVO<FindListSubstanceRequestVO> request,
-			ResponseVO<List<FindListSubstanceResponseVO>> response) {
+	private boolean validateParametersFindByList(RequestVO<FindListIngredientRequestVO> request,
+			ResponseVO<List<FindListIngredientResponseVO>> response) {
 		
 		// Validar campos obligatorios
 	    ValidatorArqUtil.validateParameters(request, response);
@@ -451,30 +451,30 @@ public class SubstanceServiceImpl implements SubstanceService {
 
 
 	/**
-	 * Obtiene una lista de objetos substanceVO a partir de una lista de DO
+	 * Obtiene una lista de objetos ingredientVO a partir de una lista de DO
 	 * 
 	 * @return Lista VO para retorno de resultados
 	 * 
-	 * @param listaSubstance a transformar
+	 * @param listaIngredient a transformar
 	 */
-	private List<FindListSubstanceResponseVO> transformListDO(List<SubstanceDO> listaSubstance) {
+	private List<FindListIngredientResponseVO> transformListDO(List<IngredientDO> listaIngredient) {
 
 		// Declarar variables
-		List<FindListSubstanceResponseVO> listaSubstanceVO = new ArrayList<>();
+		List<FindListIngredientResponseVO> listaIngredientVO = new ArrayList<>();
 
 		// recorrer el objeto origen
-		for (SubstanceDO substanceDO : listaSubstance) {
+		for (IngredientDO ingredientDO : listaIngredient) {
 			// Se hace la declaracion de variables necesarias
-			FindListSubstanceResponseVO substanceVO = new FindListSubstanceResponseVO();
+			FindListIngredientResponseVO ingredientVO = new FindListIngredientResponseVO();
 			
-			substanceVO.setId(substanceDO.getId());
-			substanceVO.setName(substanceDO.getName());
-			substanceVO.setDescription(substanceDO.getDescription());
+			ingredientVO.setId(ingredientDO.getId());
+			ingredientVO.setName(ingredientDO.getName());
+			ingredientVO.setDescription(ingredientDO.getDescription());
 			
-			listaSubstanceVO.add(substanceVO);
+			listaIngredientVO.add(ingredientVO);
 		}
 
-		return listaSubstanceVO;
+		return listaIngredientVO;
 	}
 	
 
@@ -484,9 +484,9 @@ public class SubstanceServiceImpl implements SubstanceService {
 	 * Regresa el objeto de la base de datos o una excepcion con el error
 	 * 
 	 *************************************************************************/
-	public SubstanceDO exists(Long id, String name){
+	public IngredientDO exists(Long id, String name){
 
-		SubstanceDO registro = null;
+		IngredientDO registro = null;
 		try {
 			//Validacion de datos de entrada
 			if (ValidatorUtil.isNullOrZero(id)) {
@@ -494,11 +494,11 @@ public class SubstanceServiceImpl implements SubstanceService {
 					registro = null;
 				} else {
 					//Buscamos por nombre
-					registro = substanceRepository.findByName(name);
+					registro = ingredientRepository.findByName(name);
 				}
 			} else {
 				//Consulta
-				registro = substanceRepository.findById(id);
+				registro = ingredientRepository.findById(id);
 			}
 			//Validacion de existencia
 			if (ValidatorUtil.isNull(registro)) {

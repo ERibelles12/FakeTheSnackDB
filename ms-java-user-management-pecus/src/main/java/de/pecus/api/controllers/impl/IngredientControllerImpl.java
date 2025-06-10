@@ -18,25 +18,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.pecus.api.controllers.SubstanceController;
-import de.pecus.api.services.usuarios.SubstanceService;
+import de.pecus.api.controllers.IngredientController;
+import de.pecus.api.services.usuarios.IngredientService;
 import de.pecus.api.util.RequestVOUtil;
 import de.pecus.api.util.ResponseUtil;
-import de.pecus.api.util.SubstanceServicesResponseBuilder;
+import de.pecus.api.util.IngredientServicesResponseBuilder;
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.substance.CreateSubstanceRequestVO;
-import de.pecus.api.vo.substance.DeleteSubstanceRequestVO;
-import de.pecus.api.vo.substance.FindDetailSubstanceRequestVO;
-import de.pecus.api.vo.substance.FindDetailSubstanceResponseVO;
-import de.pecus.api.vo.substance.FindListSubstanceRequestVO;
-import de.pecus.api.vo.substance.FindListSubstanceResponseVO;
-import de.pecus.api.vo.substance.UpdateSubstanceRequestVO;
+import de.pecus.api.vo.ingredient.CreateIngredientRequestVO;
+import de.pecus.api.vo.ingredient.DeleteIngredientRequestVO;
+import de.pecus.api.vo.ingredient.FindDetailIngredientRequestVO;
+import de.pecus.api.vo.ingredient.FindDetailIngredientResponseVO;
+import de.pecus.api.vo.ingredient.FindListIngredientRequestVO;
+import de.pecus.api.vo.ingredient.FindListIngredientResponseVO;
+import de.pecus.api.vo.ingredient.UpdateIngredientRequestVO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 
 /**
- * Clase de controlador para servicio Rest de Substance
+ * Clase de controlador para servicio Rest de Ingredient
  * 
  * @author Jorge Serrano
  * @version 1.0
@@ -44,10 +44,10 @@ import io.swagger.annotations.ApiImplicitParams;
  */
 @RestController
 @RequestMapping("")
-public class SubstanceControllerImpl implements SubstanceController {
+public class IngredientControllerImpl implements IngredientController {
 
 	@Autowired
-	private SubstanceService substanceService;
+	private IngredientService ingredientService;
 
 	/**
 	 * Operation: Operation: create, Method: POST Crea un registro en la BB.DD.
@@ -66,19 +66,19 @@ public class SubstanceControllerImpl implements SubstanceController {
 		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@PostMapping(value = "/substance", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<Long>> createSubstance(@RequestHeader Map<String, String> headers,
-			@RequestBody CreateSubstanceRequestVO body) {
+	@PostMapping(value = "/ingredient", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<Long>> createIngredient(@RequestHeader Map<String, String> headers,
+			@RequestBody CreateIngredientRequestVO body) {
 		
 			// Generamos el objeto requestVO
-			RequestVO<CreateSubstanceRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
+			RequestVO<CreateIngredientRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
 
 			ResponseEntity<ResponseVO<Long>> response = null;
 			try {
 				// Invocar al servicio
-				ResponseVO<Long> serviceResponse = substanceService.create(requestVO);
+				ResponseVO<Long> serviceResponse = ingredientService.create(requestVO);
 
-				response  = SubstanceServicesResponseBuilder.buildCreateOrUpdateResponse(serviceResponse);
+				response  = IngredientServicesResponseBuilder.buildCreateOrUpdateResponse(serviceResponse);
 
 			} catch (Exception exception) {
 				// Excepcion controlada
@@ -107,10 +107,10 @@ public class SubstanceControllerImpl implements SubstanceController {
 		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@PutMapping(value = "/substance/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<Long>> updateSubstance(@RequestHeader Map<String, String> headers, 
+	@PutMapping(value = "/ingredient/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<Long>> updateIngredient(@RequestHeader Map<String, String> headers, 
 			@PathVariable(name = "id", required = false) Long id, 
-			@RequestBody UpdateSubstanceRequestVO body) {
+			@RequestBody UpdateIngredientRequestVO body) {
 		
 		
 			// Declaracion de variable
@@ -119,13 +119,13 @@ public class SubstanceControllerImpl implements SubstanceController {
 			body.setId(id);
 
 			// Generamos el objeto requestVO
-			RequestVO<UpdateSubstanceRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
+			RequestVO<UpdateIngredientRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
 			
 			try {
 				// Invocar al servicio
-				ResponseVO<Long> serviceResponse = substanceService.update(requestVO);
+				ResponseVO<Long> serviceResponse = ingredientService.update(requestVO);
 
-				response = SubstanceServicesResponseBuilder.buildCreateOrUpdateResponse(serviceResponse);
+				response = IngredientServicesResponseBuilder.buildCreateOrUpdateResponse(serviceResponse);
 
 			} catch (Exception exception) {
 				// Excepcion controlada
@@ -154,23 +154,23 @@ public class SubstanceControllerImpl implements SubstanceController {
 		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@DeleteMapping(value = "/substance/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<Boolean>> deleteSubstance(@RequestHeader Map<String, String> headers,
+	@DeleteMapping(value = "/ingredient/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<Boolean>> deleteIngredient(@RequestHeader Map<String, String> headers,
 			@PathVariable("id") Long id) {
 		// Declaracion de variables
 		ResponseEntity<ResponseVO<Boolean>> response = null;
 		
 		// Generamos el objeto requestVO
-		DeleteSubstanceRequestVO deleteSubstanceRequestVO = new DeleteSubstanceRequestVO();
-		deleteSubstanceRequestVO.setId(id);
-		RequestVO<DeleteSubstanceRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,deleteSubstanceRequestVO);
+		DeleteIngredientRequestVO deleteIngredientRequestVO = new DeleteIngredientRequestVO();
+		deleteIngredientRequestVO.setId(id);
+		RequestVO<DeleteIngredientRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,deleteIngredientRequestVO);
 		
 
 		try {
 			
-			ResponseVO<Boolean> serviceResponse = substanceService.delete(requestVO);
+			ResponseVO<Boolean> serviceResponse = ingredientService.delete(requestVO);
 
-			response = SubstanceServicesResponseBuilder.buildDeleteResponse(serviceResponse);
+			response = IngredientServicesResponseBuilder.buildDeleteResponse(serviceResponse);
 
 		} catch (Exception exception) {
 			// Excepcion no controlada
@@ -198,31 +198,31 @@ public class SubstanceControllerImpl implements SubstanceController {
 		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@GetMapping(value = "/substance/detail", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<FindDetailSubstanceResponseVO>> findDetailSubstance(
+	@GetMapping(value = "/ingredient/detail", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<FindDetailIngredientResponseVO>> findDetailIngredient(
 			@RequestHeader Map<String, String> headers, 
 			@RequestParam(value = "id", required= false) Long id,
 			@RequestParam(value = "name", required = false) String name) {
 
 		// Declaracion de variables
-		ResponseEntity<ResponseVO<FindDetailSubstanceResponseVO>> response = null;
+		ResponseEntity<ResponseVO<FindDetailIngredientResponseVO>> response = null;
 
 		// Crear el objeto requestVO
-		FindDetailSubstanceRequestVO findDetailSubstanceRequestVO = new FindDetailSubstanceRequestVO();
-		findDetailSubstanceRequestVO.setId(id);
-		findDetailSubstanceRequestVO.setName(name);
-		RequestVO<FindDetailSubstanceRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,findDetailSubstanceRequestVO);
+		FindDetailIngredientRequestVO findDetailIngredientRequestVO = new FindDetailIngredientRequestVO();
+		findDetailIngredientRequestVO.setId(id);
+		findDetailIngredientRequestVO.setName(name);
+		RequestVO<FindDetailIngredientRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,findDetailIngredientRequestVO);
 
 		try {
 			
 			// Invocar al metodo de busqueda
-			ResponseVO<FindDetailSubstanceResponseVO> serviceResponse = substanceService.findDetail(requestVO);
+			ResponseVO<FindDetailIngredientResponseVO> serviceResponse = ingredientService.findDetail(requestVO);
 			
-			response = SubstanceServicesResponseBuilder.buildFindDetailResponse(serviceResponse);
+			response = IngredientServicesResponseBuilder.buildFindDetailResponse(serviceResponse);
 
 		} catch (Exception exception) {
 			// Excepcion no controlada
-			ResponseVO<FindDetailSubstanceResponseVO> exceptionResponse = ResponseUtil.getErrorResponse(exception);
+			ResponseVO<FindDetailIngredientResponseVO> exceptionResponse = ResponseUtil.getErrorResponse(exception);
 			response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
 		}
 		return response;
@@ -251,8 +251,8 @@ public class SubstanceControllerImpl implements SubstanceController {
 		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@GetMapping(value = "/substance/list", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<List<FindListSubstanceResponseVO>>> findListSubstance(
+	@GetMapping(value = "/ingredient/list", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<List<FindListIngredientResponseVO>>> findListIngredient(
 			@RequestHeader Map<String, String> headers, 
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
@@ -260,21 +260,21 @@ public class SubstanceControllerImpl implements SubstanceController {
 			@RequestParam(value = "orderType", required = false) String orderType,
 			@RequestParam(value = "name", required = false) String name){
 		// Declarar variables
-		ResponseEntity<ResponseVO<List<FindListSubstanceResponseVO>>> response = null;
+		ResponseEntity<ResponseVO<List<FindListIngredientResponseVO>>> response = null;
 
-		FindListSubstanceRequestVO findListSubstanceRequestVO = new FindListSubstanceRequestVO();
-		findListSubstanceRequestVO.setName(name);
-		RequestVO<FindListSubstanceRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, page, size, orderBy,
-				orderType, findListSubstanceRequestVO);
+		FindListIngredientRequestVO findListIngredientRequestVO = new FindListIngredientRequestVO();
+		findListIngredientRequestVO.setName(name);
+		RequestVO<FindListIngredientRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, page, size, orderBy,
+				orderType, findListIngredientRequestVO);
 
 		try {
 
-			ResponseVO<List<FindListSubstanceResponseVO>> serviceResponse = substanceService.findList(requestVO);
-			response = SubstanceServicesResponseBuilder.buildFindListSubstanceResponse(serviceResponse);
+			ResponseVO<List<FindListIngredientResponseVO>> serviceResponse = ingredientService.findList(requestVO);
+			response = IngredientServicesResponseBuilder.buildFindListIngredientResponse(serviceResponse);
 
 		} catch (Exception exception) {
 			// Excepcion no controlada
-			ResponseVO<List<FindListSubstanceResponseVO>> exceptionResponse = ResponseUtil
+			ResponseVO<List<FindListIngredientResponseVO>> exceptionResponse = ResponseUtil
 					.getErrorResponse(exception);
 			response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
 		}

@@ -589,13 +589,13 @@
 			"response": []
 		},
 		{
-			"name": "Substance-Create",
+			"name": "Ingredient-Create",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\":\"SUBSTANCE POSTMAN2\",\r\n    \"description\":\"DESCRIPCION SUSBTANCE\"\r\n}",
+					"raw": "{\r\n    \"name\":\"INGREDIENT POSTMAN2\",\r\n    \"description\":\"DESCRIPCION SUSBTANCE\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -603,7 +603,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8087/user-management/substance",
+					"raw": "http://localhost:8087/user-management/ingredient",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -611,7 +611,7 @@
 					"port": "8087",
 					"path": [
 						"user-management",
-						"substance"
+						"ingredient"
 					],
 					"query": [
 						{
@@ -630,7 +630,7 @@
 			"response": []
 		},
 		{
-			"name": "Substance-FindDetail",
+			"name": "Ingredient-FindDetail",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -647,7 +647,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8087/user-management/substance/detail?name=SUBSTANCE POSTMAN2",
+					"raw": "http://localhost:8087/user-management/ingredient/detail?name=INGREDIENT POSTMAN2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -655,7 +655,7 @@
 					"port": "8087",
 					"path": [
 						"user-management",
-						"substance",
+						"ingredient",
 						"detail"
 					],
 					"query": [
@@ -666,7 +666,7 @@
 						},
 						{
 							"key": "name",
-							"value": "SUBSTANCE POSTMAN2"
+							"value": "INGREDIENT POSTMAN2"
 						}
 					]
 				}
@@ -674,7 +674,7 @@
 			"response": []
 		},
 		{
-			"name": "Substance-FindList",
+			"name": "Ingredient-FindList",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -691,7 +691,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8087/user-management/substance/list?page=1&size=10&name=pust",
+					"raw": "http://localhost:8087/user-management/ingredient/list?page=1&size=10&name=pust",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -699,7 +699,7 @@
 					"port": "8087",
 					"path": [
 						"user-management",
-						"substance",
+						"ingredient",
 						"list"
 					],
 					"query": [
@@ -731,13 +731,13 @@
 			"response": []
 		},
 		{
-			"name": "Associate Product Substance",
+			"name": "Associate Product Ingredient",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"idProduct\":1,\r\n    \"idSubstance\":1,\r\n    \"fechaRegistro\":\"2025-06-05\"\r\n}",
+					"raw": "{\r\n    \"idProduct\":1,\r\n    \"idIngredient\":1,\r\n    \"fechaRegistro\":\"2025-06-05\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -772,13 +772,13 @@
 			"response": []
 		},
 		{
-			"name": "Delete Product Substance",
+			"name": "Delete Product Ingredient",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"idProduct\":2,\r\n    \"idSubstance\":1,\r\n    \"fechaRegistro\":\"2025-06-05\"\r\n}",
+					"raw": "{\r\n    \"idProduct\":2,\r\n    \"idIngredient\":1,\r\n    \"fechaRegistro\":\"2025-06-05\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -820,7 +820,7 @@
 			"response": []
 		},
 		{
-			"name": "FindList Product Substance",
+			"name": "FindList Product Ingredient",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},

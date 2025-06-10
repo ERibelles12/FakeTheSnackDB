@@ -33,8 +33,8 @@ import de.pecus.api.exception.EnvironmentVariableNotFoundException;
 import de.pecus.api.util.ValidatorUtil;
 
 /**
- * Clase de configuracion de entorno de acceso a datos mediante Hibernate
  * 
+ * Data access environment configuration class using Hibernate
  * @author pecus
  *
  */

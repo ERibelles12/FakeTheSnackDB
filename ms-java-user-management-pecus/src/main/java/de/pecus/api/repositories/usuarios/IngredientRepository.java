@@ -1,15 +1,16 @@
 package de.pecus.api.repositories.usuarios;
 
-import de.pecus.api.entities.SubstanceDO;
+import java.io.Serializable;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.io.Serializable;
+import de.pecus.api.entities.IngredientDO;
 
-public interface SubstanceRepository extends JpaRepository<SubstanceDO, Serializable> {
+public interface IngredientRepository extends JpaRepository<IngredientDO, Serializable> {
 
 	/**
 	 * Consulta por name sin implementacion de query especifico
@@ -17,10 +18,10 @@ public interface SubstanceRepository extends JpaRepository<SubstanceDO, Serializ
 	 * @return Objeto de mapeo a la entidad
 	 */
 	@Query(value = " SELECT r" 
-			+ " FROM  SubstanceDO r"
+			+ " FROM  IngredientDO r"
 			+ " WHERE r.active = true "
 			+ " AND r.name = :name")
-	SubstanceDO findByName(@Param("name") String name);
+	IngredientDO findByName(@Param("name") String name);
 	
 	/**
 	 * Consulta por id sin implementacion de query especifico
@@ -30,10 +31,10 @@ public interface SubstanceRepository extends JpaRepository<SubstanceDO, Serializ
 	 * @param id Identificador de registro buscado
 	 */
 	@Query(value = " SELECT r" 
-			+ " FROM  SubstanceDO r"
+			+ " FROM  IngredientDO r"
 			+ " WHERE r.active = true "
 			+ " AND r.id = :id")
-	SubstanceDO findById(@Param("id") Long id);
+	IngredientDO findById(@Param("id") Long id);
 	
     /**
 	 * Consulta por nombre . Y se prepara para paginacion
@@ -44,10 +45,10 @@ public interface SubstanceRepository extends JpaRepository<SubstanceDO, Serializ
 	 * @param pageable
 	 */
 	@Query(value = " SELECT r" 
-			+ " FROM  SubstanceDO r"
+			+ " FROM  IngredientDO r"
 			+ " WHERE r.active = true "
 			+ " AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))")
-	Page<SubstanceDO> findList(@Param("name") String name,
+	Page<IngredientDO> findList(@Param("name") String name,
                              Pageable pageable);
 	
 }

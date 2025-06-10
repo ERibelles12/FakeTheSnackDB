@@ -32,8 +32,8 @@ public class RecipeDO extends AuditBase<Long> implements Serializable {
 
 	/****************************  RELACION 1..N ******************************/
 	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn(name = "FK_SUBSTANCE_ID" , referencedColumnName = "PK_ID")
-	private SubstanceDO substance;
+	@JoinColumn(name = "FK_INGREDIENT_ID" , referencedColumnName = "PK_ID")
+	private IngredientDO ingredient;
 
 	@Column(name="DD_REGISTER_DATE")
 	private Date fechaRegistro;
@@ -61,11 +61,11 @@ public class RecipeDO extends AuditBase<Long> implements Serializable {
 		this.product = id;
 	}
 
-	public SubstanceDO getSubstance() {
-		return substance;
+	public IngredientDO getIngredient() {
+		return ingredient;
 	}
-	public void setSubstance(SubstanceDO id) {
-		this.substance = id;
+	public void setIngredient(IngredientDO id) {
+		this.ingredient = id;
 	}
 
 	public Date getFechaRegistro() { return this.fechaRegistro;}

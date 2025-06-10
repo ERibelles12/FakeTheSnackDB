@@ -1,4 +1,4 @@
-package de.pecus.api.vo.substance;
+package de.pecus.api.vo.ingredient;
 
 /**
  * 
@@ -8,7 +8,7 @@ package de.pecus.api.vo.substance;
  *         de la case IdType
  *
  */
-public class UpdateSubstanceRequestVO {
+public class UpdateIngredientRequestVO {
 	
 		// id
 		private Long id;

@@ -16,9 +16,9 @@ public class FuncionesBusinessError {
 	public static final String NOT_FOUND_ERROR 									= "NOT_FOUND_ERROR";
 	public static final String DUPLICATED_ERROR 								= "DUPLICATED_ERROR";
 	public static final String REQUIRED_ID_PRODUCT_ERROR 						= "REQUIRED_ID_PRODUCT_ERROR";
-	public static final String REQUIRED_ID_SUBSTANCE_ERROR 						= "REQUIRED_ID_SUBSTANCE_ERROR";
+	public static final String REQUIRED_ID_INGREDIENT_ERROR 						= "REQUIRED_ID_INGREDIENT_ERROR";
 	public static final String NOT_FOUND_PRODUCT 								= "NOT_FOUND_PRODUCT";
-	public static final String NOT_FOUND_SUBSTANCE 								= "NOT_FOUND_SUBSTANCE";
+	public static final String NOT_FOUND_INGREDIENT 								= "NOT_FOUND_INGREDIENT";
 
 	public static final String NOT_FOUND_REGISTER_LIST_ERROR 					= "NOT_FOUND_REGISTER_LIST_ERROR";
 

@@ -11,14 +11,14 @@ import java.util.Date;
  *  create de la case Recipe
  *
  */
-public class AssociateProductSubstanceRequestVO {
+public class AssociateProductIngredientRequestVO {
 
 
 	// Identificador alfanumerico
 	private Long idProduct;
 
 	// Descripcion del registro
-	private Long idSubstance;
+	private Long idIngredient;
 
 	// Fecha de registro
 	private Date fechaRegistro;
@@ -26,8 +26,8 @@ public class AssociateProductSubstanceRequestVO {
 	public Long getIdProduct() {return idProduct;}
 	public void setIdProduct(Long idProduct) {this.idProduct = idProduct;}
 
-	public Long getIdSubstance() {return idSubstance;}
-	public void setIdSubstance(Long idSubstance) {this.idSubstance = idSubstance;}
+	public Long getIdIngredient() {return idIngredient;}
+	public void setIdIngredient(Long idIngredient) {this.idIngredient = idIngredient;}
 
 	public Date getFechaRegistro() {return fechaRegistro;}
 	public void setFechaRegistro(Date fechaRegistro) {this.fechaRegistro = fechaRegistro;}

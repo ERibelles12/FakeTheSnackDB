@@ -1,25 +1,26 @@
-package de.pecus.api.vo.substance;
+package de.pecus.api.vo.ingredient;
+
 
 /**
  * 
  * @author Jose_Luis_Garcia
  *
- *         Clase con los parametros de entrada a la invocacion del metodo create
- *         de la case EventType
+ *	Clase con los parametros de entrada a la invocacion del metodo 
+ *  create de la case EventType
  *
  */
-public class FindListSubstanceResponseVO {
+public class FindDetailIngredientResponseVO {
 
-	// id
+
+	// Identificador de registro
 	private Long id;
-	
+
 	// Identificador alfanumerico
 	private String name;
 
 	// Descripcion del registro
 	private String description;
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -43,5 +44,6 @@ public class FindListSubstanceResponseVO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
 }
+

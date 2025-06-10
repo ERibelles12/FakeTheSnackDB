@@ -3,7 +3,6 @@ package de.pecus.api.controllers.impl;
 import java.util.List;
 import java.util.Map;
 
-import de.pecus.api.vo.product.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,14 +19,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.pecus.api.controllers.ProductController;
-//import de.pecus.api.log.SmartLogger;
-//import de.pecus.api.log.SmartLoggerFactory;
 import de.pecus.api.services.usuarios.ProductService;
 import de.pecus.api.util.ProductServicesResponseBuilder;
 import de.pecus.api.util.RequestVOUtil;
 import de.pecus.api.util.ResponseUtil;
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
+import de.pecus.api.vo.product.AssociateProductIngredientRequestVO;
+import de.pecus.api.vo.product.CreateProductRequestVO;
+import de.pecus.api.vo.product.DeleteProductIngredientRequestVO;
+import de.pecus.api.vo.product.DeleteProductRequestVO;
+import de.pecus.api.vo.product.FindDetailProductRequestVO;
+import de.pecus.api.vo.product.FindDetailProductResponseVO;
+import de.pecus.api.vo.product.FindListProductRecipeRequestVO;
+import de.pecus.api.vo.product.FindListProductRecipeResponseVO;
+import de.pecus.api.vo.product.FindListProductRequestVO;
+import de.pecus.api.vo.product.FindListProductResponseVO;
+import de.pecus.api.vo.product.UpdateProductRequestVO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 
@@ -295,16 +303,16 @@ public class ProductControllerImpl implements ProductController {
 			@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 			@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
 	@PostMapping(value = "/recipe", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<Long>> associateProductSubstance(@RequestHeader Map<String, String> headers,
-														  @RequestBody AssociateProductSubstanceRequestVO body) {
+	public ResponseEntity<ResponseVO<Long>> associateProductIngredient(@RequestHeader Map<String, String> headers,
+														  @RequestBody AssociateProductIngredientRequestVO body) {
 
 		// Generamos el objeto requestVO
-		RequestVO<AssociateProductSubstanceRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
+		RequestVO<AssociateProductIngredientRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
 
 		ResponseEntity<ResponseVO<Long>> response = null;
 		try {
 			// Invocar al servicio
-			ResponseVO<Long> serviceResponse = productService.associateProductSubstance(requestVO);
+			ResponseVO<Long> serviceResponse = productService.associateProductIngredient(requestVO);
 
 			response  = ProductServicesResponseBuilder.buildCreateOrUpdateResponse(serviceResponse);
 
@@ -336,19 +344,19 @@ public class ProductControllerImpl implements ProductController {
 			@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 			@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
 	@DeleteMapping(value = "/recipe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<Boolean>> deleteProductSubstance(@RequestHeader Map<String, String> headers,
+	public ResponseEntity<ResponseVO<Boolean>> deleteProductIngredient(@RequestHeader Map<String, String> headers,
 															 @PathVariable("id") Long id) {
 		// Declaracion de variables
 		ResponseEntity<ResponseVO<Boolean>> response = null;
 
 		// Generamos el objeto requestVO
-		DeleteProductSubstanceRequestVO deleteProductSubstanceRequestVO = new DeleteProductSubstanceRequestVO();
-		deleteProductSubstanceRequestVO.setIdRecipe(id);
-		RequestVO<DeleteProductSubstanceRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,deleteProductSubstanceRequestVO);
+		DeleteProductIngredientRequestVO deleteProductIngredientRequestVO = new DeleteProductIngredientRequestVO();
+		deleteProductIngredientRequestVO.setIdRecipe(id);
+		RequestVO<DeleteProductIngredientRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,deleteProductIngredientRequestVO);
 
 		try {
 
-			ResponseVO<Boolean> serviceResponse = productService.deleteProductSubstance(requestVO);
+			ResponseVO<Boolean> serviceResponse = productService.deleteProductIngredient(requestVO);
 
 			response = ProductServicesResponseBuilder.buildDeleteResponse(serviceResponse);
 

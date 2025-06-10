@@ -19,9 +19,9 @@ public class FindListProductRecipeResponseVO {
 	private Long idProduct;
 	private String nameProduct;
 
-	// Substance
-	private Long idSubstance;
-	private String nameSubstance;
+	// Ingredient
+	private Long idIngredient;
+	private String nameIngredient;
 
 	//SubCategory
 	private Date fechaRegistro;
@@ -45,18 +45,18 @@ public class FindListProductRecipeResponseVO {
 		this.nameProduct = nameProduct;
 	}
 
-	public Long getIdSubstance() {
-		return idSubstance;
+	public Long getIdIngredient() {
+		return idIngredient;
 	}
-	public void setIdSubstance(Long idSubstance) {
-		this.idSubstance = idSubstance;
+	public void setIdIngredient(Long idIngredient) {
+		this.idIngredient = idIngredient;
 	}
 
-	public String getNameSubstance() {
-		return nameSubstance;
+	public String getNameIngredient() {
+		return nameIngredient;
 	}
-	public void setNameSubstance(String nameSubstance) {
-		this.nameSubstance = nameSubstance;
+	public void setNameIngredient(String nameIngredient) {
+		this.nameIngredient = nameIngredient;
 	}
 
 }

@@ -8,7 +8,7 @@ package de.pecus.api.vo.product;
  *  create de la case Recipe
  *
  */
-public class DeleteProductSubstanceRequestVO {
+public class DeleteProductIngredientRequestVO {
 
 
 	// Identificador alfanumerico

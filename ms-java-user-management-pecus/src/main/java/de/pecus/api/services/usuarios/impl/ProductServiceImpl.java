@@ -4,11 +4,6 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.pecus.api.entities.*;
-import de.pecus.api.repositories.usuarios.RecipeRepository;
-import de.pecus.api.repositories.usuarios.SubstanceRepository;
-import de.pecus.api.vo.product.*;
-import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,10 +13,18 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import de.pecus.api.constant.DataConstants;
+import de.pecus.api.entities.BrandDO;
+import de.pecus.api.entities.CategoryDO;
+import de.pecus.api.entities.IngredientDO;
+import de.pecus.api.entities.ProductDO;
+import de.pecus.api.entities.RecipeDO;
+import de.pecus.api.entities.SubCategoryDO;
 import de.pecus.api.enums.WildcardTypeEnum;
 import de.pecus.api.error.FuncionesBusinessError;
 import de.pecus.api.error.GeneralBusinessErrors;
+import de.pecus.api.repositories.usuarios.IngredientRepository;
 import de.pecus.api.repositories.usuarios.ProductRepository;
+import de.pecus.api.repositories.usuarios.RecipeRepository;
 import de.pecus.api.services.usuarios.ProductService;
 import de.pecus.api.util.CriteriaUtil;
 import de.pecus.api.util.ResponseUtil;
@@ -31,6 +34,17 @@ import de.pecus.api.util.ValidatorArqUtil;
 import de.pecus.api.util.ValidatorUtil;
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
+import de.pecus.api.vo.product.AssociateProductIngredientRequestVO;
+import de.pecus.api.vo.product.CreateProductRequestVO;
+import de.pecus.api.vo.product.DeleteProductRequestVO;
+import de.pecus.api.vo.product.DeleteProductIngredientRequestVO;
+import de.pecus.api.vo.product.FindDetailProductRequestVO;
+import de.pecus.api.vo.product.FindDetailProductResponseVO;
+import de.pecus.api.vo.product.FindListProductRecipeRequestVO;
+import de.pecus.api.vo.product.FindListProductRecipeResponseVO;
+import de.pecus.api.vo.product.FindListProductRequestVO;
+import de.pecus.api.vo.product.FindListProductResponseVO;
+import de.pecus.api.vo.product.UpdateProductRequestVO;
 
 /**
  * Clase de logica de negocio para administracion de productes
@@ -45,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
 	private ProductRepository productRepository;
 
 	@Autowired
-	private SubstanceRepository substanceRepository;
+	private IngredientRepository ingredientRepository;
 
 	@Autowired
 	private RecipeRepository recipeRepository;
@@ -282,7 +296,7 @@ public class ProductServiceImpl implements ProductService {
 	 *
 	 * @return Id generado
 	 */
-	public ResponseVO<Long> associateProductSubstance(RequestVO<AssociateProductSubstanceRequestVO> request) {
+	public ResponseVO<Long> associateProductIngredient(RequestVO<AssociateProductIngredientRequestVO> request) {
 
 		// Declarar variables
 		ResponseVO<Long> response = new ResponseVO<>();
@@ -292,14 +306,14 @@ public class ProductServiceImpl implements ProductService {
 
 			// Preparar los datos para actualizar la BB.DD.
 			RecipeDO recipeDO = new RecipeDO();
-			SubstanceDO substanceDO = new SubstanceDO();
+			IngredientDO ingredientDO = new IngredientDO();
 			ProductDO productDO = new ProductDO();
 
 			productDO.setId(request.getParameters().getIdProduct());
-			substanceDO.setId(request.getParameters().getIdSubstance());
+			ingredientDO.setId(request.getParameters().getIdIngredient());
 
 			recipeDO.setProduct(productDO);
-			recipeDO.setSubstance(substanceDO);
+			recipeDO.setIngredient(ingredientDO);
 			recipeDO.setFechaRegistro(request.getParameters().getFechaRegistro());
 
 			// Actualizar los parametros de auditoria
@@ -323,7 +337,7 @@ public class ProductServiceImpl implements ProductService {
 	 *
 	 * @return Id eliminado
 	 */
-	public ResponseVO<Boolean> deleteProductSubstance(RequestVO<DeleteProductSubstanceRequestVO> request) {
+	public ResponseVO<Boolean> deleteProductIngredient(RequestVO<DeleteProductIngredientRequestVO> request) {
 
 		// Declarar variables
 		ResponseVO<Boolean> response = new ResponseVO<>();
@@ -638,10 +652,10 @@ public class ProductServiceImpl implements ProductService {
 	 * @param response Respuesta donde se agregan los errores
 	 * @return true si todos los parametros son correctos
 	 */
-	private boolean validateParametersAssociate(RequestVO<AssociateProductSubstanceRequestVO> request, ResponseVO<Long> response) {
+	private boolean validateParametersAssociate(RequestVO<AssociateProductIngredientRequestVO> request, ResponseVO<Long> response) {
 
 		// Obtener los parametros de entrada
-		AssociateProductSubstanceRequestVO parameters = request.getParameters();
+		AssociateProductIngredientRequestVO parameters = request.getParameters();
 
 		// validar que el campo obligatorio
 		if (ValidatorUtil.isNullOrZero(parameters.getIdProduct())) {
@@ -654,20 +668,20 @@ public class ProductServiceImpl implements ProductService {
 			}
 		}
 
-		if (ValidatorUtil.isNullOrZero(parameters.getIdSubstance())) {
-			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_ID_SUBSTANCE_ERROR);
+		if (ValidatorUtil.isNullOrZero(parameters.getIdIngredient())) {
+			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_ID_INGREDIENT_ERROR);
 		} else {
 			// validar que el campo obligatorio
-			SubstanceDO substanceDO	= existSubstance(parameters.getIdSubstance());
-			if (ValidatorUtil.isNull(substanceDO)) {
-				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_SUBSTANCE);
+			IngredientDO ingredientDO	= existIngredient(parameters.getIdIngredient());
+			if (ValidatorUtil.isNull(ingredientDO)) {
+				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_INGREDIENT);
 			}
 		}
 
 		//Si no hay un error previo buscamos en la base de datos si no existe la relacion
 		if (ValidatorUtil.isSuccessfulResponse(response)) {
 
-			RecipeDO recipeDO = recipeRepository.findByProductAndSubstance(parameters.getIdProduct(),parameters.getIdSubstance());
+			RecipeDO recipeDO = recipeRepository.findByProductAndIngredient(parameters.getIdProduct(),parameters.getIdIngredient());
 			if (!ValidatorUtil.isNull(recipeDO)) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.DUPLICATED_ERROR);
 			}
@@ -685,7 +699,7 @@ public class ProductServiceImpl implements ProductService {
 	 * @param response Respuesta donde se agregan los errores
 	 * @return true si todos los parametros son correctos
 	 */
-	private boolean validateParametersDeleteRecipe(RequestVO<DeleteProductSubstanceRequestVO> request, ResponseVO<Boolean> response) {
+	private boolean validateParametersDeleteRecipe(RequestVO<DeleteProductIngredientRequestVO> request, ResponseVO<Boolean> response) {
 
 		// Validar que se han informado los parametros de entrada
 		if (ValidatorUtil.isNull(request.getParameters())) {
@@ -748,8 +762,8 @@ public class ProductServiceImpl implements ProductService {
 			recipeVO.setId(recipeDO.getId());
 			recipeVO.setIdProduct(recipeDO.getProduct().getId());
 			recipeVO.setNameProduct(recipeDO.getProduct().getName());
-			recipeVO.setIdSubstance(recipeDO.getSubstance().getId());
-			recipeVO.setNameSubstance(recipeDO.getSubstance().getName());
+			recipeVO.setIdIngredient(recipeDO.getIngredient().getId());
+			recipeVO.setNameIngredient(recipeDO.getIngredient().getName());
 
 			listaRecipeVO.add(recipeVO);
 		}
@@ -796,16 +810,16 @@ public class ProductServiceImpl implements ProductService {
 	 * Regresa el objeto de la base de datos o una excepcion con el error
 	 *
 	 *************************************************************************/
-	public SubstanceDO existSubstance(Long idRegistro){
+	public IngredientDO existIngredient(Long idRegistro){
 
-		SubstanceDO registro = null;
+		IngredientDO registro = null;
 
 		try {
 			//Validacion de datos de entrada
 			if (ValidatorUtil.isNullOrZero(idRegistro)) {
 					registro = null;
 				} else {
-					registro = substanceRepository.findById(idRegistro);
+					registro = ingredientRepository.findById(idRegistro);
 				}
 			//Validacion de existencia
 		} catch (Exception e) {

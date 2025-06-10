@@ -1,4 +1,4 @@
-package de.pecus.api.vo.substance;
+package de.pecus.api.vo.ingredient;
 
 /**
  * 
@@ -8,22 +8,9 @@ package de.pecus.api.vo.substance;
  *  findDetail de la case EventType
  *
  */
-public class FindDetailSubstanceRequestVO {
+public class FindListIngredientRequestVO {
 
-
-	// Identificador de registro
-	private Long id;
-
-	// Identificador alfanumerico
 	private String name;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -32,6 +19,7 @@ public class FindDetailSubstanceRequestVO {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 
 	
 }

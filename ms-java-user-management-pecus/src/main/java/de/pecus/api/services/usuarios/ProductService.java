@@ -4,7 +4,17 @@ import java.util.List;
 
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.product.*;
+import de.pecus.api.vo.product.AssociateProductIngredientRequestVO;
+import de.pecus.api.vo.product.CreateProductRequestVO;
+import de.pecus.api.vo.product.DeleteProductIngredientRequestVO;
+import de.pecus.api.vo.product.DeleteProductRequestVO;
+import de.pecus.api.vo.product.FindDetailProductRequestVO;
+import de.pecus.api.vo.product.FindDetailProductResponseVO;
+import de.pecus.api.vo.product.FindListProductRecipeRequestVO;
+import de.pecus.api.vo.product.FindListProductRecipeResponseVO;
+import de.pecus.api.vo.product.FindListProductRequestVO;
+import de.pecus.api.vo.product.FindListProductResponseVO;
+import de.pecus.api.vo.product.UpdateProductRequestVO;
 
 /**
  * Clase de logica de negocio para administracion de Productes
@@ -67,7 +77,7 @@ public interface ProductService {
 	 *
 	 * @return Id generado
 	 */
-	ResponseVO<Long> associateProductSubstance (RequestVO<AssociateProductSubstanceRequestVO> request);
+	ResponseVO<Long> associateProductIngredient (RequestVO<AssociateProductIngredientRequestVO> request);
 
 	/**
 	 * Asocia una substancia a un producto
@@ -76,7 +86,7 @@ public interface ProductService {
 	 *
 	 * @return Id generado
 	 */
-	ResponseVO<Boolean> deleteProductSubstance (RequestVO<DeleteProductSubstanceRequestVO> request);
+	ResponseVO<Boolean> deleteProductIngredient (RequestVO<DeleteProductIngredientRequestVO> request);
 
 	/**
 	 * Consulta la base de datos en base a varios parametros

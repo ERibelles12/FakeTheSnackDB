@@ -1,4 +1,4 @@
-package de.pecus.api.vo.substance;
+package de.pecus.api.vo.ingredient;
 
 /**
  * 
@@ -7,7 +7,7 @@ package de.pecus.api.vo.substance;
  *	Clase con los parametros de entrada a la invocacion del metodo 
  *
  */
-public class DeleteSubstanceRequestVO {
+public class DeleteIngredientRequestVO {
 
 
 	// Identificador de registro

@@ -3,10 +3,15 @@ package de.pecus.api.controllers;
 import java.util.List;
 import java.util.Map;
 
-import de.pecus.api.vo.product.*;
 import org.springframework.http.ResponseEntity;
 
 import de.pecus.api.vo.ResponseVO;
+import de.pecus.api.vo.product.AssociateProductIngredientRequestVO;
+import de.pecus.api.vo.product.CreateProductRequestVO;
+import de.pecus.api.vo.product.FindDetailProductResponseVO;
+import de.pecus.api.vo.product.FindListProductRecipeResponseVO;
+import de.pecus.api.vo.product.FindListProductResponseVO;
+import de.pecus.api.vo.product.UpdateProductRequestVO;
 
 public interface ProductController {
 
@@ -77,7 +82,7 @@ public interface ProductController {
 	 *
 	 * @return Responde una entidad de tipo Response el registro creado
 	 */
-	ResponseEntity<ResponseVO<Long>> associateProductSubstance(Map<String, String> headers, AssociateProductSubstanceRequestVO body);
+	ResponseEntity<ResponseVO<Long>> associateProductIngredient(Map<String, String> headers, AssociateProductIngredientRequestVO body);
 
 	/**
 	 * Servicio para elimina un registro.
@@ -87,7 +92,7 @@ public interface ProductController {
 	 *
 	 * @return Responde una entidad de tipo Response el booleano del resultado
 	 */
-	ResponseEntity<ResponseVO<Boolean>> deleteProductSubstance(Map<String, String> headers, Long id);
+	ResponseEntity<ResponseVO<Boolean>> deleteProductIngredient(Map<String, String> headers, Long id);
 
 	/**
 	 * Servicio para consulta de los datos de la tabla con filtros

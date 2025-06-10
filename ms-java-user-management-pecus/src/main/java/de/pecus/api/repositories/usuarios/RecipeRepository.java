@@ -2,7 +2,6 @@ package de.pecus.api.repositories.usuarios;
 
 import java.io.Serializable;
 
-import de.pecus.api.entities.BrandDO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,21 +20,21 @@ public interface RecipeRepository extends JpaRepository<RecipeDO, Serializable> 
 			+ " FROM  RecipeDO r"
 			+ " WHERE r.active = true "
 			+ " AND r.product.id = :idProduct"
-			+ " AND r.substance.id = :idSubstance")
-	RecipeDO findByProductAndSubstance(@Param("idProduct") Long idProduct, @Param("idSubstance") Long idSubstance);
+			+ " AND r.ingredient.id = :idIngredient")
+	RecipeDO findByProductAndIngredient(@Param("idProduct") Long idProduct, @Param("idIngredient") Long idIngredient);
 
 
 
 	@Query(value = " SELECT r"
 			+ " FROM  RecipeDO r"
 			+ " JOIN FETCH r.product p"
-			+ " JOIN FETCH r.substance s"
+			+ " JOIN FETCH r.ingredient s"
 			+ " WHERE r.active = true "
 			+ " AND p.id = :idProduct",
 			countQuery="SELECT COUNT(r) "
 					+ " FROM  RecipeDO r"
 					+ " INNER JOIN r.product p"
-					+ " INNER JOIN r.substance s"
+					+ " INNER JOIN r.ingredient s"
 					+ " WHERE r.active = true "
 				+ "	AND p.id = :idProduct")
 	Page<RecipeDO> findListByProduct(@Param("idProduct") Long idProduct,
@@ -48,16 +47,16 @@ public interface RecipeRepository extends JpaRepository<RecipeDO, Serializable> 
 	@Query(value = " SELECT r"
 			+ " FROM  RecipeDO r"
 			+ " JOIN FETCH r.product p"
-			+ " JOIN FETCH r.substance s"
+			+ " JOIN FETCH r.ingredient s"
 			+ " WHERE r.active = true "
-			+ " AND s.id = :idSubstance",
+			+ " AND s.id = :idIngredient",
 			countQuery="SELECT COUNT(r) "
 					+ " FROM  RecipeDO r"
 					+ " INNER JOIN r.product p"
-					+ " INNER JOIN r.substance s"
+					+ " INNER JOIN r.ingredient s"
 					+ " WHERE r.active = true "
-					+ "	AND s.id = :idSubstance")
-	Page<RecipeDO> findListBySubstance(@Param("idSubstance") Long idSubstance,
+					+ "	AND s.id = :idIngredient")
+	Page<RecipeDO> findListByIngredient(@Param("idIngredient") Long idIngredient,
 									  Pageable pageable);
 
 	/**
@@ -70,7 +69,7 @@ public interface RecipeRepository extends JpaRepository<RecipeDO, Serializable> 
 	@Query(value = " SELECT r"
 			+ " FROM  RecipeDO r"
 			+ " JOIN FETCH r.product p"
-			+ " JOIN FETCH r.substance s"
+			+ " JOIN FETCH r.ingredient s"
 			+ " WHERE r.active = true "
 			+ " AND r.id = :id")
 	RecipeDO findById(@Param("id") Long id);

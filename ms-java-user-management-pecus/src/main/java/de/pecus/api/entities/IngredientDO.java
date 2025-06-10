@@ -6,16 +6,16 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Catalog Substance
+ * Catalog Ingredient
  * 
- * List of Substance registered in the systema.
+ * List of Ingredient registered in the systema.
  * @author jose.ribelles
  * @version 1.0
  * @created 24-jul.-2019 11:27:46 a. m.
  */
 @Entity
-@Table(name = "SUBSTANCE")
-public class SubstanceDO extends AuditBase<Long> implements Serializable {
+@Table(name = "INGREDIENT")
+public class IngredientDO extends AuditBase<Long> implements Serializable {
 
 	/**
 	 *
@@ -32,7 +32,7 @@ public class SubstanceDO extends AuditBase<Long> implements Serializable {
 	private String description;
 
 
-	public SubstanceDO(){
+	public IngredientDO(){
 
 	}
 
