@@ -36,8 +36,8 @@ import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
 import de.pecus.api.vo.product.AssociateProductIngredientRequestVO;
 import de.pecus.api.vo.product.CreateProductRequestVO;
-import de.pecus.api.vo.product.DeleteProductRequestVO;
 import de.pecus.api.vo.product.DeleteProductIngredientRequestVO;
+import de.pecus.api.vo.product.DeleteProductRequestVO;
 import de.pecus.api.vo.product.FindDetailProductRequestVO;
 import de.pecus.api.vo.product.FindDetailProductResponseVO;
 import de.pecus.api.vo.product.FindListProductRecipeRequestVO;
@@ -272,6 +272,7 @@ public class ProductServiceImpl implements ProductService {
 			Pageable pageable = PageRequest.of(page - 1, size, Sort.by(orderType, orderBy));
 			
 			String normalizedName = this.limpiarAcentos(request.getParameters().getName());
+			normalizedName = (StringUtil.toUpperCase(normalizedName));
 			
 			// ejecucion de la busqueda por el parametro recibido
 			listaProduct = productRepository.findList(this.cleanString(normalizedName), pageable);
@@ -583,7 +584,11 @@ public class ProductServiceImpl implements ProductService {
 			//Buscar por criterio: Name
 			if (ValidatorUtil.isNullOrEmpty(parameters.getName())) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_ID_ERROR);
-			} 
+			}
+			else { 
+				// Validacion de formato (Capital letters)
+				parameters.setName(StringUtil.toUpperCase(parameters.getName()));
+			}
 		}
 		
 		return ValidatorUtil.isSuccessfulResponse(response);
