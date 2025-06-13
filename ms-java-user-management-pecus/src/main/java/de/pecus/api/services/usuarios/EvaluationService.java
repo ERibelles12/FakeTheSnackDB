@@ -31,8 +31,7 @@ public interface EvaluationService {
 
 	/**
 	 * Consulta un registro
-	 * 
-	 * @param numero Nombre  buscado
+	 *
 	 * 
 	 * @return Objeto VO con los datos encontrados
 	 */

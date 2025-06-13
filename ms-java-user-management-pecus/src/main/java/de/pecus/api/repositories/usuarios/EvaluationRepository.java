@@ -13,42 +13,50 @@ import de.pecus.api.entities.EvaluationDO;
 public interface EvaluationRepository extends JpaRepository<EvaluationDO, Serializable> {
 
 	/**
-	 * Consulta por name sin implementacion de query especifico
-	 * @param name Identificador de nombre buscado
-	 * @return Objeto de mapeo a la entidad
+	 * Query to recover an evaluation data
+	 * 
+	 * @return Objeto
+	 * 
+	 * @param id evaluation
 	 */
+
 	@Query(value = " SELECT r" 
 			+ " FROM  EvaluationDO r"
-			+ " WHERE r.active = true "
-			+ " AND r.name = :name")
-	EvaluationDO findByName(@Param("name") String name);
-	
-	/**
-	 * Consulta por id sin implementacion de query especifico
-	 * 
-	 * @return Objeto de mapeo a la entidad
-	 * 
-	 * @param id Identificador de registro buscado
-	 */
-	@Query(value = " SELECT r" 
-			+ " FROM  EvaluationDO r"
+			+ " JOIN FETCH r.brand b"
+			+ " JOIN FETCH r.category c"
+			+ " JOIN FETCH r.subCategory s"
+			+ " JOIN FETCH r.product p"
+			+ " JOIN FETCH r.ingredient i"
 			+ " WHERE r.active = true "
 			+ " AND r.id = :id")
 	EvaluationDO findById(@Param("id") Long id);
-	
-    /**
-	 * Consulta por nombre . Y se prepara para paginacion
+
+	/**
+	 * Query to recover the evaluation of a product
+	 *
+	 * @return List<Objeto> with the results
 	 * 
-	 * @return List<Objeto> con el resultado
-	 * 
-	 * @param name cadena descriptiva de registro buscado
 	 * @param pageable
 	 */
-	@Query(value = " SELECT r" 
+
+	@Query(value = " SELECT r"
 			+ " FROM  EvaluationDO r"
+			+ " JOIN FETCH r.brand b"
+			+ " JOIN FETCH r.category c"
+			+ " JOIN FETCH r.subCategory s"
+			+ " JOIN FETCH r.product p"
+			+ " JOIN FETCH r.ingredient i"
 			+ " WHERE r.active = true "
-			+ " AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))")
-	Page<EvaluationDO> findList(@Param("name") String name,
+			+ " AND r.product.id = :productId",
+	countQuery="SELECT COUNT(r) "
+			+ " FROM  EvaluationDO r "
+			+ "	INNER JOIN r.brand b "
+			+ " INNER JOIN r.category c "
+			+ "	INNER JOIN r.subCategory s "
+			+ "	WHERE r.active = true "
+			+ " AND r.product.id = :productId")
+	Page<EvaluationDO> findList(@Param("productId") Long productId,
                                Pageable pageable);
-	
-}
+
+	}
+

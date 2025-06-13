@@ -3,6 +3,7 @@ package de.pecus.api.controllers.impl;
 import java.util.List;
 import java.util.Map;
 
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,42 +19,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.pecus.api.controllers.ProductController;
-import de.pecus.api.services.usuarios.ProductService;
-import de.pecus.api.util.ProductServicesResponseBuilder;
+import de.pecus.api.controllers.EvaluationController;
+import de.pecus.api.services.usuarios.EvaluationService;
+import de.pecus.api.util.EvaluationServicesResponseBuilder;
 import de.pecus.api.util.RequestVOUtil;
 import de.pecus.api.util.ResponseUtil;
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.product.AssociateProductIngredientRequestVO;
-import de.pecus.api.vo.product.CreateProductRequestVO;
-import de.pecus.api.vo.product.DeleteProductIngredientRequestVO;
-import de.pecus.api.vo.product.DeleteProductRequestVO;
-import de.pecus.api.vo.product.FindDetailProductRequestVO;
-import de.pecus.api.vo.product.FindDetailProductResponseVO;
-import de.pecus.api.vo.product.FindListProductRecipeRequestVO;
-import de.pecus.api.vo.product.FindListProductRecipeResponseVO;
-import de.pecus.api.vo.product.FindListProductRequestVO;
-import de.pecus.api.vo.product.FindListProductResponseVO;
-import de.pecus.api.vo.product.UpdateProductRequestVO;
+import de.pecus.api.vo.evaluation.CreateEvaluationRequestVO;
+import de.pecus.api.vo.evaluation.FindDetailEvaluationRequestVO;
+import de.pecus.api.vo.evaluation.FindDetailEvaluationResponseVO;
+import de.pecus.api.vo.evaluation.FindListEvaluationRequestVO;
+import de.pecus.api.vo.evaluation.FindListEvaluationResponseVO;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 
 /**
- * Clase de controlador para servicio Rest de Product
+ * Clase de controlador para servicio Rest de Evaluation
  * 
- * @author Jorge Serrano
+ * @author Emilio Ribelles
  * @version 1.0
- * @created 21-junio-2019 11:34:31 a. m.
+ * @created 13-jun-2025 11:34:31 a. m.
  */
 @RestController
 @RequestMapping("")
-public class ProductControllerImpl implements ProductController {
+public class EvaluationControllerImpl implements EvaluationController {
 
-	//public static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(ProductController.class);
+	//public static final SmartLogger LOGGER = SmartLoggerFactory.getLogger(EvaluationController.class);
 
 	@Autowired
-	private ProductService productService;
+	private EvaluationService evaluationService;
 
 	/**
 	 * Operation: Operation: create, Method: POST Crea un registro en la BB.DD.
@@ -72,19 +66,19 @@ public class ProductControllerImpl implements ProductController {
 		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@PostMapping(value = "/product", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<Long>> createProduct(@RequestHeader Map<String, String> headers,
-			@RequestBody CreateProductRequestVO body) {
+	@PostMapping(value = "/evaluation", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<Long>> createEvaluation(@RequestHeader Map<String, String> headers,
+			@RequestBody CreateEvaluationRequestVO body) {
 		
 			// Generamos el objeto requestVO
-			RequestVO<CreateProductRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
+			RequestVO<CreateEvaluationRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
 
 			ResponseEntity<ResponseVO<Long>> response = null;
 			try {
 				// Invocar al servicio
-				ResponseVO<Long> serviceResponse = productService.create(requestVO);
+				ResponseVO<Long> serviceResponse = evaluationService.create(requestVO);
 
-				response  = ProductServicesResponseBuilder.buildCreateOrUpdateResponse(serviceResponse);
+				response  = EvaluationServicesResponseBuilder.buildCreateOrUpdateResponse(serviceResponse);
 
 			} catch (Exception exception) {
 				// Excepcion controlada
@@ -95,97 +89,6 @@ public class ProductControllerImpl implements ProductController {
 			
 	}
 	
-	/**
-	 * Operation: Operation: update, Method: POST Actualiza un registro en la BB.DD.
-	 * @param headers		Arreglo de objetos de tipo llave valor para almacenar los headers
-	 * @param id 			Identificador del registro a actualizar
-	 * @param body 			Cuerpo de la peticion con la informacion del regsitro que se desean insertar
-	 * @return 				Ojeto con el cuerpo de respuesta (ong con el id del registro actualizado) y le codigo de respuesta http corrspondiente a la operacion
-	 */
-	@Override
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "Authorization", value = "eyJhbGciOiJIUzI1NiJ9.eyJUT0tFTl9EQVRBIjp7ImFwZWxs", paramType = "header", dataTypeClass = String.class),
-		@ApiImplicitParam(name = "mac-address", value = " 2C:54:91:88:C9:E3 or 2c-54-91-88-c9-e3", paramType = "header", dataTypeClass = String.class),
-		@ApiImplicitParam(name = "request-date", value = "2021-09-07 17:29:25.443", paramType = "header", dataTypeClass = String.class, required = true),
-		@ApiImplicitParam(name = "latitude", value = "-74.00898606", paramType = "header", dataTypeClass = String.class),
-		@ApiImplicitParam(name = "longitude", value = "40.71727401", paramType = "header", dataTypeClass = String.class),
-		@ApiImplicitParam(name = "language", value = "es_MX", paramType = "header", dataTypeClass = String.class, required = true),
-		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
-		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
-		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@PutMapping(value = "/product/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<Long>> updateProduct(@RequestHeader Map<String, String> headers, 
-			@PathVariable(name = "id", required = false) Long id, 
-			@RequestBody UpdateProductRequestVO body) {
-		
-		
-			// Declaracion de variable
-			ResponseEntity<ResponseVO<Long>> response = null;
-
-			body.setId(id);
-
-			// Generamos el objeto requestVO
-			RequestVO<UpdateProductRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
-			
-			try {
-				// Invocar al servicio
-				ResponseVO<Long> serviceResponse = productService.update(requestVO);
-
-				response = ProductServicesResponseBuilder.buildCreateOrUpdateResponse(serviceResponse);
-
-			} catch (Exception exception) {
-				// Excepcion controlada
-				ResponseVO<Long> exceptionResponse = ResponseUtil.getErrorResponse(exception);
-				response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
-			}
-			return response;
-			
-	}
-	
-	/**
-	 * Operation: delete, Method: DELETE Elimina un registro en la BB.DD.
-	 * 
-	 * @param headers		Arreglo de objetos de tipo llave valor para almacenar los headers
-	 * @param id 			Identificador del registro a actualizar
-	 * @return 				Objeto con el resultado del borrado
-	 */
-	@Override
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "Authorization", value = "eyJhbGciOiJIUzI1NiJ9.eyJUT0tFTl9EQVRBIjp7ImFwZWxs", paramType = "header", dataTypeClass = String.class),
-		@ApiImplicitParam(name = "mac-address", value = " 2C:54:91:88:C9:E3 or 2c-54-91-88-c9-e3", paramType = "header", dataTypeClass = String.class),
-		@ApiImplicitParam(name = "request-date", value = "2021-09-07 17:29:25.443", paramType = "header", dataTypeClass = String.class, required = true),
-		@ApiImplicitParam(name = "latitude", value = "-74.00898606", paramType = "header", dataTypeClass = String.class),
-		@ApiImplicitParam(name = "longitude", value = "40.71727401", paramType = "header", dataTypeClass = String.class),
-		@ApiImplicitParam(name = "language", value = "es_MX", paramType = "header", dataTypeClass = String.class, required = true),
-		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
-		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
-		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@DeleteMapping(value = "/product/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<Boolean>> deleteProduct(@RequestHeader Map<String, String> headers,
-			@PathVariable("id") Long id) {
-		// Declaracion de variables
-		ResponseEntity<ResponseVO<Boolean>> response = null;
-		
-		// Generamos el objeto requestVO
-		DeleteProductRequestVO deleteProductRequestVO = new DeleteProductRequestVO();
-		deleteProductRequestVO.setId(id);
-		RequestVO<DeleteProductRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,deleteProductRequestVO);
-		
-
-		try {
-			
-			ResponseVO<Boolean> serviceResponse = productService.delete(requestVO);
-
-			response = ProductServicesResponseBuilder.buildDeleteResponse(serviceResponse);
-
-		} catch (Exception exception) {
-			// Excepcion no controlada
-			ResponseVO<Boolean> exceptionResponse = ResponseUtil.getErrorResponse(exception);
-			response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
-		}
-		return response;
-	}
-
 	/**
 	 * Operation: findEventDetail, Method: Busca el detalle de un registro en la base de datos.
 	 * 
@@ -204,31 +107,30 @@ public class ProductControllerImpl implements ProductController {
 		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@GetMapping(value = "/product/detail", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<FindDetailProductResponseVO>> findDetailProduct(
+	@GetMapping(value = "/evaluation/detail", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<FindDetailEvaluationResponseVO>> findDetailEvaluation(
 			@RequestHeader Map<String, String> headers, 
 			@RequestParam(value = "id", required= false) Long id,
 			@RequestParam(value = "name", required = false) String name) {
 
 		// Declaracion de variables
-		ResponseEntity<ResponseVO<FindDetailProductResponseVO>> response = null;
+		ResponseEntity<ResponseVO<FindDetailEvaluationResponseVO>> response = null;
 
 		// Crear el objeto requestVO
-		FindDetailProductRequestVO findDetailProductRequestVO = new FindDetailProductRequestVO();
-		findDetailProductRequestVO.setId(id);
-		findDetailProductRequestVO.setName(name);
-		RequestVO<FindDetailProductRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,findDetailProductRequestVO);
+		FindDetailEvaluationRequestVO findDetailEvaluationRequestVO = new FindDetailEvaluationRequestVO();
+		findDetailEvaluationRequestVO.setId(id);
+		RequestVO<FindDetailEvaluationRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,findDetailEvaluationRequestVO);
 
 		try {
 			
 			// Invocar al metodo de busqueda
-			ResponseVO<FindDetailProductResponseVO> serviceResponse = productService.findDetail(requestVO);
+			ResponseVO<FindDetailEvaluationResponseVO> serviceResponse = evaluationService.findDetail(requestVO);
 			
-			response = ProductServicesResponseBuilder.buildFindDetailResponse(serviceResponse);
+			response = EvaluationServicesResponseBuilder.buildFindDetailResponse(serviceResponse);
 
 		} catch (Exception exception) {
 			// Excepcion no controlada
-			ResponseVO<FindDetailProductResponseVO> exceptionResponse = ResponseUtil.getErrorResponse(exception);
+			ResponseVO<FindDetailEvaluationResponseVO> exceptionResponse = ResponseUtil.getErrorResponse(exception);
 			response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
 		}
 		return response;
@@ -255,8 +157,8 @@ public class ProductControllerImpl implements ProductController {
 		@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
 		@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
 		@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@GetMapping(value = "/product/list", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<List<FindListProductResponseVO>>> findListProduct(
+	@GetMapping(value = "/evaluation/list", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<List<FindListEvaluationResponseVO>>> findListEvaluation(
 			@RequestHeader Map<String, String> headers, 
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
@@ -264,160 +166,25 @@ public class ProductControllerImpl implements ProductController {
 			@RequestParam(value = "orderType", required = false) String orderType,
 			@RequestParam(value = "name", required = false) String name){
 		// Declarar variables
-		ResponseEntity<ResponseVO<List<FindListProductResponseVO>>> response = null;
+		ResponseEntity<ResponseVO<List<FindListEvaluationResponseVO>>> response = null;
 
-		FindListProductRequestVO findListProductRequestVO = new FindListProductRequestVO();
-		findListProductRequestVO.setName(name);
-		RequestVO<FindListProductRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, page, size, orderBy,
-				orderType, findListProductRequestVO);
+		FindListEvaluationRequestVO findListEvaluationRequestVO = new FindListEvaluationRequestVO();
+		RequestVO<FindListEvaluationRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, page, size, orderBy,
+				orderType, findListEvaluationRequestVO);
 
 		try {
 
-			ResponseVO<List<FindListProductResponseVO>> serviceResponse = productService.findList(requestVO);
-			response = ProductServicesResponseBuilder.buildFindListProductResponse(serviceResponse);
+			ResponseVO<List<FindListEvaluationResponseVO>> serviceResponse = evaluationService.findList(requestVO);
+			response = EvaluationServicesResponseBuilder.buildFindListEvaluationResponse(serviceResponse);
 
 		} catch (Exception exception) {
 			// Excepcion no controlada
-			ResponseVO<List<FindListProductResponseVO>> exceptionResponse = ResponseUtil
+			ResponseVO<List<FindListEvaluationResponseVO>> exceptionResponse = ResponseUtil
 					.getErrorResponse(exception);
 			response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
 		}
 		return response;
 	}
 
-	/**
-	 * Operation: Operation: create, Method: POST Asocia un producto y sustancia.
-	 * @param headers		Arreglo de objetos de tipo llave valor para almacenar los headers
-	 * @param body 			Cuerpo de la peticion con la informacion del regsitro que se desean insertar
-	 * @return 				Ojeto con el cuerpo de respuesta (ong con el id del registro actualizado) y le codigo de respuesta http corrspondiente a la operacion
-	 */
-	@Override
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "Authorization", value = "eyJhbGciOiJIUzI1NiJ9.eyJUT0tFTl9EQVRBIjp7ImFwZWxs", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "mac-address", value = " 2C:54:91:88:C9:E3 or 2c-54-91-88-c9-e3", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "request-date", value = "2021-09-07 17:29:25.443", paramType = "header", dataTypeClass = String.class, required = true),
-			@ApiImplicitParam(name = "latitude", value = "-74.00898606", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "longitude", value = "40.71727401", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "language", value = "es_MX", paramType = "header", dataTypeClass = String.class, required = true),
-			@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
-			@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@PostMapping(value = "/recipe", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<Long>> associateProductIngredient(@RequestHeader Map<String, String> headers,
-														  @RequestBody AssociateProductIngredientRequestVO body) {
-
-		// Generamos el objeto requestVO
-		RequestVO<AssociateProductIngredientRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,body);
-
-		ResponseEntity<ResponseVO<Long>> response = null;
-		try {
-			// Invocar al servicio
-			ResponseVO<Long> serviceResponse = productService.associateProductIngredient(requestVO);
-
-			response  = ProductServicesResponseBuilder.buildCreateOrUpdateResponse(serviceResponse);
-
-		} catch (Exception exception) {
-			// Excepcion controlada
-			ResponseVO<Long> exceptionResponse = ResponseUtil.getErrorResponse(exception);
-			response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
-		}
-		return response;
-
-	}
-
-	/**
-	 * Operation: delete, Method: DELETE Elimina un registro en la BB.DD.
-	 *
-	 * @param headers		Arreglo de objetos de tipo llave valor para almacenar los headers
-	 * @param id 			Identificador del registro a actualizar
-	 * @return 				Objeto con el resultado del borrado
-	 */
-	@Override
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "Authorization", value = "eyJhbGciOiJIUzI1NiJ9.eyJUT0tFTl9EQVRBIjp7ImFwZWxs", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "mac-address", value = " 2C:54:91:88:C9:E3 or 2c-54-91-88-c9-e3", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "request-date", value = "2021-09-07 17:29:25.443", paramType = "header", dataTypeClass = String.class, required = true),
-			@ApiImplicitParam(name = "latitude", value = "-74.00898606", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "longitude", value = "40.71727401", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "language", value = "es_MX", paramType = "header", dataTypeClass = String.class, required = true),
-			@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
-			@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@DeleteMapping(value = "/recipe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<Boolean>> deleteProductIngredient(@RequestHeader Map<String, String> headers,
-															 @PathVariable("id") Long id) {
-		// Declaracion de variables
-		ResponseEntity<ResponseVO<Boolean>> response = null;
-
-		// Generamos el objeto requestVO
-		DeleteProductIngredientRequestVO deleteProductIngredientRequestVO = new DeleteProductIngredientRequestVO();
-		deleteProductIngredientRequestVO.setIdRecipe(id);
-		RequestVO<DeleteProductIngredientRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,deleteProductIngredientRequestVO);
-
-		try {
-
-			ResponseVO<Boolean> serviceResponse = productService.deleteProductIngredient(requestVO);
-
-			response = ProductServicesResponseBuilder.buildDeleteResponse(serviceResponse);
-
-		} catch (Exception exception) {
-			// Excepcion no controlada
-			ResponseVO<Boolean> exceptionResponse = ResponseUtil.getErrorResponse(exception);
-			response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
-		}
-		return response;
-	}
-
-
-	/**
-	 * Operation: findList, Method: GET Consulta la lista de registros en
-	 * base a varios parametros. El resultado se regresa como un arreglo de
-	 * registros.
-	 *
-	 * @return ResponseVO con la lista de registros encontrada
-	 *
-	 * @param page   Numero de pagina
-	 * @param size   Tamano de pagina
-	 */
-	@Override
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "Authorization", value = "eyJhbGciOiJIUzI1NiJ9.eyJUT0tFTl9EQVRBIjp7ImFwZWxs", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "mac-address", value = " 2C:54:91:88:C9:E3 or 2c-54-91-88-c9-e3", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "request-date", value = "2021-09-07 17:29:25.443", paramType = "header", dataTypeClass = String.class, required = true),
-			@ApiImplicitParam(name = "latitude", value = "-74.00898606", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "longitude", value = "40.71727401", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "language", value = "es_MX", paramType = "header", dataTypeClass = String.class, required = true),
-			@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
-			@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
-			@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
-	@GetMapping(value = "/recipe/list", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseVO<List<FindListProductRecipeResponseVO>>> findListProductRecipe(
-			@RequestHeader Map<String, String> headers,
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "size", required = false) Integer size,
-			@RequestParam(value = "orderBy", required = false) String orderBy,
-			@RequestParam(value = "orderType", required = false) String orderType,
-			@RequestParam(value = "id", required = false) Long id){
-		// Declarar variables
-		ResponseEntity<ResponseVO<List<FindListProductRecipeResponseVO>>> response = null;
-
-		FindListProductRecipeRequestVO findListProductRecipeRequestVO = new FindListProductRecipeRequestVO();
-		findListProductRecipeRequestVO.setIdProduct(id);
-		RequestVO<FindListProductRecipeRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, page, size, orderBy,
-				orderType, findListProductRecipeRequestVO);
-
-		try {
-
-			ResponseVO<List<FindListProductRecipeResponseVO>> serviceResponse = productService.findListRecipe(requestVO);
-			response = ProductServicesResponseBuilder.buildFindListProductRecipeResponse(serviceResponse);
-
-		} catch (Exception exception) {
-			// Excepcion no controlada
-			ResponseVO<List<FindListProductRecipeResponseVO>> exceptionResponse = ResponseUtil
-					.getErrorResponse(exception);
-			response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
-		}
-		return response;
-	}
 
 }

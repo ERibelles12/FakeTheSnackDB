@@ -15,23 +15,10 @@ public interface EvaluationController {
 	/**
 	 * Servicio para crear un registro.
 	 * 
-	 * @param headers 		Cabeceras de la solicitud.
-	 * @param name		Id alfanumerico del registro
-	 * @param descripcion	Descripcion del registro
-	 * 
+	 * @param headers 		Cabeceras de la solicitud.*
 	 * @return Responde una entidad de tipo Response el registro creado
 	 */
 	ResponseEntity<ResponseVO<Long>> createEvaluation(Map<String, String> headers, CreateEvaluationRequestVO body);
-
-	/**
-	 * Servicio para elimina un registro.
-	 * 
-	 * @param headers 		Cabeceras de la solicitud.
-	 * @param id			Id del registro a actualizar
-	 * 
-	 * @return Responde una entidad de tipo Response el booleano del resultado
-	 */
-	ResponseEntity<ResponseVO<Boolean>> deleteEvaluation(Map<String, String> headers, Long id);
 
 	/**
 	 * Servicio consulta un registro
