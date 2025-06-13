@@ -1,49 +1,63 @@
 package de.pecus.api.vo.evaluation;
 
 
+import java.util.Date;
+
 /**
  * 
- * @author Jose_Luis_Garcia
+ * @author Emilio Ribelles
  *
- *	Clase con los parametros de entrada a la invocacion del metodo 
- *  create de la case EventType
+ *	Data entry to save an evaluation
  *
  */
 public class CreateEvaluationRequestVO {
 
+	//Product
+	private Long productId;
 
-	// Identificador alfanumerico
-	private String idNombre;
+	//Ingredient with percentaje
+	private Long ingredientId;
+	// Relation id between product and ingredient
+	private Long recipeId;
 
-	// Descripcion del registro
-	private String descripcion;
+	// Ingredient precentaje
+	private Long ingredientPercentaje;
+	//Evaluation Date.
+	private Date evaluationDate;
 
-	private Boolean global;
-	
-	public String getIdNombre() {
-		return idNombre;
+	public Long getProductId() {
+		return productId;
+	}
+	public void setProductId(Long id) {
+		this.productId = id;
 	}
 
-	public void setIdNombre(String idNombre) {
-		this.idNombre = idNombre;
+	public Long getIngredientId() {
+		return ingredientId;
+	}
+	public void setIngredientId(Long id) {
+		this.ingredientId = id;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public Long getRecipeId() {
+		return recipeId;
+	}
+	public void setRecipeId(Long id) {
+		this.recipeId = id;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public Long getIngredientPercentaje() {
+		return ingredientPercentaje;
+	}
+	public void setIngredientPercentaje(Long id) {
+		this.ingredientPercentaje = id;
 	}
 
-	public Boolean getGlobal() {
-		return global;
+	public Date getEvaluationDate() {
+		return evaluationDate;
+	}
+	public void setEvaluationDate(Date evaluationDate) {
+		this.evaluationDate = evaluationDate;
 	}
 
-	public void setGlobal(Boolean global) {
-		this.global = global;
-	}
-
-
-	
 }

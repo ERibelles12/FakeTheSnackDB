@@ -2,24 +2,21 @@ package de.pecus.api.vo.evaluation;
 
 /**
  * 
- * @author Jose_Luis_Garcia
+ * @author Emilio Ribelles
  *
- *	Clase con los parametros de entrada a la invocacion del metodo 
- *  findDetail de la case EventType
+ * Data entry to recover a list of evaluation for a product
  *
  */
 public class FindListEvaluationRequestVO {
 
-	private String idNombre;
+	//Product Id
+	private Long productId;
 
-	public String getIdNombre() {
-		return idNombre;
+	public Long getProductId() {
+		return productId;
+	}
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 
-	public void setIdNombre(String idNombre) {
-		this.idNombre = idNombre;
-	}
-	
-
-	
 }

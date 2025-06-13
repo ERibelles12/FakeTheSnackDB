@@ -17,10 +17,16 @@ public class FuncionesBusinessError {
 	public static final String DUPLICATED_ERROR 								= "DUPLICATED_ERROR";
 	public static final String REQUIRED_ID_PRODUCT_ERROR 						= "REQUIRED_ID_PRODUCT_ERROR";
 	public static final String REQUIRED_ID_INGREDIENT_ERROR 						= "REQUIRED_ID_INGREDIENT_ERROR";
+	public static final String REQUIRED_RECIPE_ID_ERROR 						= "REQUIRED_RECIPE_ID_ERROR";
+	public static final String REQUIRED_INGREDIENT_PERCENTAJE_ERROR 			= "REQUIRED_INGREDIENT_PERCENTAJE_ERROR";
+	public static final String REQUIRED_EVALUATION_DATE_ERROR 					= "REQUIRED_EVALUATION_DATE_ERROR";
 	public static final String NOT_FOUND_PRODUCT 								= "NOT_FOUND_PRODUCT";
-	public static final String NOT_FOUND_INGREDIENT 								= "NOT_FOUND_INGREDIENT";
+	public static final String NOT_FOUND_INGREDIENT 							= "NOT_FOUND_INGREDIENT";
+	public static final String NOT_FOUND_RECIPE_ID_ERROR 							= "NOT_FOUND_RECIPE_ID_ERROR";
 
 	public static final String NOT_FOUND_REGISTER_LIST_ERROR 					= "NOT_FOUND_REGISTER_LIST_ERROR";
+	public static final String NOT_RECIPE_PRODUCT_ERROR 						= "NOT_RECIPE_PRODUCT_ERROR";
+	public static final String NOT_RECIPE_INGREDIENT_ERROR 						= "NOT_RECIPE_INGREDIENT_ERROR";
 
 	
 	}

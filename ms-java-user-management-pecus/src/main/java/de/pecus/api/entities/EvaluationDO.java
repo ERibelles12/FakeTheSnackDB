@@ -79,7 +79,7 @@ public class EvaluationDO extends AuditBase<Long> implements Serializable {
 	public BrandDO getBrand() {
 		return brand;
 	}
-	public void setProduct(BrandDO id) {
+	public void setBrand(BrandDO id) {
 		this.brand = id;
 	}
 
@@ -93,7 +93,7 @@ public class EvaluationDO extends AuditBase<Long> implements Serializable {
 	public SubCategoryDO getSubCategory() {
 		return subCategory;
 	}
-	public void setProduct(SubCategoryDO id) {
+	public void setSubCategory(SubCategoryDO id) {
 		this.subCategory = id;
 	}
 
@@ -114,7 +114,7 @@ public class EvaluationDO extends AuditBase<Long> implements Serializable {
 	public RecipeDO getRecipe() {
 		return recipe;
 	}
-	public void setIngredient(RecipeDO id) {
+	public void setRecipe(RecipeDO id) {
 		this.recipe = id;
 	}
 
