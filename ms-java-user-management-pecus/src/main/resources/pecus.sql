@@ -5,10 +5,6 @@
 -- EXAMPLE MODEL
 ----------------------------------------------------------------
 
-DROP INDEX idx_usuario_mobpass;
-DROP INDEX idx_activo_prev_token_usuario;
-DROP INDEX idx_activo_token_token_usuario;
-DROP INDEX uk_dx_user_id_email_usuario;
 DROP INDEX idx_tipo_rol;
 
 DROP TABLE AUDIT_LOG;
@@ -263,6 +259,7 @@ CREATE TABLE EVALUATION (
     fk_category_id BIGSERIAL NOT NULL,
     fk_subcategory_id BIGSERIAL NOT NULL,
     fk_product_id BIGSERIAL NOT NULL,
+    fk_ingredient_id BIGSERIAL NOT NULL,
     fk_recipe_id BIGSERIAL NOT NULL,
     dn_ingredient_percentaje NUMERIC(1,0) default 1,
     dd_evaluation_date DATE NOT NULL,
@@ -278,6 +275,7 @@ ALTER TABLE EVALUATION ADD CONSTRAINT const_fk_brand_id FOREIGN KEY (fk_brand_id
 ALTER TABLE EVALUATION ADD CONSTRAINT const_fk_category_id FOREIGN KEY (fk_category_id) REFERENCES CATEGORY (pk_id);
 ALTER TABLE EVALUATION ADD CONSTRAINT const_fk_subcategory_id FOREIGN KEY (fk_subcategory_id) REFERENCES SUBCATEGORY (pk_id);
 ALTER TABLE EVALUATION ADD CONSTRAINT const_fk_product_id FOREIGN KEY (fk_product_id) REFERENCES PRODUCT (pk_id);
+ALTER TABLE EVALUATION ADD CONSTRAINT const_fk_ingredient_id FOREIGN KEY (fk_ingredient_id) REFERENCES INGREDIENT (pk_id);
 ALTER TABLE EVALUATION ADD CONSTRAINT const_fk_recipe_id FOREIGN KEY (fk_recipe_id) REFERENCES RECIPE (pk_id);
 
 ---------------------------------------------------------------
@@ -290,6 +288,8 @@ CREATE TABLE RESULT_ITEM (
     fk_evaluation_id BIGSERIAL NOT NULL,
     dd_evaluation_date DATE NOT NULL,
     fk_recipe_id BIGSERIAL NOT NULL,
+    fk_product_id BIGSERIAL NOT NULL,
+    fk_ingredient_id BIGSERIAL NOT NULL,
     dn_ingredient_percentaje NUMERIC(1,0) default 1,
     dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
@@ -301,27 +301,45 @@ CREATE TABLE RESULT_ITEM (
 -- foreing key
 ALTER TABLE RESULT_ITEM ADD CONSTRAINT const_fk_evaluation_id FOREIGN KEY (fk_evaluation_id) REFERENCES EVALUATION (pk_id);
 ALTER TABLE RESULT_ITEM ADD CONSTRAINT const_fk_recipe_id FOREIGN KEY (fk_recipe_id) REFERENCES RECIPE (pk_id);
+ALTER TABLE RESULT_ITEM ADD CONSTRAINT const_fk_product_id FOREIGN KEY (fk_product_id) REFERENCES PRODUCT (pk_id);
+ALTER TABLE RESULT_ITEM ADD CONSTRAINT const_fk_ingredient_id FOREIGN KEY (fk_ingredient_id) REFERENCES INGREDIENT (pk_id);
 
 
 --------------------------------------------------------------
 --------------------  EXAMPLE DATA ---------------------------
 --------------------------------------------------------------
 
-INSERT INTO BRAND (pk_id, dx_name, dx_description, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
-                  (1,'GENERAL BRAND','DEFAULT BRAND',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+INSERT INTO BRAND ( dx_name, dx_description, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
+                  ('GENERAL BRAND','DEFAULT BRAND',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
 
-INSERT INTO CATEGORY (pk_id, dx_name, dn_general_indicator, dn_milk_indicator, dn_meat_indicator, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
-                (1,'GENERAL CATEGORY',true,false,false,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-                (2,'GENERAL MILK CATEGORY',false,true,false,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-                (3,'GENERAL MEAT CATEGORY',false,false,true,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+INSERT INTO CATEGORY ( dx_name, dn_general_indicator, dn_milk_indicator, dn_meat_indicator, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
+                ('GENERAL CATEGORY',true,false,false,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+                ('GENERAL MILK CATEGORY',false,true,false,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+                ('GENERAL MEAT CATEGORY',false,false,true,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
 
-INSERT INTO SUBCATEGORY (PK_ID, FK_CATEGORY_ID, DX_NAME, dn_activo, dn_usuario_creador, dd_fecha_creacion, dn_usuario_modificador, dd_fecha_modificacion) VALUES
-    (1,2,'PRODUCT ENTERA',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (2,2,'PRODUCT DESCREMADOS',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (3,3,'PIG',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (4,3,'COWN',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+INSERT INTO SUBCATEGORY ( FK_CATEGORY_ID, DX_NAME, dn_activo, dn_usuario_creador, dd_fecha_creacion, dn_usuario_modificador, dd_fecha_modificacion) VALUES
+    (2,'PRODUCT ENTERA',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (2,'PRODUCT DESCREMADOS',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (3,'PIG',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (3,'COWN',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
 
-INSERT INTO PRODUCT (PK_ID, FK_BRAND_ID, FK_CATEGORY_ID, FK_SUBCATEGORY_ID, DX_NAME, DX_DESCRIPTION, dn_activo, DN_USUARIO_CREADOR, dd_fecha_creacion, DN_USUARIO_MODIFICADOR,dd_fecha_modificacion) VALUES
-    (1,1,1,1,'PRODUCTO GENERICO','NOMBRE DEL PRODUCTO GENERICO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (2,1,2,1,'YOGURT DESCREMADO','NOMBRE DEL YOGURT DESCREMADO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (3,1,3,3,'PIG PRODUCT','NOMBRE DEL PRODUCTO DE CERDO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+INSERT INTO PRODUCT ( FK_BRAND_ID, FK_CATEGORY_ID, FK_SUBCATEGORY_ID, DX_NAME, DX_DESCRIPTION, dn_activo, DN_USUARIO_CREADOR, dd_fecha_creacion, DN_USUARIO_MODIFICADOR,dd_fecha_modificacion) VALUES
+    (1,1,1,'PRODUCTO GENERICO','NOMBRE DEL PRODUCTO GENERICO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (1,2,1,'YOGURT DESCREMADO','NOMBRE DEL YOGURT DESCREMADO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (1,3,3,'PIG PRODUCT','NOMBRE DEL PRODUCTO DE CERDO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+
+
+INSERT INTO INGREDIENT ( dx_name, dx_description, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
+    ('FIRST INGREDIENT','FIRST INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('SECOND INGREDIENT','SECOND INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('THIRTH INGREDIENT','THIRDTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('FOURTH INGREDIENT','FOURTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('FIFTH INGREDIENT','FIFTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('SIXTH INGREDIENT','SIXTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+
+INSERT INTO RECIPE ( fk_product_id, fk_ingredient_id, dd_register_date, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
+    (1,1,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (1,3,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (1,5,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (2,2,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (2,4,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
