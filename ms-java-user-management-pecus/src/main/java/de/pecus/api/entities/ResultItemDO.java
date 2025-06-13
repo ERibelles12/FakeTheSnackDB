@@ -9,14 +9,14 @@ import java.util.Date;
 /**
  * Catalog Recipe
  * 
- * Result deetail entity
+ * Resultt deetail entity
  * @author jose.ribelles
  * @version 1.0
  * @created 24-jul.-2025 11:27:46 a. m.
  */
 @Entity
-@Table(name = "RESULT_ITEM")
-public class ResulItemDO extends AuditBase<Long> implements Serializable {
+@Table(name = "ResultT_ITEM")
+public class ResultItemDO extends AuditBase<Long> implements Serializable {
 
 	private static final long serialVersionUID = -5382607608047169433L;
 
@@ -51,7 +51,7 @@ public class ResulItemDO extends AuditBase<Long> implements Serializable {
 	@Column(name="DD_EVALUATION_DATE")
 	private Date evaluationDate;
 
-	public ResulItemDO(){
+	public ResultItemDO(){
 
 	}
 
