@@ -9,14 +9,14 @@ import java.util.Date;
 /**
  * Catalog Recipe
  * 
- * Evaluation entity
+ * Result deetail entity
  * @author jose.ribelles
  * @version 1.0
  * @created 24-jul.-2025 11:27:46 a. m.
  */
 @Entity
-@Table(name = "EVALUATION")
-public class EvaluationDO extends AuditBase<Long> implements Serializable {
+@Table(name = "RESULT_ITEM")
+public class ResulItemDO extends AuditBase<Long> implements Serializable {
 
 	private static final long serialVersionUID = -5382607608047169433L;
 
@@ -27,18 +27,8 @@ public class EvaluationDO extends AuditBase<Long> implements Serializable {
 
 	/****************************  RELACION 1..N ******************************/
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "FK_BRAND_ID" , referencedColumnName = "PK_ID")
-	private BrandDO brand;
-
-	/****************************  RELACION 1..N ******************************/
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "FK_CATEGORY_ID" , referencedColumnName = "PK_ID")
-	private CategoryDO category;
-
-	/****************************  RELACION 1..N ******************************/
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "FK_SUBCATEGORY_ID" , referencedColumnName = "PK_ID")
-	private SubCategoryDO subCategory;
+	@JoinColumn(name = "FK_EVALUATION_ID" , referencedColumnName = "PK_ID")
+	private EvaluationDO evaluation;
 
 	/****************************  RELACION 1..N ******************************/
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -61,7 +51,7 @@ public class EvaluationDO extends AuditBase<Long> implements Serializable {
 	@Column(name="DD_EVALUATION_DATE")
 	private Date evaluationDate;
 
-	public EvaluationDO(){
+	public ResulItemDO(){
 
 	}
 
@@ -76,25 +66,11 @@ public class EvaluationDO extends AuditBase<Long> implements Serializable {
 		this.id = id;
 	}
 
-	public BrandDO getBrand() {
-		return brand;
+	public EvaluationDO getEvaluation() {
+		return evaluation;
 	}
-	public void setProduct(BrandDO id) {
-		this.brand = id;
-	}
-
-	public CategoryDO getCategory() {
-		return category;
-	}
-	public void setCategory(CategoryDO id) {
-		this.category = id;
-	}
-
-	public SubCategoryDO getSubCategory() {
-		return subCategory;
-	}
-	public void setProduct(SubCategoryDO id) {
-		this.subCategory = id;
+	public void setEvaluation(EvaluationDO id) {
+		this.evaluation = id;
 	}
 
 	public ProductDO getProduct() {

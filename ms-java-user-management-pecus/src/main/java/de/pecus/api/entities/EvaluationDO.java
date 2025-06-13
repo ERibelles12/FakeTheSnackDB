@@ -9,14 +9,14 @@ import java.util.Date;
 /**
  * Catalog Recipe
  * 
- * List of Recipe registered in the systema.
+ * Evaluation entity
  * @author jose.ribelles
  * @version 1.0
- * @created 24-jul.-2019 11:27:46 a. m.
+ * @created 24-jul.-2025 11:27:46 a. m.
  */
 @Entity
-@Table(name = "RECIPE")
-public class RecipeDO extends AuditBase<Long> implements Serializable {
+@Table(name = "EVALUATION")
+public class EvaluationDO extends AuditBase<Long> implements Serializable {
 
 	private static final long serialVersionUID = -5382607608047169433L;
 
@@ -24,6 +24,21 @@ public class RecipeDO extends AuditBase<Long> implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="PK_ID")
 	private Long id;
+
+	/****************************  RELACION 1..N ******************************/
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "FK_BRAND_ID" , referencedColumnName = "PK_ID")
+	private BrandDO brand;
+
+	/****************************  RELACION 1..N ******************************/
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "FK_CATEGORY_ID" , referencedColumnName = "PK_ID")
+	private CategoryDO category;
+
+	/****************************  RELACION 1..N ******************************/
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "FK_SUBCATEGORY_ID" , referencedColumnName = "PK_ID")
+	private SubCategoryDO subCategory;
 
 	/****************************  RELACION 1..N ******************************/
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -35,11 +50,18 @@ public class RecipeDO extends AuditBase<Long> implements Serializable {
 	@JoinColumn(name = "FK_INGREDIENT_ID" , referencedColumnName = "PK_ID")
 	private IngredientDO ingredient;
 
-	@Column(name="DD_REGISTER_DATE")
-	private Date fechaRegistro;
+	/****************************  RELACION 1..N ******************************/
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "FK_RECIPE_ID" , referencedColumnName = "PK_ID")
+	private RecipeDO recipe;
 
+	@Column(name="DN_INGREDIENT_PERCENTAJE")
+	private Long ingredientPercentage;
 
-	public RecipeDO(){
+	@Column(name="DD_EVALUATION_DATE")
+	private Date evaluationDate;
+
+	public EvaluationDO(){
 
 	}
 
@@ -52,6 +74,27 @@ public class RecipeDO extends AuditBase<Long> implements Serializable {
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public BrandDO getBrand() {
+		return brand;
+	}
+	public void setProduct(BrandDO id) {
+		this.brand = id;
+	}
+
+	public CategoryDO getCategory() {
+		return category;
+	}
+	public void setCategory(CategoryDO id) {
+		this.category = id;
+	}
+
+	public SubCategoryDO getSubCategory() {
+		return subCategory;
+	}
+	public void setProduct(SubCategoryDO id) {
+		this.subCategory = id;
 	}
 
 	public ProductDO getProduct() {
@@ -68,7 +111,17 @@ public class RecipeDO extends AuditBase<Long> implements Serializable {
 		this.ingredient = id;
 	}
 
-	public Date getFechaRegistro() { return this.fechaRegistro;}
-	public void setFechaRegistro(Date fechaRegistro) {this.fechaRegistro = fechaRegistro;}
+	public RecipeDO getRecipe() {
+		return recipe;
+	}
+	public void setIngredient(RecipeDO id) {
+		this.recipe = id;
+	}
+
+	public Long getIngredientPercentaje() { return this.ingredientPercentage;}
+	public void setIngredientPercentage(Long ingredientPercentage) {this.ingredientPercentage = ingredientPercentage;}
+
+	public Date getEvaluationDate() { return this.evaluationDate;}
+	public void setEvaluationDate(Date evaluationDate) {this.evaluationDate = evaluationDate;}
 
 }
