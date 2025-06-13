@@ -3,16 +3,12 @@ package de.pecus.api.controllers.impl;
 import java.util.List;
 import java.util.Map;
 
-import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +28,7 @@ import de.pecus.api.vo.evaluation.FindDetailEvaluationResponseVO;
 import de.pecus.api.vo.evaluation.FindListEvaluationRequestVO;
 import de.pecus.api.vo.evaluation.FindListEvaluationResponseVO;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 
 /**
  * Clase de controlador para servicio Rest de Evaluation
@@ -110,8 +107,7 @@ public class EvaluationControllerImpl implements EvaluationController {
 	@GetMapping(value = "/evaluation/detail", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseVO<FindDetailEvaluationResponseVO>> findDetailEvaluation(
 			@RequestHeader Map<String, String> headers, 
-			@RequestParam(value = "id", required= false) Long id,
-			@RequestParam(value = "name", required = false) String name) {
+			@RequestParam(value = "id", required= false) Long id) {
 
 		// Declaracion de variables
 		ResponseEntity<ResponseVO<FindDetailEvaluationResponseVO>> response = null;
@@ -164,16 +160,17 @@ public class EvaluationControllerImpl implements EvaluationController {
 			@RequestParam(value = "size", required = false) Integer size,
 			@RequestParam(value = "orderBy", required = false) String orderBy,
 			@RequestParam(value = "orderType", required = false) String orderType,
-			@RequestParam(value = "name", required = false) String name){
+			@RequestParam(value = "idProduct", required = false) Long idProduct){
 		// Declarar variables
 		ResponseEntity<ResponseVO<List<FindListEvaluationResponseVO>>> response = null;
 
 		FindListEvaluationRequestVO findListEvaluationRequestVO = new FindListEvaluationRequestVO();
+		findListEvaluationRequestVO.setProductId(idProduct);
 		RequestVO<FindListEvaluationRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, page, size, orderBy,
 				orderType, findListEvaluationRequestVO);
 
 		try {
-
+			
 			ResponseVO<List<FindListEvaluationResponseVO>> serviceResponse = evaluationService.findList(requestVO);
 			response = EvaluationServicesResponseBuilder.buildFindListEvaluationResponse(serviceResponse);
 

@@ -29,7 +29,7 @@ public interface EvaluationController {
 	 * 
 	 * @return Responde una entidad de tipo Response con los datos del registro
 	 */
-	ResponseEntity<ResponseVO<FindDetailEvaluationResponseVO>> findDetailEvaluation(Map<String, String> headers, Long id, String name);
+	ResponseEntity<ResponseVO<FindDetailEvaluationResponseVO>> findDetailEvaluation(Map<String, String> headers, Long id);
 
 	
 	/**
@@ -41,7 +41,7 @@ public interface EvaluationController {
 	 * @return Responde una lista de registros encontrados
 	 */
 	ResponseEntity<ResponseVO<List<FindListEvaluationResponseVO>>> findListEvaluation(Map<String, String> headers, Integer page,
-                                                                                Integer size, String orderBy, String orderType, String name);
+                                                                                Integer size, String orderBy, String orderType, Long idProduct);
 
 
 	
