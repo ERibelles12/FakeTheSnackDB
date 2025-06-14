@@ -62,7 +62,7 @@ public class IngredientServiceImpl implements IngredientService {
 		ResponseVO<Long> response = new ResponseVO<>();
 		
 			// Validar los parametros de entrada
-			if (validateParametersCreate(request, response)) {
+			if (validateParametersCreate(request, response)) { 
 		
 				// Preparar los datos para actualizar la BB.DD.
 				IngredientDO ingredientDO = new IngredientDO();
@@ -227,7 +227,8 @@ public class IngredientServiceImpl implements IngredientService {
 			Pageable pageable = PageRequest.of(page - 1, size, Sort.by(orderType, orderBy));
 			
 			String normalizedName = this.limpiarAcentos(request.getParameters().getName());
-			
+			normalizedName = (StringUtil.toUpperCase(normalizedName));
+
 			// ejecucion de la busqueda por el parametro recibido
 			listaIngredient = ingredientRepository.findList(this.cleanString(normalizedName), pageable);
 
@@ -421,6 +422,10 @@ public class IngredientServiceImpl implements IngredientService {
 			if (ValidatorUtil.isNullOrEmpty(parameters.getName())) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_ID_ERROR);
 			} 
+			else { 
+				// Validacion de formato (Capital letters)
+				parameters.setName(StringUtil.toUpperCase(parameters.getName()));
+			}
 		}
 		
 		return ValidatorUtil.isSuccessfulResponse(response);
