@@ -86,9 +86,9 @@ public class EvaluationServiceImpl implements EvaluationService {
 				brandDO.setId(1L);
 				categoryDO.setId(1L);
 				subCategoryDO.setId(1L);
-				productDO.setId(request.getParameters().getProductId());
-				ingredientDO.setId(request.getParameters().getIngredientId());
-				recipeDO.setId(request.getParameters().getRecipeId());
+				productDO.setId(request.getParameters().getIdProduct());
+				ingredientDO.setId(request.getParameters().getIdIngredient());
+				recipeDO.setId(request.getParameters().getIdRecipe());
 
 				evaluationDO.setBrand(brandDO);
 				evaluationDO.setCategory(categoryDO);
@@ -137,17 +137,17 @@ public class EvaluationServiceImpl implements EvaluationService {
 			} else {
 
 				evaluationVO.setId(evaluationDO.getId());
-				evaluationVO.setBrandId(evaluationDO.getBrand().getId());
+				evaluationVO.setIdBrand(evaluationDO.getBrand().getId());
 				evaluationVO.setBrandName(evaluationDO.getBrand().getName());
-				evaluationVO.setCategoryId(evaluationDO.getCategory().getId());
+				evaluationVO.setIdCategory(evaluationDO.getCategory().getId());
 				evaluationVO.setCategoryName(evaluationDO.getCategory().getName());
-				evaluationVO.setSubCategoryId(evaluationDO.getSubCategory().getId());
+				evaluationVO.setIdSubCategory(evaluationDO.getSubCategory().getId());
 				evaluationVO.setSubCategoryName(evaluationDO.getSubCategory().getName());
-				evaluationVO.setProductId(evaluationDO.getProduct().getId());
+				evaluationVO.setIdProduct(evaluationDO.getProduct().getId());
 				evaluationVO.setProductName(evaluationDO.getProduct().getName());
-				evaluationVO.setIngredientId(evaluationDO.getIngredient().getId());
+				evaluationVO.setIdIngredient(evaluationDO.getIngredient().getId());
 				evaluationVO.setIngredientName(evaluationDO.getIngredient().getName());
-				evaluationVO.setRecipeId(evaluationDO.getRecipe().getId());
+				evaluationVO.setIdRecipe(evaluationDO.getRecipe().getId());
 				evaluationVO.setEvaluationDate(evaluationDO.getEvaluationDate());
 				evaluationVO.setIngredientPercentaje(evaluationDO.getIngredientPercentaje());
 
@@ -193,7 +193,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 			Pageable pageable = PageRequest.of(page - 1, size, Sort.by(orderType, orderBy));
 
 			// Database execution
-			listaEvaluation = evaluationRepository.findList(request.getParameters().getProductId(), pageable);
+			listaEvaluation = evaluationRepository.findList(request.getParameters().getIdProduct(), pageable);
 
 			// Si no se encontro ningun registro que cumpla la condicion generar error.
  				if (ValidatorUtil.isNullOrEmpty(listaEvaluation.getContent())) {
@@ -245,13 +245,13 @@ public class EvaluationServiceImpl implements EvaluationService {
 		}
 
 		//Validar que exista el registro a actualizar
-		if(ValidatorUtil.isNull(parameters.getProductId()))
+		if(ValidatorUtil.isNull(parameters.getIdProduct()))
 		{
 			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_ID_PRODUCT_ERROR, request);
 			return false;
 		} else {
 
-			productRegister = productRepository.findById(parameters.getProductId());
+			productRegister = productRepository.findById(parameters.getIdProduct());
 
 			if (ValidatorUtil.isNull(productRegister)) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_PRODUCT, request);
@@ -260,14 +260,14 @@ public class EvaluationServiceImpl implements EvaluationService {
 		}
 
 		//Validar que exista el registro a actualizar
-		if(ValidatorUtil.isNull(parameters.getIngredientId()))
+		if(ValidatorUtil.isNull(parameters.getIdIngredient()))
 		{
 			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_ID_INGREDIENT_ERROR, request);
 			return false;
 
 		} else {
 
-			ingredientRegister = ingredientRepository.findById(parameters.getIngredientId());
+			ingredientRegister = ingredientRepository.findById(parameters.getIdIngredient());
 
 			if (ValidatorUtil.isNull(ingredientRegister)) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_INGREDIENT, request);
@@ -276,24 +276,24 @@ public class EvaluationServiceImpl implements EvaluationService {
 		}
 
 		//Validar que exista el registro a actualizar
-		if(ValidatorUtil.isNull(parameters.getRecipeId()))
+		if(ValidatorUtil.isNull(parameters.getIdRecipe()))
 		{
 			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_RECIPE_ID_ERROR, request);
 			return false;
 		} else {
 
-			recipeRegister = recipeRepository.findById(parameters.getRecipeId());
+			recipeRegister = recipeRepository.findById(parameters.getIdRecipe());
 
 			if (ValidatorUtil.isNull(recipeRegister)) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_RECIPE_ID_ERROR, request);
 				return false;
 			} else {
-				if (recipeRegister.getProduct().getId() != parameters.getProductId()) {
+				if (recipeRegister.getProduct().getId() != parameters.getIdProduct()) {
 					ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_RECIPE_PRODUCT_ERROR, request);
 					return false;
 
 				} else {
-					if (recipeRegister.getIngredient().getId() != parameters.getIngredientId()) {
+					if (recipeRegister.getIngredient().getId() != parameters.getIdIngredient()) {
 						ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_RECIPE_INGREDIENT_ERROR, request);
 						return false;
 					}
@@ -364,7 +364,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 		ValidatorArqUtil.validatePaginatonParameters(request, response);
 
 		// validar que el campo obligatorio
-		if (ValidatorUtil.isNullOrZero(request.getParameters().getProductId())) {
+		if (ValidatorUtil.isNullOrZero(request.getParameters().getIdProduct())) {
 
 			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_ID_ERROR);
 		}
@@ -393,17 +393,17 @@ public class EvaluationServiceImpl implements EvaluationService {
 			FindListEvaluationResponseVO evaluationVO = new FindListEvaluationResponseVO();
 			
 			evaluationVO.setId(evaluationDO.getId());
-			evaluationVO.setBrandId(evaluationDO.getBrand().getId());
+			evaluationVO.setIdBrand(evaluationDO.getBrand().getId());
 			evaluationVO.setBrandName(evaluationDO.getBrand().getName());
-			evaluationVO.setCategoryId(evaluationDO.getCategory().getId());
+			evaluationVO.setIdCategory(evaluationDO.getCategory().getId());
 			evaluationVO.setCategoryName(evaluationDO.getCategory().getName());
-			evaluationVO.setSubCategoryId(evaluationDO.getSubCategory().getId());
+			evaluationVO.setIdSubCategory(evaluationDO.getSubCategory().getId());
 			evaluationVO.setSubCategoryName(evaluationDO.getSubCategory().getName());
-			evaluationVO.setProductId(evaluationDO.getProduct().getId());
+			evaluationVO.setIdProduct(evaluationDO.getProduct().getId());
 			evaluationVO.setProductName(evaluationDO.getProduct().getName());
-			evaluationVO.setIngredientId(evaluationDO.getIngredient().getId());
+			evaluationVO.setIdIngredient(evaluationDO.getIngredient().getId());
 			evaluationVO.setIngredientName(evaluationDO.getIngredient().getName());
-			evaluationVO.setRecipeId(evaluationDO.getRecipe().getId());
+			evaluationVO.setIdRecipe(evaluationDO.getRecipe().getId());
 			evaluationVO.setEvaluationDate(evaluationDO.getEvaluationDate());
 			evaluationVO.setIngredientPercentaje(evaluationDO.getIngredientPercentaje());
 
@@ -425,10 +425,12 @@ public class EvaluationServiceImpl implements EvaluationService {
 		EvaluationDO registro = null;
 
 		try {
+
 			//Validacion de datos de entrada
-			if (ValidatorUtil.isNullOrZero(id)) {
+			if (!ValidatorUtil.isNullOrZero(id)) {
 
 				registro = evaluationRepository.findById(id);
+
 			}
 
 		} catch (Exception e) {

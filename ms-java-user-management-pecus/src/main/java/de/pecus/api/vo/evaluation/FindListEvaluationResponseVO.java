@@ -14,18 +14,18 @@ public class FindListEvaluationResponseVO {
 
 	// id
 	private Long id;
-	private Long brandId;
+	private Long idBrand;
 	private String brandName;
-	private Long categoryId;
+	private Long idCategory;
 	private String categoryName;
-	private Long subCategoryId;
+	private Long idSubCategory;
 	private String subCategoryName;
 
-	private Long productId;
+	private Long idProduct;
 	private String productName;
-	private Long ingredientId;
+	private Long idIngredient;
 	private String ingredientName;
-	private Long recipeId;
+	private Long idRecipe;
 	private Date evaluationDate;
 	private Long ingredientPercentaje;
 
@@ -36,28 +36,28 @@ public class FindListEvaluationResponseVO {
 		this.id = id;
 	}
 
-	public Long getBrandId() {return brandId;}
-	public void setBrandId(Long brandId) {this.brandId = brandId;}
+	public Long getIdBrand() {return idBrand;}
+	public void setIdBrand(Long idBrand) {this.idBrand = idBrand;}
 	public String getBrandName() {return brandName;}
 	public void setBrandName(String brandName) {this.brandName = brandName;}
-	public Long getCategoryId() {return categoryId;}
-	public void setCategoryId(Long categoryId) {this.categoryId = categoryId;}
+	public Long getIdCategory() {return idCategory;}
+	public void setIdCategory(Long idCategory) {this.idCategory = idCategory;}
 	public String getCategoryName() {return categoryName;}
 	public void setCategoryName(String categoryName) {this.categoryName = categoryName;}
-	public Long getSubCategoryId() {return subCategoryId;}
-	public void setSubCategoryId(Long subCategoryId) {this.subCategoryId = subCategoryId;}
+	public Long getIdSubCategory() {return idSubCategory;}
+	public void setIdSubCategory(Long idSubCategory) {this.idSubCategory = idSubCategory;}
 	public String getSubCategoryName() {return subCategoryName;}
 	public void setSubCategoryName(String subCategoryName) {this.subCategoryName = subCategoryName;}
-	public Long getProductId() {return productId;}
-	public void setProductId(Long productId) {this.productId = productId;}
+	public Long getIdProduct() {return idProduct;}
+	public void setIdProduct(Long idProduct) {this.idProduct = idProduct;}
 	public String getProductName() {return productName;}
 	public void setProductName(String productName) {this.productName = productName;}
-	public Long getIngredientId() {return ingredientId;}
-	public void setIngredientId(Long ingredientId) {this.ingredientId = ingredientId;}
+	public Long getIdIngredient() {return idIngredient;}
+	public void setIdIngredient(Long idIngredient) {this.idIngredient = idIngredient;}
 	public String getIngredientName() {return ingredientName;}
 	public void setIngredientName(String ingredientName) {this.ingredientName = ingredientName;}
-	public Long getRecipeId() {return recipeId;}
-	public void setRecipeId(Long recipeId) {this.recipeId = recipeId;}
+	public Long getIdRecipe() {return idRecipe;}
+	public void setIdRecipe(Long idRecipe) {this.idRecipe = idRecipe;}
 	public Date getEvaluationDate() {return evaluationDate;}
 	public void setEvaluationDate(Date evaluationDate) {this.evaluationDate = evaluationDate;}
 	public Long getIngredientPercentaje() {return ingredientPercentaje;}

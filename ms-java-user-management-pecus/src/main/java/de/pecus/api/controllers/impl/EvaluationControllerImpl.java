@@ -115,6 +115,7 @@ public class EvaluationControllerImpl implements EvaluationController {
 		// Crear el objeto requestVO
 		FindDetailEvaluationRequestVO findDetailEvaluationRequestVO = new FindDetailEvaluationRequestVO();
 		findDetailEvaluationRequestVO.setId(id);
+
 		RequestVO<FindDetailEvaluationRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers,findDetailEvaluationRequestVO);
 
 		try {
@@ -165,7 +166,7 @@ public class EvaluationControllerImpl implements EvaluationController {
 		ResponseEntity<ResponseVO<List<FindListEvaluationResponseVO>>> response = null;
 
 		FindListEvaluationRequestVO findListEvaluationRequestVO = new FindListEvaluationRequestVO();
-		findListEvaluationRequestVO.setProductId(idProduct);
+		findListEvaluationRequestVO.setIdProduct(idProduct);
 		RequestVO<FindListEvaluationRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, page, size, orderBy,
 				orderType, findListEvaluationRequestVO);
 

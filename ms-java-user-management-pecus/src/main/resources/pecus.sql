@@ -261,7 +261,7 @@ CREATE TABLE EVALUATION (
     fk_product_id BIGSERIAL NOT NULL,
     fk_ingredient_id BIGSERIAL NOT NULL,
     fk_recipe_id BIGSERIAL NOT NULL,
-    dn_ingredient_percentaje NUMERIC(1,0) default 1,
+    dn_ingredient_percentaje INTEGER DEFAULT 0,
     dd_evaluation_date DATE NOT NULL,
     dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
@@ -290,7 +290,7 @@ CREATE TABLE RESULT_ITEM (
     fk_recipe_id BIGSERIAL NOT NULL,
     fk_product_id BIGSERIAL NOT NULL,
     fk_ingredient_id BIGSERIAL NOT NULL,
-    dn_ingredient_percentaje NUMERIC(1,0) default 1,
+    dn_ingredient_percentaje INTEGER DEFAULT 0,
     dn_activo BOOLEAN default true,
     dd_fecha_creacion TIMESTAMP,
     dn_usuario_creador NUMERIC(19,0) ,
@@ -343,3 +343,15 @@ INSERT INTO RECIPE ( fk_product_id, fk_ingredient_id, dd_register_date, dn_activ
     (1,5,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
     (2,2,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
     (2,4,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+
+INSERT INTO EVALUATION ( fk_brand_id, fk_category_id, fk_subcategory_id, fk_product_id, fk_ingredient_id, fk_recipe_id, dn_ingredient_percentaje, dd_evaluation_date, dn_activo, dn_usuario_creador, dd_fecha_creacion, dn_usuario_modificador,  dd_fecha_modificacion) VALUES
+            (1,1,1,1,1,1,22,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+            (1,1,1,1,1,1,13,'2025-06-02',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+
+INSERT INTO RESULT_ITEM ( fk_evaluation_id, dd_evaluation_date, fk_recipe_id, fk_product_id, fk_ingredient_id, dn_ingredient_percentaje, dn_activo, dn_usuario_creador,dd_fecha_creacion, dn_usuario_modificador, dd_fecha_modificacion) VALUES
+        (1,'2025-06-01',1,1,1,22,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',2,1,3,45,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',2,1,5,33,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',1,1,1,13,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',2,1,3,66,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',2,1,5,21,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');

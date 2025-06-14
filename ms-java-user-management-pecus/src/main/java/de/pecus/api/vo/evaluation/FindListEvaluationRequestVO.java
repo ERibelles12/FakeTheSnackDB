@@ -10,13 +10,13 @@ package de.pecus.api.vo.evaluation;
 public class FindListEvaluationRequestVO {
 
 	//Product Id
-	private Long productId;
+	private Long idProduct;
 
-	public Long getProductId() {
-		return productId;
+	public Long getIdProduct() {
+		return idProduct;
 	}
-	public void setProductId(Long productId) {
-		this.productId = productId;
+	public void setIdProduct(Long idProduct) {
+		this.idProduct = idProduct;
 	}
 
 }

@@ -13,37 +13,37 @@ import java.util.Date;
 public class CreateEvaluationRequestVO {
 
 	//Product
-	private Long productId;
+	private Long idProduct;
 
 	//Ingredient with percentaje
-	private Long ingredientId;
+	private Long idIngredient;
 	// Relation id between product and ingredient
-	private Long recipeId;
+	private Long idRecipe;
 
 	// Ingredient precentaje
 	private Long ingredientPercentaje;
 	//Evaluation Date.
 	private Date evaluationDate;
 
-	public Long getProductId() {
-		return productId;
+	public Long getIdProduct() {
+		return idProduct;
 	}
-	public void setProductId(Long id) {
-		this.productId = id;
-	}
-
-	public Long getIngredientId() {
-		return ingredientId;
-	}
-	public void setIngredientId(Long id) {
-		this.ingredientId = id;
+	public void setIdProduct(Long id) {
+		this.idProduct = id;
 	}
 
-	public Long getRecipeId() {
-		return recipeId;
+	public Long getIdIngredient() {
+		return idIngredient;
 	}
-	public void setRecipeId(Long id) {
-		this.recipeId = id;
+	public void setIdIngredient(Long id) {
+		this.idIngredient = id;
+	}
+
+	public Long getIdRecipe() {
+		return idRecipe;
+	}
+	public void setIdRecipe(Long id) {
+		this.idRecipe = id;
 	}
 
 	public Long getIngredientPercentaje() {
