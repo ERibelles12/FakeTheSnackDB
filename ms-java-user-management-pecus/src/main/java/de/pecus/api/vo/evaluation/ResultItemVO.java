@@ -19,7 +19,8 @@ public class ResultItemVO {
 	private Long ingredientId;
 	private String ingredientName;
 	private Long evaluationId;
-	private Long ingredientPercentaje;
+	private Long ingredientMeanPercentage;
+	private Long ingredientStdPercentage;
 	private Date evaluationDate;
 
 
@@ -58,12 +59,12 @@ public class ResultItemVO {
 		this.evaluationId = evaluationId;
 	}
 
-	public Long getIngredientPercentaje() {
-		return ingredientPercentaje;
-	}
-	public void setIngredientPercentaje(Long ingredientPercentaje) {
-		this.ingredientPercentaje = ingredientPercentaje;
-	}
+	public Long getIngredientMeanPercentage() { return this.ingredientMeanPercentage;}
+	public void setIngredientMeanPercentage(Long ingredientMeanPercentage) {this.ingredientMeanPercentage = ingredientMeanPercentage;}
+
+	public Long getIngredientStdPercentage() { return this.ingredientStdPercentage;}
+	public void setIngredientStdPercentage(Long ingredientStdPercentage) {this.ingredientStdPercentage = ingredientStdPercentage;}
+
 
 	public Date getEvaluationDate() {
 		return evaluationDate;

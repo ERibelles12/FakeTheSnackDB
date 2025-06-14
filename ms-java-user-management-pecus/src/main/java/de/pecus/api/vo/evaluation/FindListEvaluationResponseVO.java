@@ -27,7 +27,8 @@ public class FindListEvaluationResponseVO {
 	private String ingredientName;
 	private Long idRecipe;
 	private Date evaluationDate;
-	private Long ingredientPercentaje;
+	private Long ingredientMeanPercentage;
+	private Long ingredientStdPercentage;
 
 	public Long getId() {
 		return id;
@@ -60,8 +61,10 @@ public class FindListEvaluationResponseVO {
 	public void setIdRecipe(Long idRecipe) {this.idRecipe = idRecipe;}
 	public Date getEvaluationDate() {return evaluationDate;}
 	public void setEvaluationDate(Date evaluationDate) {this.evaluationDate = evaluationDate;}
-	public Long getIngredientPercentaje() {return ingredientPercentaje;}
-	public void setIngredientPercentaje(Long ingredientPercentaje) {this.ingredientPercentaje = ingredientPercentaje;}
+	public Long getIngredientMeanPercentage() {return ingredientMeanPercentage;}
+	public void setIngredientMeanPercentage(Long ingredientMeanPercentage) {this.ingredientMeanPercentage = ingredientMeanPercentage;}
+	public Long getIngredientStdPercentage() {return ingredientStdPercentage;}
+	public void setIngredientStdPercentage(Long ingredientStdPercentage) {this.ingredientStdPercentage = ingredientStdPercentage;}
 
 
 }

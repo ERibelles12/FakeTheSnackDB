@@ -2,6 +2,7 @@ package de.pecus.api.vo.evaluation;
 
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -15,15 +16,22 @@ public class CreateEvaluationRequestVO {
 	//Product
 	private Long idProduct;
 
-	//Ingredient with percentaje
+	//Ingredient with percentage
 	private Long idIngredient;
 	// Relation id between product and ingredient
 	private Long idRecipe;
 
-	// Ingredient precentaje
-	private Long ingredientPercentaje;
+	// Ingredient mean precentaje
+	private Long ingredientMeanPercentage;
+
+	// Ingredient variation precentaje
+	private Long ingredientStdPercentage;
+
 	//Evaluation Date.
 	private Date evaluationDate;
+
+	//List of results
+	private List<ResultItemVO> listaResultados;
 
 	public Long getIdProduct() {
 		return idProduct;
@@ -46,11 +54,18 @@ public class CreateEvaluationRequestVO {
 		this.idRecipe = id;
 	}
 
-	public Long getIngredientPercentaje() {
-		return ingredientPercentaje;
+	public Long getIngredientMeanPercentage() {
+		return ingredientMeanPercentage;
 	}
-	public void setIngredientPercentaje(Long id) {
-		this.ingredientPercentaje = id;
+	public void setIngredientMeanPercentage(Long id) {
+		this.ingredientMeanPercentage = id;
+	}
+
+		public Long getIngredientStdPercentage() {
+		return ingredientStdPercentage;
+	}
+	public void setIngredientStdPercentage(Long id) {
+		this.ingredientStdPercentage = id;
 	}
 
 	public Date getEvaluationDate() {
@@ -59,5 +74,7 @@ public class CreateEvaluationRequestVO {
 	public void setEvaluationDate(Date evaluationDate) {
 		this.evaluationDate = evaluationDate;
 	}
-
+	
+	public List<ResultItemVO> getListaResultados() {return listaResultados;}
+	public void setListaResultados(List<ResultItemVO> listaResultados) {}
 }

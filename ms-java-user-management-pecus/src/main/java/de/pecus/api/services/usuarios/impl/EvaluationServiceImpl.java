@@ -1,12 +1,8 @@
 package de.pecus.api.services.usuarios.impl;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.pecus.api.entities.*;
-import de.pecus.api.repositories.usuarios.*;
-import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,15 +11,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import de.pecus.api.constant.DataConstants;
-import de.pecus.api.enums.WildcardTypeEnum;
+import de.pecus.api.entities.BrandDO;
+import de.pecus.api.entities.CategoryDO;
+import de.pecus.api.entities.EvaluationDO;
+import de.pecus.api.entities.IngredientDO;
+import de.pecus.api.entities.ProductDO;
+import de.pecus.api.entities.RecipeDO;
+import de.pecus.api.entities.SubCategoryDO;
 import de.pecus.api.error.FuncionesBusinessError;
 import de.pecus.api.error.GeneralBusinessErrors;
+import de.pecus.api.repositories.usuarios.EvaluationRepository;
+import de.pecus.api.repositories.usuarios.IngredientRepository;
+import de.pecus.api.repositories.usuarios.ProductRepository;
+import de.pecus.api.repositories.usuarios.RecipeRepository;
+import de.pecus.api.repositories.usuarios.ResultItemRepository;
 import de.pecus.api.services.usuarios.EvaluationService;
-import de.pecus.api.util.CriteriaUtil;
 import de.pecus.api.util.ResponseUtil;
 import de.pecus.api.util.ServiceUtil;
-import de.pecus.api.util.StringUtil;
 import de.pecus.api.util.ValidatorArqUtil;
 import de.pecus.api.util.ValidatorUtil;
 import de.pecus.api.vo.RequestVO;
@@ -97,7 +101,8 @@ public class EvaluationServiceImpl implements EvaluationService {
 				evaluationDO.setIngredient(ingredientDO);
 				evaluationDO.setRecipe(recipeDO);
 				evaluationDO.setEvaluationDate(request.getParameters().getEvaluationDate());
-				evaluationDO.setIngredientPercentage(request.getParameters().getIngredientPercentaje());
+				evaluationDO.setIngredientMeanPercentage(request.getParameters().getIngredientMeanPercentage());
+				evaluationDO.setIngredientStdPercentage(request.getParameters().getIngredientStdPercentage());
 
 				// Actualizar los parametros de auditoria
 				ServiceUtil.setAuditFields(evaluationDO, request.getToken());
@@ -149,7 +154,8 @@ public class EvaluationServiceImpl implements EvaluationService {
 				evaluationVO.setIngredientName(evaluationDO.getIngredient().getName());
 				evaluationVO.setIdRecipe(evaluationDO.getRecipe().getId());
 				evaluationVO.setEvaluationDate(evaluationDO.getEvaluationDate());
-				evaluationVO.setIngredientPercentaje(evaluationDO.getIngredientPercentaje());
+				evaluationVO.setIngredientMeanPercentage(evaluationDO.getIngredientMeanPercentage());
+				evaluationVO.setIngredientStdPercentage(evaluationDO.getIngredientStdPercentage());
 
 				response.setData(evaluationVO);
 				// regresar la respuesta correcta con los registros obtenidos.
@@ -302,9 +308,16 @@ public class EvaluationServiceImpl implements EvaluationService {
 		}
 
 		//Validar que exista el registro a actualizar
-		if(ValidatorUtil.isNullOrZero(parameters.getIngredientPercentaje()))
+		if(ValidatorUtil.isNullOrZero(parameters.getIngredientMeanPercentage()))
 		{
-			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_INGREDIENT_PERCENTAJE_ERROR, request);
+			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_INGREDIENT_MEAN_PERCENTAGE_ERROR, request);
+			return false;
+		}
+
+		//Validar que exista el registro a actualizar
+		if(ValidatorUtil.isNullOrZero(parameters.getIngredientStdPercentage()))
+		{
+			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_INGREDIENT_STD_PERCENTAGE_ERROR, request);
 			return false;
 		}
 
@@ -405,7 +418,8 @@ public class EvaluationServiceImpl implements EvaluationService {
 			evaluationVO.setIngredientName(evaluationDO.getIngredient().getName());
 			evaluationVO.setIdRecipe(evaluationDO.getRecipe().getId());
 			evaluationVO.setEvaluationDate(evaluationDO.getEvaluationDate());
-			evaluationVO.setIngredientPercentaje(evaluationDO.getIngredientPercentaje());
+			evaluationVO.setIngredientMeanPercentage(evaluationDO.getIngredientMeanPercentage());
+			evaluationVO.setIngredientStdPercentage(evaluationDO.getIngredientStdPercentage());
 
 			listaEvaluationVO.add(evaluationVO);
 		}

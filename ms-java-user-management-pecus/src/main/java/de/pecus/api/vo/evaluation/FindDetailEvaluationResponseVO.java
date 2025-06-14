@@ -1,8 +1,6 @@
 package de.pecus.api.vo.evaluation;
 
 
-import de.pecus.api.vo.category.FindListCategoryResponseVO;
-
 import java.util.Date;
 import java.util.List;
 
@@ -45,8 +43,11 @@ public class FindDetailEvaluationResponseVO {
 	// Evaluation Date
 	private Date evaluationDate;
 
-	// ingredient percentaje
-	private Long ingredientPercentaje;
+	// Ingredient mean precentaje
+	private Long ingredientMeanPercentage;
+
+	// Ingredient variation precentaje
+	private Long ingredientStdPercentage;
 
 	//List of results
 	private List<ResultItemVO> listaResultados;
@@ -90,8 +91,11 @@ public class FindDetailEvaluationResponseVO {
 	public Date getEvaluationDate() {return evaluationDate;}
 	public void setEvaluationDate(Date evaluationDate) {this.evaluationDate = evaluationDate;}
 
-	public Long getIngredientPercentaje() {return ingredientPercentaje;}
-	public void setIngredientPercentaje(Long ingredientPercentaje) {this.ingredientPercentaje = ingredientPercentaje;}
+	public Long getIngredientMeanPercentage() { return this.ingredientMeanPercentage;}
+	public void setIngredientMeanPercentage(Long ingredientMeanPercentage) {this.ingredientMeanPercentage = ingredientMeanPercentage;}
+
+	public Long getIngredientStdPercentage() { return this.ingredientStdPercentage;}
+	public void setIngredientStdPercentage(Long ingredientStdPercentage) {this.ingredientStdPercentage = ingredientStdPercentage;}
 
 	public List<ResultItemVO> getListaResultados() {return listaResultados;}
 	public void setListaResultados(List<ResultItemVO> listaResultados) {}
