@@ -15,7 +15,7 @@ import java.util.Date;
  * @created 24-jul.-2025 11:27:46 a. m.
  */
 @Entity
-@Table(name = "ResultT_ITEM")
+@Table(name = "RESULT_ITEM")
 public class ResultItemDO extends AuditBase<Long> implements Serializable {
 
 	private static final long serialVersionUID = -5382607608047169433L;

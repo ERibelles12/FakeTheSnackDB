@@ -1,6 +1,7 @@
 package de.pecus.api.repositories.usuarios;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,12 +37,27 @@ public interface ResultItemRepository extends JpaRepository<ResultItemDO, Serial
 	@Query(value = " SELECT r" 
 			+ " FROM  ResultItemDO r"
 			+ " WHERE r.active = true "
-			+ " AND r.recipe.id	= :idRecipe",
+			+ " AND r.evaluation.id	= :idEvaluation",
 			countQuery="SELECT COUNT(r) "
 					+ " FROM  ResultItemDO r "
 					+ " WHERE r.active = true "
-					+ " AND r.recipe.id =:idRecipe")
-	Page<ResultItemDO> findList(@Param("idRecipe") Long idRecipe,
+					+ " AND r.evaluation.id =:idEvaluation")
+	Page<ResultItemDO> findList(@Param("idEvaluation") Long idEvaluation,
                                Pageable pageable);
+
+	/**
+	 * Consulta por nombre . Y se prepara para paginacion
+	 *
+	 * @return List<Objeto> con el resultado
+	 *
+	 */
+
+	@Query(value = " SELECT r"
+			+ " FROM  ResultItemDO r"
+			+ " JOIN FETCH r.ingredient i"
+			+ " WHERE r.active = true "
+			+ " AND r.evaluation.id	= :id")
+	List<ResultItemDO> findAllResult(@Param("id") Long id);
+
 
 }

@@ -98,6 +98,6 @@ public class FindDetailEvaluationResponseVO {
 	public void setIngredientStdPercentage(Long ingredientStdPercentage) {this.ingredientStdPercentage = ingredientStdPercentage;}
 
 	public List<ResultItemVO> getListaResultados() {return listaResultados;}
-	public void setListaResultados(List<ResultItemVO> listaResultados) {}
+	public void setListaResultados(List<ResultItemVO> listaResultados) {this.listaResultados = listaResultados;}
 
 }

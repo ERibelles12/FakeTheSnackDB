@@ -3,21 +3,13 @@ package de.pecus.api.services.usuarios.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.pecus.api.entities.*;
+import de.pecus.api.vo.evaluation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import de.pecus.api.entities.BrandDO;
-import de.pecus.api.entities.CategoryDO;
-import de.pecus.api.entities.EvaluationDO;
-import de.pecus.api.entities.IngredientDO;
-import de.pecus.api.entities.ProductDO;
-import de.pecus.api.entities.RecipeDO;
-import de.pecus.api.entities.SubCategoryDO;
 import de.pecus.api.error.FuncionesBusinessError;
 import de.pecus.api.error.GeneralBusinessErrors;
 import de.pecus.api.repositories.usuarios.EvaluationRepository;
@@ -32,11 +24,6 @@ import de.pecus.api.util.ValidatorArqUtil;
 import de.pecus.api.util.ValidatorUtil;
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.evaluation.CreateEvaluationRequestVO;
-import de.pecus.api.vo.evaluation.FindDetailEvaluationRequestVO;
-import de.pecus.api.vo.evaluation.FindDetailEvaluationResponseVO;
-import de.pecus.api.vo.evaluation.FindListEvaluationRequestVO;
-import de.pecus.api.vo.evaluation.FindListEvaluationResponseVO;
 
 /**
  * Clase de logica de negocio para administracion de evaluationes
@@ -131,7 +118,8 @@ public class EvaluationServiceImpl implements EvaluationService {
 		// declaracion de varables
 		ResponseVO<FindDetailEvaluationResponseVO> response = new ResponseVO<>();
 		FindDetailEvaluationResponseVO evaluationVO = new FindDetailEvaluationResponseVO();
-		
+		List<ResultItemVO> resultListVO = new ArrayList<>();
+
 		// validar que se cumplen las condiciones para realizar la consulta
 		if (validateParametersFindDetail(request, response)) {
 
@@ -156,6 +144,11 @@ public class EvaluationServiceImpl implements EvaluationService {
 				evaluationVO.setEvaluationDate(evaluationDO.getEvaluationDate());
 				evaluationVO.setIngredientMeanPercentage(evaluationDO.getIngredientMeanPercentage());
 				evaluationVO.setIngredientStdPercentage(evaluationDO.getIngredientStdPercentage());
+
+				//Recover items results for the evaluation
+				resultListVO =recoverResultList(evaluationDO.getId());
+
+				evaluationVO.setListaResultados(resultListVO);
 
 				response.setData(evaluationVO);
 				// regresar la respuesta correcta con los registros obtenidos.
@@ -426,8 +419,49 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 		return listaEvaluationVO;
 	}
-	
 
+
+
+	/**
+	 * Recover the list of results for a evaluation
+	 *
+	 * @return result list
+	 *
+	 * @param evaluation to recover results
+	 */
+	private List<ResultItemVO> recoverResultList(Long evaluation) {
+
+		// Declarar variables
+		List<ResultItemVO> resultListVO = new ArrayList<>();
+		List<ResultItemDO> resultListDO = null;
+
+		resultListDO = resultItemRepository.findAllResult(evaluation);
+
+		if (!ValidatorUtil.isNull(resultListDO)) {
+			// Loop for each result from data base
+			for (ResultItemDO resultDO : resultListDO) {
+
+				// new output object
+				ResultItemVO resultItemVO = new ResultItemVO();
+
+				//move data from database object to output object
+				resultItemVO.setId(resultDO.getId());
+				resultItemVO.setRecipeId(resultDO.getRecipe().getId());
+				resultItemVO.setEvaluationId(resultDO.getEvaluation().getId());
+				resultItemVO.setEvaluationDate(resultDO.getEvaluationDate());
+				resultItemVO.setProductId(resultDO.getProduct().getId());
+				resultItemVO.setIngredientId(resultDO.getIngredient().getId());
+				resultItemVO.setIngredientName(resultDO.getIngredient().getName());
+				resultItemVO.setIngredientMeanPercentage(resultDO.getIngredientMeanPercentage());
+				resultItemVO.setIngredientStdPercentage(resultDO.getIngredientStdPercentage());
+
+				//add object to the list
+				resultListVO.add(resultItemVO);
+			}
+		}
+
+		return resultListVO;
+	}
 
 	/*************************************************************************
 	 * Metodo que busca un registro por su id, name
