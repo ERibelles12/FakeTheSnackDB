@@ -44,13 +44,13 @@ public class FindDetailEvaluationResponseVO {
 	private Date evaluationDate;
 
 	// Ingredient mean precentaje
-	private Long ingredientMeanPercentage;
+	private Float ingredientMeanPercentage;
 
 	// Ingredient variation precentaje
-	private Long ingredientStdPercentage;
+	private Float ingredientStdPercentage;
 
 	//List of results
-	private List<ResultItemVO> listaResultados;
+	private List<ResultItemVO> resultList;
 
 	public Long getId() {
 		return id;
@@ -91,13 +91,13 @@ public class FindDetailEvaluationResponseVO {
 	public Date getEvaluationDate() {return evaluationDate;}
 	public void setEvaluationDate(Date evaluationDate) {this.evaluationDate = evaluationDate;}
 
-	public Long getIngredientMeanPercentage() { return this.ingredientMeanPercentage;}
-	public void setIngredientMeanPercentage(Long ingredientMeanPercentage) {this.ingredientMeanPercentage = ingredientMeanPercentage;}
+	public Float getIngredientMeanPercentage() { return this.ingredientMeanPercentage;}
+	public void setIngredientMeanPercentage(Float ingredientMeanPercentage) {this.ingredientMeanPercentage = ingredientMeanPercentage;}
 
-	public Long getIngredientStdPercentage() { return this.ingredientStdPercentage;}
-	public void setIngredientStdPercentage(Long ingredientStdPercentage) {this.ingredientStdPercentage = ingredientStdPercentage;}
+	public Float getIngredientStdPercentage() { return this.ingredientStdPercentage;}
+	public void setIngredientStdPercentage(Float ingredientStdPercentage) {this.ingredientStdPercentage = ingredientStdPercentage;}
 
-	public List<ResultItemVO> getListaResultados() {return listaResultados;}
-	public void setListaResultados(List<ResultItemVO> listaResultados) {this.listaResultados = listaResultados;}
+	public List<ResultItemVO> getResultList() {return resultList;}
+	public void setResultList(List<ResultItemVO> resultList) {this.resultList = resultList;}
 
 }

@@ -589,13 +589,13 @@
 			"response": []
 		},
 		{
-			"name": "Ingredient-Create",
+			"name": "Substance-Create",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\":\"INGREDIENT POSTMAN2\",\r\n    \"description\":\"DESCRIPCION SUSBTANCE\"\r\n}",
+					"raw": "{\r\n    \"name\":\"SUBSTANCE POSTMAN2\",\r\n    \"description\":\"DESCRIPCION SUSBTANCE\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -603,7 +603,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8087/user-management/ingredient",
+					"raw": "http://localhost:8087/user-management/substance",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -611,7 +611,7 @@
 					"port": "8087",
 					"path": [
 						"user-management",
-						"ingredient"
+						"substance"
 					],
 					"query": [
 						{
@@ -630,7 +630,7 @@
 			"response": []
 		},
 		{
-			"name": "Ingredient-FindDetail",
+			"name": "Substance-FindDetail",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -647,7 +647,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8087/user-management/ingredient/detail?name=INGREDIENT POSTMAN2",
+					"raw": "http://localhost:8087/user-management/substance/detail?name=SUBSTANCE POSTMAN2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -655,7 +655,7 @@
 					"port": "8087",
 					"path": [
 						"user-management",
-						"ingredient",
+						"substance",
 						"detail"
 					],
 					"query": [
@@ -666,7 +666,7 @@
 						},
 						{
 							"key": "name",
-							"value": "INGREDIENT POSTMAN2"
+							"value": "SUBSTANCE POSTMAN2"
 						}
 					]
 				}
@@ -674,7 +674,7 @@
 			"response": []
 		},
 		{
-			"name": "Ingredient-FindList",
+			"name": "Substance-FindList",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -691,7 +691,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8087/user-management/ingredient/list?page=1&size=10&name=pust",
+					"raw": "http://localhost:8087/user-management/substance/list?page=1&size=10&name=pust",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -699,7 +699,7 @@
 					"port": "8087",
 					"path": [
 						"user-management",
-						"ingredient",
+						"substance",
 						"list"
 					],
 					"query": [
@@ -731,13 +731,13 @@
 			"response": []
 		},
 		{
-			"name": "Associate Product Ingredient",
+			"name": "Associate Product Substance",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"idProduct\":1,\r\n    \"idIngredient\":1,\r\n    \"fechaRegistro\":\"2025-06-05\"\r\n}",
+					"raw": "{\r\n    \"idProduct\":1,\r\n    \"idSubstance\":1,\r\n    \"fechaRegistro\":\"2025-06-05\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -772,13 +772,13 @@
 			"response": []
 		},
 		{
-			"name": "Delete Product Ingredient",
+			"name": "Delete Product Substance",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"idProduct\":2,\r\n    \"idIngredient\":1,\r\n    \"fechaRegistro\":\"2025-06-05\"\r\n}",
+					"raw": "{\r\n    \"idProduct\":2,\r\n    \"idSubstance\":1,\r\n    \"fechaRegistro\":\"2025-06-05\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -820,7 +820,7 @@
 			"response": []
 		},
 		{
-			"name": "FindList Product Ingredient",
+			"name": "FindList Product Substance",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -837,7 +837,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8087/user-management/recipe/list?page=1&size=10&orderBy&orderType&id=3",
+					"raw": "http://localhost:8087/user-management/recipe/list?page=1&size=10&orderBy&orderType&id=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -867,7 +867,142 @@
 						},
 						{
 							"key": "id",
-							"value": "3"
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Evaluation - FindList",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":4,\r\n    \"name\":\"categoria UPDATE\",\r\n    \"generalIndicator\":true,\r\n    \"milkIndicator\":false,\r\n    \"meatIndicator\":false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8087/user-management/evaluation/list?page=1&size=10&orderBy&orderType&idProduct=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"user-management",
+						"evaluation",
+						"list"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "orderBy",
+							"value": null
+						},
+						{
+							"key": "orderType",
+							"value": null
+						},
+						{
+							"key": "idProduct",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Evaluation-FindDetail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8087/user-management/evaluation/detail?id=4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"user-management",
+						"evaluation",
+						"detail"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Evaluation-Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idProduct\":1,\r\n    \"idIngredient\": 1,\r\n    \"idRecipe\": 1,\r\n    \"ingredientMeanPercentage\": 5.55,\r\n    \"ingredientStdPercentage\": 3.03,\r\n    \"evaluationDate\":\"2025-06-13\",\r\n    \"resultList\": [\r\n        {\r\n            \"recipeId\": 1,\r\n            \"ingredientId\": 1,\r\n            \"ingredientMeanPercentage\": 11.11,\r\n            \"ingredientStdPercentage\": 1.01\r\n        },\r\n        {\r\n            \"recipeId\": 2,\r\n            \"ingredientId\": 2,\r\n            \"ingredientMeanPercentage\": 22.22,\r\n            \"ingredientStdPercentage\": 2.02\r\n        } \r\n    ]           \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8087/user-management/evaluation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"user-management",
+						"evaluation"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
 						}
 					]
 				}

@@ -71,9 +71,10 @@ public class EvaluationServiceImpl implements EvaluationService {
 			// Validar los parametros de entrada
 			if (validateParametersCreate(request, response)) {
 		
-				// Preparar los datos para actualizar la BB.DD.
+				// Prepare data to insert in the database.
 				EvaluationDO evaluationDO = new EvaluationDO();
 
+				// create object foreing keys
 				brandDO.setId(1L);
 				categoryDO.setId(1L);
 				subCategoryDO.setId(1L);
@@ -81,6 +82,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 				ingredientDO.setId(request.getParameters().getIdIngredient());
 				recipeDO.setId(request.getParameters().getIdRecipe());
 
+				// principal atributes
 				evaluationDO.setBrand(brandDO);
 				evaluationDO.setCategory(categoryDO);
 				evaluationDO.setSubCategory(subCategoryDO);
@@ -91,16 +93,21 @@ public class EvaluationServiceImpl implements EvaluationService {
 				evaluationDO.setIngredientMeanPercentage(request.getParameters().getIngredientMeanPercentage());
 				evaluationDO.setIngredientStdPercentage(request.getParameters().getIngredientStdPercentage());
 
-				// Actualizar los parametros de auditoria
+				// user information
 				ServiceUtil.setAuditFields(evaluationDO, request.getToken());
 
-				// Insertar el registro
+				// insert into the database
 				evaluationDO = evaluationRepository.saveAndFlush(evaluationDO);
 
 				// Regresar la respuesta correcta y el objeto a regresar
 				response.setSuccess(true);
 				response.setData(evaluationDO.getId());
-				
+
+				if (!request.getParameters().getResultList().isEmpty()) {
+					// insert resultlist into the database
+					response.setSuccess(insertResultList(request, evaluationDO));
+				}
+
 			}
 		return response;
 	}
@@ -148,7 +155,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 				//Recover items results for the evaluation
 				resultListVO =recoverResultList(evaluationDO.getId());
 
-				evaluationVO.setListaResultados(resultListVO);
+				evaluationVO.setResultList(resultListVO);
 
 				response.setData(evaluationVO);
 				// regresar la respuesta correcta con los registros obtenidos.
@@ -301,14 +308,14 @@ public class EvaluationServiceImpl implements EvaluationService {
 		}
 
 		//Validar que exista el registro a actualizar
-		if(ValidatorUtil.isNullOrZero(parameters.getIngredientMeanPercentage()))
+		if(parameters.getIngredientMeanPercentage() == 0)
 		{
 			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_INGREDIENT_MEAN_PERCENTAGE_ERROR, request);
 			return false;
 		}
 
 		//Validar que exista el registro a actualizar
-		if(ValidatorUtil.isNullOrZero(parameters.getIngredientStdPercentage()))
+		if(parameters.getIngredientStdPercentage() == 0 )
 		{
 			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_INGREDIENT_STD_PERCENTAGE_ERROR, request);
 			return false;
@@ -461,6 +468,65 @@ public class EvaluationServiceImpl implements EvaluationService {
 		}
 
 		return resultListVO;
+	}
+
+	/**
+	 * Insert into the database the differents result-items
+	 *
+	 * @return result list
+	 *
+	 */
+	private Boolean insertResultList(RequestVO<CreateEvaluationRequestVO> request, EvaluationDO evaluationDO ) {
+
+		// Declarar variables
+		List<CreateResultItemVO> resultListVO = new ArrayList<>();
+		List<ResultItemDO> resultListDO = new ArrayList<>();
+		Boolean resultado = true;
+
+		if (!ValidatorUtil.isNull(request.getParameters().getResultList())) {
+			resultListVO = request.getParameters().getResultList();
+
+			// Loop for each result from data base
+			for (CreateResultItemVO resultVO : resultListVO) {
+
+				// new output object
+				ResultItemDO resultItemDO = new ResultItemDO();
+				EvaluationDO evaluation = new EvaluationDO();
+				ProductDO product = new ProductDO();
+				IngredientDO ingredient = new IngredientDO();
+				RecipeDO recipe = new RecipeDO();
+
+				//move data from database object to output object
+				evaluation.setId(evaluationDO.getId());
+				product.setId(evaluationDO.getProduct().getId());
+
+				ingredient.setId(resultVO.getIngredientId());
+				recipe.setId(resultVO.getRecipeId());
+
+				resultItemDO.setEvaluation(evaluation);
+				resultItemDO.setProduct(product);
+				resultItemDO.setIngredient(ingredient);
+				resultItemDO.setRecipe(recipe);
+				resultItemDO.setEvaluationDate(evaluationDO.getEvaluationDate());
+				resultItemDO.setIngredientMeanPercentage(resultVO.getIngredientMeanPercentage());
+				resultItemDO.setIngredientStdPercentage(resultVO.getIngredientStdPercentage());
+
+				// user information
+				ServiceUtil.setAuditFields(resultItemDO, request.getToken());
+
+
+				//add object to the list
+				resultListDO.add(resultItemDO);
+			}
+
+			if (!ValidatorUtil.isNull(resultListDO)) {
+				resultListDO = resultItemRepository.saveAllAndFlush(resultListDO);
+			} else {
+				resultado = false;
+			}
+		}
+
+		return resultado;
 	}
 
 	/*************************************************************************

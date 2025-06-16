@@ -56,10 +56,10 @@ public class EvaluationDO extends AuditBase<Long> implements Serializable {
 	private RecipeDO recipe;
 
 	@Column(name="DN_INGREDIENT_MEAN_PERCENTAGE")
-	private Long ingredientMeanPercentage;
+	private Float ingredientMeanPercentage;
 
 	@Column(name="DN_INGREDIENT_STD_PERCENTAGE")
-	private Long ingredientStdPercentage;
+	private Float ingredientStdPercentage;
 
 	@Column(name="DD_EVALUATION_DATE")
 	private Date evaluationDate;
@@ -121,11 +121,11 @@ public class EvaluationDO extends AuditBase<Long> implements Serializable {
 		this.recipe = id;
 	}
 
-	public Long getIngredientMeanPercentage() { return this.ingredientMeanPercentage;}
-	public void setIngredientMeanPercentage(Long ingredientMeanPercentage) {this.ingredientMeanPercentage = ingredientMeanPercentage;}
+	public Float getIngredientMeanPercentage() { return this.ingredientMeanPercentage;}
+	public void setIngredientMeanPercentage(Float ingredientMeanPercentage) {this.ingredientMeanPercentage = ingredientMeanPercentage;}
 
-	public Long getIngredientStdPercentage() { return this.ingredientStdPercentage;}
-	public void setIngredientStdPercentage(Long ingredientStdPercentage) {this.ingredientStdPercentage = ingredientStdPercentage;}
+	public Float getIngredientStdPercentage() { return this.ingredientStdPercentage;}
+	public void setIngredientStdPercentage(Float ingredientStdPercentage) {this.ingredientStdPercentage = ingredientStdPercentage;}
 
 	public Date getEvaluationDate() { return this.evaluationDate;}
 	public void setEvaluationDate(Date evaluationDate) {this.evaluationDate = evaluationDate;}
