@@ -320,40 +320,56 @@ INSERT INTO CATEGORY ( dx_name, dn_general_indicator, dn_milk_indicator, dn_meat
                 ('GENERAL MEAT CATEGORY',false,false,true,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
 
 INSERT INTO SUBCATEGORY ( FK_CATEGORY_ID, DX_NAME, dn_activo, dn_usuario_creador, dd_fecha_creacion, dn_usuario_modificador, dd_fecha_modificacion) VALUES
-    (2,'PRODUCT ENTERA',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (2,'PRODUCT DESCREMADOS',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (2,'PRODUCT BIO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (2,'PRODUCT LACTOSE FREE',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
     (3,'PIG',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (3,'COWN',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+    (3,'COW',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
 
 INSERT INTO PRODUCT ( FK_BRAND_ID, FK_CATEGORY_ID, FK_SUBCATEGORY_ID, DX_NAME, DX_DESCRIPTION, dn_activo, DN_USUARIO_CREADOR, dd_fecha_creacion, DN_USUARIO_MODIFICADOR,dd_fecha_modificacion) VALUES
-    (1,1,1,'PRODUCTO GENERICO','NOMBRE DEL PRODUCTO GENERICO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (1,1,1,'CURRYWURST','NOMBRE DEL PRODUCTO GENERICO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
     (1,2,1,'YOGURT DESCREMADO','NOMBRE DEL YOGURT DESCREMADO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
     (1,3,3,'PIG PRODUCT','NOMBRE DEL PRODUCTO DE CERDO',true, 1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
 
 
 INSERT INTO INGREDIENT ( dx_name, dx_description, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
-    ('FIRST INGREDIENT','FIRST INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    ('SECOND INGREDIENT','SECOND INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    ('THIRTH INGREDIENT','THIRDTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    ('FOURTH INGREDIENT','FOURTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    ('FIFTH INGREDIENT','FIFTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    ('SIXTH INGREDIENT','SIXTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+    ('COOKED PULSES','FIRST INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('COCONUT FAT','SECOND INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('TOMATO PUREE','THIRDTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('SUNFLOWER OIL','FOURTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('AGAVE SYRUP','FIFTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('TOMATO PASTE','SIXTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('CURRY','SIXTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('SMOKED SEA SALT','SIXTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('ROASTED ONIONS','SIXTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('LEMON JUICE','SIXTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    ('SHIITAKE','SIXTH INGREDIENTE DESCRIPTION',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
 
 INSERT INTO RECIPE ( fk_product_id, fk_ingredient_id, dd_register_date, dn_activo, dn_usuario_creador, dd_fecha_creacion,dn_usuario_modificador,dd_fecha_modificacion) VALUES
     (1,1,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (1,2,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
     (1,3,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (1,4,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
     (1,5,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (2,2,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-    (2,4,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+    (1,6,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (1,7,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (1,8,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (1,9,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (1,10,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+    (1,11,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
 
 INSERT INTO EVALUATION ( fk_brand_id, fk_category_id, fk_subcategory_id, fk_product_id, fk_ingredient_id, fk_recipe_id, dn_ingredient_mean_percentage, dn_ingredient_std_percentage, dd_evaluation_date, dn_activo, dn_usuario_creador, dd_fecha_creacion, dn_usuario_modificador,  dd_fecha_modificacion) VALUES
             (1,1,1,1,1,1,22,2.5,'2025-06-01',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
             (1,1,1,1,1,1,13,3,'2025-06-02',true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
 
 INSERT INTO RESULT_ITEM ( fk_evaluation_id, dd_evaluation_date, fk_recipe_id, fk_product_id, fk_ingredient_id, dn_ingredient_mean_percentage, dn_ingredient_std_percentage, dn_activo, dn_usuario_creador,dd_fecha_creacion, dn_usuario_modificador, dd_fecha_modificacion) VALUES
-        (1,'2025-06-01',1,1,1,22,3,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-        (1,'2025-06-01',2,1,3,45,2,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-        (1,'2025-06-01',2,1,5,33,2,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-        (1,'2025-06-01',1,1,1,13,1,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-        (1,'2025-06-01',2,1,3,66,2.3,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
-        (1,'2025-06-01',2,1,5,21,2.4,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
+        (1,'2025-06-01',1,1,1,50,0,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',2,1,3,13.44,5.08,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',3,1,5,9.5,0,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',4,1,1,8.1,0,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',5,1,3,6.08,2.37,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',6,1,3,4.62,2.09,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',7,1,3,3.21,1.6,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',8,1,3,2.1,0,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',9,1,3,1.5,0.83,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',10,1,3,1,0.93,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01'),
+        (1,'2025-06-01',11,1,5,0.45,0.7,true,1,'2025-05-01 01:01:01',1,'2025-05-01 01:01:01');
