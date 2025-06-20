@@ -14,7 +14,7 @@ import de.pecus.api.entities.ResultItemDO;
 public interface ResultItemRepository extends JpaRepository<ResultItemDO, Serializable> {
 
 	/**
-	 * Consulta por id sin implementacion de query especifico
+	 * Consulta por id un resultado
 	 * 
 	 * @return Objeto de mapeo a la entidad
 	 * 
@@ -27,7 +27,7 @@ public interface ResultItemRepository extends JpaRepository<ResultItemDO, Serial
 	ResultItemDO findById(@Param("id") Long id);
 	
 	/**
-	 * Consulta por nombre . Y se prepara para paginacion
+	 * Consultala lista de resultados de una Evaluación con paginacion
 	 * 
 	 * @return List<Objeto> con el resultado
 	 * 
@@ -46,7 +46,7 @@ public interface ResultItemRepository extends JpaRepository<ResultItemDO, Serial
                                Pageable pageable);
 
 	/**
-	 * Consulta por nombre . Y se prepara para paginacion
+	 * Consulta la lista de resultados de una evaluacion sin paginacion
 	 *
 	 * @return List<Objeto> con el resultado
 	 *
@@ -58,6 +58,41 @@ public interface ResultItemRepository extends JpaRepository<ResultItemDO, Serial
 			+ " WHERE r.active = true "
 			+ " AND r.evaluation.id	= :id")
 	List<ResultItemDO> findAllResult(@Param("id") Long id);
+
+	/**
+	 * Consulta la lista de resultados de un producto ordenada por fecha ascendente
+	 * (o id evaluación ascendente), con paginación, con los filtros producto, ingrediente o ambos
+	 *
+	 * @return List<Objeto> con el resultado
+	 *
+	 */
+
+	@Query(value = " SELECT r"
+			+ " FROM  ResultItemDO r"
+			+ " JOIN FETCH r.product p"
+			+ " JOIN FETCH r.ingredient i"
+//			+ " JOIN FETCH r.product.brand b"
+//			+ " JOIN FETCH r.product.category c"
+//			+ " JOIN FETCH r.product.subCategory sc"
+			+ " WHERE r.active = true "
+			+ " AND (:idProduct IS NULL OR r.product.id = :idProduct)"
+			+ " AND (:idIngredient IS NULL OR r.ingredient.id = :idIngredient)"
+			+ " ORDER BY r.evaluation.id ASC",
+			countQuery="SELECT COUNT(r) "
+					+ " FROM  ResultItemDO r "
+					+ " INNER JOIN r.product p"
+					+ " INNER JOIN r.ingredient i"
+//					+ " INNER JOIN r.product.brand b"
+//					+ " INNER JOIN r.product.category c"
+//					+ " INNER JOIN r.product.subCategory sc"
+					+ " WHERE r.active = true "
+					+ " AND (:idProduct IS NULL OR r.product.id = :idProduct)"
+					+ " AND (:idIngredient IS NULL OR r.ingredient.id = :idIngredient)")
+	Page<ResultItemDO> findListProductIngredientResult(
+						@Param("idProduct") Long idProduct,
+						@Param("idIngredient") Long idIngredient,
+						Pageable pageable);
+
 
 
 }

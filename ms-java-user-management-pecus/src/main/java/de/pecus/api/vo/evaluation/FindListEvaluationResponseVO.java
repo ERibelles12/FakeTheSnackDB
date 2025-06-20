@@ -4,10 +4,9 @@ import java.util.Date;
 
 /**
  * 
- * @author Jose_Luis_Garcia
+ * @author Emilio Ribelles Marin
  *
- *         Clase con los parametros de entrada a la invocacion del metodo create
- *         de la case EventType
+ *         Output for all the findList method
  *
  */
 public class FindListEvaluationResponseVO {

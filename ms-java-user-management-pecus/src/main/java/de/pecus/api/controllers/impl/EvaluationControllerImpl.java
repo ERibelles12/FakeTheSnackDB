@@ -134,7 +134,7 @@ public class EvaluationControllerImpl implements EvaluationController {
 	}
 	
 	/**
-	 * Operation: findEventList, Method: GET Consulta la lista de registros en
+	 * Operation: findEvaluationList, Method: GET Consulta la lista de registros en
 	 * base a varios parametros. El resultado se regresa como un arreglo de
 	 * registros.
 	 * 
@@ -184,5 +184,59 @@ public class EvaluationControllerImpl implements EvaluationController {
 		return response;
 	}
 
+	/**
+	 * Operation: findEvaluationList, Method: GET Consulta la lista de registros en
+	 * base a varios parametros. El resultado se regresa como un arreglo de
+	 * registros.
+	 *
+	 * @return ResponseVO con la lista de registros encontrada
+	 *
+	 * @param page   Numero de pagina
+	 * @param size   Tamano de pagina
+	 */
+	@Override
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "Authorization", value = "eyJhbGciOiJIUzI1NiJ9.eyJUT0tFTl9EQVRBIjp7ImFwZWxs", paramType = "header", dataTypeClass = String.class),
+			@ApiImplicitParam(name = "mac-address", value = " 2C:54:91:88:C9:E3 or 2c-54-91-88-c9-e3", paramType = "header", dataTypeClass = String.class),
+			@ApiImplicitParam(name = "request-date", value = "2021-09-07 17:29:25.443", paramType = "header", dataTypeClass = String.class, required = true),
+			@ApiImplicitParam(name = "latitude", value = "-74.00898606", paramType = "header", dataTypeClass = String.class),
+			@ApiImplicitParam(name = "longitude", value = "40.71727401", paramType = "header", dataTypeClass = String.class),
+			@ApiImplicitParam(name = "language", value = "es_MX", paramType = "header", dataTypeClass = String.class, required = true),
+			@ApiImplicitParam(name = "time-zone", value = "America/Mexico City", paramType = "header", dataTypeClass = String.class),
+			@ApiImplicitParam(name = "id-client-invoke", value = "21", paramType = "header", dataTypeClass = String.class, required = true),
+			@ApiImplicitParam(name = "client-operation-code", value = "qWERGFDSRSGfsdertRTRe2345RTd", paramType = "header", dataTypeClass = String.class, required = true) })
+	@GetMapping(value = "/evaluation/listResult", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseVO<List<FindListEvaluationResponseVO>>> findListProductIngredientResult(
+			@RequestHeader Map<String, String> headers,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			@RequestParam(value = "orderBy", required = false) String orderBy,
+			@RequestParam(value = "orderType", required = false) String orderType,
+			@RequestParam(value = "idProduct", required = false) Long idProduct,
+			@RequestParam(value = "idIngredient", required = false) Long idIngredient)
+	{
+		// Declarar variables
+		ResponseEntity<ResponseVO<List<FindListEvaluationResponseVO>>> response = null;
+
+		FindListEvaluationRequestVO findListEvaluationRequestVO = new FindListEvaluationRequestVO();
+		findListEvaluationRequestVO.setIdProduct(idProduct);
+		findListEvaluationRequestVO.setIdIngredient(idIngredient);
+
+		RequestVO<FindListEvaluationRequestVO> requestVO = RequestVOUtil.setNewRequestVO(headers, page, size, orderBy,
+				orderType, findListEvaluationRequestVO);
+
+		try {
+
+			ResponseVO<List<FindListEvaluationResponseVO>> serviceResponse = evaluationService.findListProductIngredientResult(requestVO);
+			response = EvaluationServicesResponseBuilder.buildFindListEvaluationResponse(serviceResponse);
+
+		} catch (Exception exception) {
+			// Excepcion no controlada
+			ResponseVO<List<FindListEvaluationResponseVO>> exceptionResponse = ResponseUtil
+					.getErrorResponse(exception);
+			response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
+		}
+		return response;
+	}
 
 }

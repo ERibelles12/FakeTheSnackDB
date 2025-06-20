@@ -1008,6 +1008,61 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Result - FindListProductIngredientResult",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":4,\r\n    \"name\":\"categoria UPDATE\",\r\n    \"generalIndicator\":true,\r\n    \"milkIndicator\":false,\r\n    \"meatIndicator\":false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8087/user-management/evaluation/list?page=1&size=10&orderBy&orderType&idProduct=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"user-management",
+						"evaluation",
+						"list"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "orderBy",
+							"value": null
+						},
+						{
+							"key": "orderType",
+							"value": null
+						},
+						{
+							"key": "idProduct",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

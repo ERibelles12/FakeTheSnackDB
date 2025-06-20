@@ -33,7 +33,7 @@ public interface EvaluationController {
 
 	
 	/**
-	 * Servicio para consulta de los datos de la tabla con filtros
+	 * Servicio para consulta de la lista de evaluaciones de un producto
 	 * 
 	 * @param headers 		Cabeceras de la solicitud.
 	 * @param name		Id alfanumerico del registro
@@ -44,6 +44,17 @@ public interface EvaluationController {
                                                                                 Integer size, String orderBy, String orderType, Long idProduct);
 
 
-	
-	
+
+	/**
+	 * Servicio para consulta de la lista de resdultados de un producto y/o un ingrediente
+	 *
+	 * @param headers 		Cabeceras de la solicitud.
+	 *
+	 * @return Responde una lista de registros encontrados
+	 */
+	ResponseEntity<ResponseVO<List<FindListEvaluationResponseVO>>> findListProductIngredientResult(Map<String, String> headers, Integer page,
+																					  Integer size, String orderBy, String orderType, Long idProduct, Long idIngredient);
+
+
+
 }

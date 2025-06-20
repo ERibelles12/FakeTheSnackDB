@@ -213,9 +213,54 @@ public class EvaluationServiceImpl implements EvaluationService {
 		}
 		return response;
 	}
-	
 
-	
+
+	/**
+	 * Consulta la base de datos de resultados para un producto y/o ingrediente
+	 *
+	 * @return ReponseVO con los datos encontrados
+	 *
+	 * @param request Objeto con parametros de entrada de banner
+	 */
+	public ResponseVO<List<FindListEvaluationResponseVO>> findListProductIngredientResult(RequestVO<FindListEvaluationRequestVO> request) {
+
+		// declaracion de varables
+		ResponseVO<List<FindListEvaluationResponseVO>> response = new ResponseVO<>();
+
+		Page<ResultItemDO> listaResultado = null;
+
+		if (validateParametersFindByListProductIngredientResult(request, response)) {
+
+			FindListEvaluationRequestVO parameters = request.getParameters();
+
+			// Preparamos el objeto para la paginacion
+			String orderby = request.getOrderBy();
+			String ordertype = request.getOrderType();
+			String orderBy = ValidatorUtil.isNullOrEmpty(orderby) ? "id" : orderby;
+			Direction orderType = ValidatorUtil.isNullOrEmpty(ordertype) || ordertype.equals("asc") ? Direction.ASC
+					: Direction.DESC;
+			Integer size = ValidatorUtil.isNullOrZero(request.getSize()) ? 100 : request.getSize();
+			Integer page = ValidatorUtil.isNullOrZero(request.getPage()) ? 1 : request.getPage();
+			Pageable pageable = PageRequest.of(page - 1, size, Sort.by(orderType, orderBy));
+
+			// Database execution
+			listaResultado = resultItemRepository.findListProductIngredientResult(request.getParameters().getIdProduct(),
+					request.getParameters().getIdIngredient(), pageable);
+
+			// Si no se encontro ningun registro que cumpla la condicion generar error.
+			if (ValidatorUtil.isNullOrEmpty(listaResultado.getContent())) {
+				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_REGISTER_LIST_ERROR);
+			} else {
+				// Regresar la respuesta correcta con los registros obtenidos.
+				response.setSuccess(true);
+				response.setTotalRows(listaResultado.getTotalElements());
+				response.setData(transformListResultItemDO(listaResultado.getContent()));
+			}
+		}
+		return response;
+	}
+
+
 	/*******************************************************************************************************
 	 * 
 	 * FIN METODOS PUBLICOS
@@ -387,6 +432,28 @@ public class EvaluationServiceImpl implements EvaluationService {
 	}
 
 
+	/**
+	 * Valida que los parametros para la operacion de consulta por parametros sean
+	 * correctos
+	 *
+	 * @return true si el nombre no esta vacio
+	 *
+	 * @param request  Objeto con los criterios a buscar
+	 * @param response Respuesta donde se agregan los errores
+	 */
+	private boolean validateParametersFindByListProductIngredientResult(RequestVO<FindListEvaluationRequestVO> request,
+												 ResponseVO<List<FindListEvaluationResponseVO>> response) {
+
+		// Validar campos obligatorios
+		ValidatorArqUtil.validateParameters(request, response);
+
+		// validar los parametros de la paginacion
+		ValidatorArqUtil.validatePaginatonParameters(request, response);
+
+		return ValidatorUtil.isSuccessfulResponse(response);
+
+	}
+
 
 	/**
 	 * Obtiene una lista de objetos evaluationVO a partir de una lista de DO
@@ -428,7 +495,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 	}
 
 
-
 	/**
 	 * Recover the list of results for a evaluation
 	 *
@@ -468,6 +534,46 @@ public class EvaluationServiceImpl implements EvaluationService {
 		}
 
 		return resultListVO;
+	}
+
+
+	/**
+	 * Obtiene una lista de objetos evaluationVO a partir de una lista de DO
+	 *
+	 * @return Lista VO para retorno de resultados
+	 *
+	 * @param listaResultado a transformar
+	 */
+	private List<FindListEvaluationResponseVO> transformListResultItemDO(List<ResultItemDO> listaResultado) {
+
+		// Declarar variables
+		List<FindListEvaluationResponseVO> listaEvaluationVO = new ArrayList<>();
+
+		// recorrer el objeto origen
+		for (ResultItemDO resultItemDO : listaResultado) {
+			// Se hace la declaracion de variables necesarias
+			FindListEvaluationResponseVO evaluationVO = new FindListEvaluationResponseVO();
+
+			evaluationVO.setId(resultItemDO.getEvaluation().getId());
+			evaluationVO.setIdBrand(resultItemDO.getProduct().getBrand().getId());
+//			evaluationVO.setBrandName(resultItemDO.getProduct().getBrand().getName());
+			evaluationVO.setIdCategory(resultItemDO.getProduct().getCategory().getId());
+//			evaluationVO.setCategoryName(resultItemDO.getProduct().getCategory().getName());
+			evaluationVO.setIdSubCategory(resultItemDO.getProduct().getSubCategory().getId());
+//			evaluationVO.setSubCategoryName(resultItemDO.getProduct().getSubCategory().getName());
+			evaluationVO.setIdProduct(resultItemDO.getProduct().getId());
+			evaluationVO.setProductName(resultItemDO.getProduct().getName());
+			evaluationVO.setIdIngredient(resultItemDO.getIngredient().getId());
+			evaluationVO.setIngredientName(resultItemDO.getIngredient().getName());
+			evaluationVO.setIdRecipe(resultItemDO.getRecipe().getId());
+			evaluationVO.setEvaluationDate(resultItemDO.getEvaluationDate());
+			evaluationVO.setIngredientMeanPercentage(resultItemDO.getIngredientMeanPercentage());
+			evaluationVO.setIngredientStdPercentage(resultItemDO.getIngredientStdPercentage());
+
+			listaEvaluationVO.add(evaluationVO);
+		}
+
+		return listaEvaluationVO;
 	}
 
 	/**

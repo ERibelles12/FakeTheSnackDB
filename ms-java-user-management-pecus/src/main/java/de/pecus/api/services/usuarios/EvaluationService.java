@@ -49,4 +49,14 @@ public interface EvaluationService {
 
 
 
+	/**
+	 * Obtiene la lista de resultados para un producto y/o ingrediente
+	 *
+	 * @return ReponseVO con los datos encontrados
+	 *
+	 * @param request Objeto con parametros de entrada
+	 */
+	ResponseVO<List<FindListEvaluationResponseVO>> findListProductIngredientResult(RequestVO<FindListEvaluationRequestVO> request);
+
+
 }
