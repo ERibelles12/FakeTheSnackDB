@@ -1,6 +1,9 @@
 package de.pecus.api.services.usuarios.impl;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.pecus.api.entities.*;
@@ -148,9 +151,9 @@ public class EvaluationServiceImpl implements EvaluationService {
 				evaluationVO.setIdIngredient(evaluationDO.getIngredient().getId());
 				evaluationVO.setIngredientName(evaluationDO.getIngredient().getName());
 				evaluationVO.setIdRecipe(evaluationDO.getRecipe().getId());
-				evaluationVO.setEvaluationDate(evaluationDO.getEvaluationDate());
 				evaluationVO.setIngredientMeanPercentage(evaluationDO.getIngredientMeanPercentage());
 				evaluationVO.setIngredientStdPercentage(evaluationDO.getIngredientStdPercentage());
+				evaluationVO.setEvaluationDate(evaluationDO.getEvaluationDate());
 
 				//Recover items results for the evaluation
 				resultListVO =recoverResultList(evaluationDO.getId());
@@ -234,16 +237,30 @@ public class EvaluationServiceImpl implements EvaluationService {
 			FindListEvaluationRequestVO parameters = request.getParameters();
 
 			// Preparamos el objeto para la paginacion
+			Pageable pageable = null;
 			String orderby = request.getOrderBy();
 			String ordertype = request.getOrderType();
 			String orderBy = ValidatorUtil.isNullOrEmpty(orderby) ? "id" : orderby;
 			Direction orderType = ValidatorUtil.isNullOrEmpty(ordertype) || ordertype.equals("asc") ? Direction.ASC
 					: Direction.DESC;
+
 			Integer size = ValidatorUtil.isNullOrZero(request.getSize()) ? 100 : request.getSize();
 			Integer page = ValidatorUtil.isNullOrZero(request.getPage()) ? 1 : request.getPage();
-			Pageable pageable = PageRequest.of(page - 1, size, Sort.by(orderType, orderBy));
 
-			// Database execution
+			// OrderBy criteria
+            if (!ValidatorUtil.isNull(parameters.getIdProduct())) {
+				//Information for one product:  list of results order by ingredients and date
+				 pageable = PageRequest.of(page - 1, size, Sort.by(orderType, "i.id","evaluationDate"));
+            } else {
+                if (!ValidatorUtil.isNull(parameters.getIdIngredient())) {
+					//Information for one ingredient:  list of results order by product and date
+					 pageable = PageRequest.of(page - 1, size, Sort.by(orderType, "p.id", "evaluationDate"));
+				} else {
+					pageable = PageRequest.of(page - 1, size, Sort.by(orderType, orderBy));
+				}
+            }
+
+            // Database execution
 			listaResultado = resultItemRepository.findListProductIngredientResult(request.getParameters().getIdProduct(),
 					request.getParameters().getIdIngredient(), pageable);
 
@@ -369,8 +386,9 @@ public class EvaluationServiceImpl implements EvaluationService {
 		//Validar que exista el registro a actualizar
 		if(ValidatorUtil.isNull(parameters.getEvaluationDate()))
 		{
-			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_EVALUATION_DATE_ERROR, request);
-			return false;
+            Date actualDate = new Date();
+            parameters.setEvaluationDate(actualDate);
+
 		}
 
 		// Regresar el resultado de la validacion
@@ -548,6 +566,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 		// Declarar variables
 		List<FindListEvaluationResponseVO> listaEvaluationVO = new ArrayList<>();
+
 
 		// recorrer el objeto origen
 		for (ResultItemDO resultItemDO : listaResultado) {

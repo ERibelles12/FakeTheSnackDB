@@ -271,11 +271,11 @@ public class ProductServiceImpl implements ProductService {
 			Integer page = ValidatorUtil.isNullOrZero(request.getPage()) ? 1 : request.getPage();
 			Pageable pageable = PageRequest.of(page - 1, size, Sort.by(orderType, orderBy));
 			
-			String normalizedName = this.limpiarAcentos(request.getParameters().getName());
-			normalizedName = (StringUtil.toUpperCase(normalizedName));
-			
+			String normalizedName = this.limpiarAcentos(parameters.getName());
+			normalizedName = (this.cleanString(normalizedName));
+
 			// ejecucion de la busqueda por el parametro recibido
-			listaProduct = productRepository.findList(this.cleanString(normalizedName), pageable);
+			listaProduct = productRepository.findList(normalizedName, pageable);
 
 			// Si no se encontro ningun registro que cumpla la condicion generar error.
  				if (ValidatorUtil.isNullOrEmpty(listaProduct.getContent())) {
@@ -868,7 +868,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	public String limpiarAcentos(String cadena) {
-	    String limpio =null;
+	    String limpio ="";
 	    if (cadena !=null) {
 	        String valor = cadena;
 	        valor = valor.toUpperCase();

@@ -232,10 +232,10 @@ public class CategoryServiceImpl implements CategoryService {
 			Integer page = ValidatorUtil.isNullOrZero(request.getPage()) ? 1 : request.getPage();
 			Pageable pageable = PageRequest.of(page - 1, size, Sort.by(orderType, orderBy));
 			
-			String normalizedName = this.limpiarAcentos(request.getParameters().getName());
+			String normalizedName = this.cleanString(this.limpiarAcentos(request.getParameters().getName()));
 			
 			// ejecucion de la busqueda por el parametro recibido
-			listaCategory = categoryRepository.findList(this.cleanString(normalizedName), pageable);
+			listaCategory = categoryRepository.findList(normalizedName, pageable);
 
 			// Si no se encontro ningun registro que cumpla la condicion generar error.
  				if (ValidatorUtil.isNullOrEmpty(listaCategory.getContent())) {
@@ -513,7 +513,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 	
 	public String limpiarAcentos(String cadena) {
-	    String limpio =null;
+	    String limpio ="";
 	    if (cadena !=null) {
 	        String valor = cadena;
 	        valor = valor.toUpperCase();

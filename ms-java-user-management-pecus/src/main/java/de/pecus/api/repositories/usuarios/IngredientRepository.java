@@ -47,7 +47,7 @@ public interface IngredientRepository extends JpaRepository<IngredientDO, Serial
 	@Query(value = " SELECT r" 
 			+ " FROM  IngredientDO r"
 			+ " WHERE r.active = true "
-			+ " AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))")
+			+ " AND (:name IS NULL OR r.name LIKE %:name%)")
 	Page<IngredientDO> findList(@Param("name") String name,
                              Pageable pageable);
 	

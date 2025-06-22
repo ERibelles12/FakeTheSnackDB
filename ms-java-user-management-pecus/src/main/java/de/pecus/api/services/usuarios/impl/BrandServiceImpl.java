@@ -160,7 +160,7 @@ public class BrandServiceImpl implements BrandService {
 	 * Consulta un brand por Identificador unico
 	 * 
 	 * @return Objeto VO con los datos encontrados
-	 * @param Id      Identificador del registro a buscar
+	 * @param IdBrand      Identificador del registro a buscar
 	 * 
 	 * @param request Objeto con los datos de busqueda
 	 */
@@ -226,10 +226,10 @@ public class BrandServiceImpl implements BrandService {
 			Integer page = ValidatorUtil.isNullOrZero(request.getPage()) ? 1 : request.getPage();
 			Pageable pageable = PageRequest.of(page - 1, size, Sort.by(orderType, orderBy));
 			
-			String normalizedName = this.limpiarAcentos(request.getParameters().getName());
+			String normalizedName = this.cleanString(this.limpiarAcentos(request.getParameters().getName()));
 			
 			// ejecucion de la busqueda por el parametro recibido
-			listaBrand = brandRepository.findList(this.cleanString(normalizedName), pageable);
+			listaBrand = brandRepository.findList(normalizedName, pageable);
 
 			// Si no se encontro ningun registro que cumpla la condicion generar error.
  				if (ValidatorUtil.isNullOrEmpty(listaBrand.getContent())) {
@@ -522,7 +522,7 @@ public class BrandServiceImpl implements BrandService {
 	}
 	
 	public String limpiarAcentos(String cadena) {
-	    String limpio =null;
+	    String limpio ="";
 	    if (cadena !=null) {
 	        String valor = cadena;
 	        valor = valor.toUpperCase();

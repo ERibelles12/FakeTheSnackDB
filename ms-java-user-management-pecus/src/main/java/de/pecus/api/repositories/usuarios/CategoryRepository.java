@@ -46,7 +46,7 @@ public interface CategoryRepository extends JpaRepository<CategoryDO, Serializab
 	@Query(value = " SELECT r" 
 			+ " FROM  CategoryDO r"
 			+ " WHERE r.active = true "
-			+ " AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))")
+			+ " AND (:name IS NULL OR r.name LIKE %:name%)")
 	Page<CategoryDO> findList(@Param("name") String name,
                            Pageable pageable);
 	

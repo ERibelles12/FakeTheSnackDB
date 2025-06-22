@@ -76,8 +76,7 @@ public interface ResultItemRepository extends JpaRepository<ResultItemDO, Serial
 //			+ " JOIN FETCH r.product.subCategory sc"
 			+ " WHERE r.active = true "
 			+ " AND (:idProduct IS NULL OR r.product.id = :idProduct)"
-			+ " AND (:idIngredient IS NULL OR r.ingredient.id = :idIngredient)"
-			+ " ORDER BY r.evaluation.id ASC",
+			+ " AND (:idIngredient IS NULL OR r.ingredient.id = :idIngredient)",
 			countQuery="SELECT COUNT(r) "
 					+ " FROM  ResultItemDO r "
 					+ " INNER JOIN r.product p"

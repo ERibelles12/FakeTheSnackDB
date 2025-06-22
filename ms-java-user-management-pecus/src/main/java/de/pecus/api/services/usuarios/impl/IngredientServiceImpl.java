@@ -226,11 +226,11 @@ public class IngredientServiceImpl implements IngredientService {
 			Integer page = ValidatorUtil.isNullOrZero(request.getPage()) ? 1 : request.getPage();
 			Pageable pageable = PageRequest.of(page - 1, size, Sort.by(orderType, orderBy));
 			
-			String normalizedName = this.limpiarAcentos(request.getParameters().getName());
+			String normalizedName = this.cleanString(this.limpiarAcentos(request.getParameters().getName()));
 			normalizedName = (StringUtil.toUpperCase(normalizedName));
 
 			// ejecucion de la busqueda por el parametro recibido
-			listaIngredient = ingredientRepository.findList(this.cleanString(normalizedName), pageable);
+			listaIngredient = ingredientRepository.findList(normalizedName, pageable);
 
 			// Si no se encontro ningun registro que cumpla la condicion generar error.
  				if (ValidatorUtil.isNullOrEmpty(listaIngredient.getContent())) {
@@ -527,7 +527,7 @@ public class IngredientServiceImpl implements IngredientService {
 	}
 	
 	public String limpiarAcentos(String cadena) {
-	    String limpio =null;
+	    String limpio ="";
 	    if (cadena !=null) {
 	        String valor = cadena;
 	        valor = valor.toUpperCase();

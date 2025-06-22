@@ -234,11 +234,11 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 			Integer page = ValidatorUtil.isNullOrZero(request.getPage()) ? 1 : request.getPage();
 			Pageable pageable = PageRequest.of(page - 1, size, Sort.by(orderType, orderBy));
 			
-			String normalizedName = this.limpiarAcentos(request.getParameters().getName());
+			String normalizedName = this.cleanString(this.limpiarAcentos(request.getParameters().getName()));
 			Integer idCategory = request.getParameters().getIdCategory();
 			
 			// ejecucion de la busqueda por el parametro recibido
-			listaSubCategory = subCategoryRepository.findList(this.cleanString(normalizedName),idCategory, pageable);
+			listaSubCategory = subCategoryRepository.findList(normalizedName,idCategory, pageable);
 
 			// Si no se encontro ningun registro que cumpla la condicion generar error.
  				if (ValidatorUtil.isNullOrEmpty(listaSubCategory.getContent())) {
@@ -514,7 +514,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 	}
 	
 	public String limpiarAcentos(String cadena) {
-	    String limpio =null;
+	    String limpio ="";
 	    if (cadena !=null) {
 	        String valor = cadena;
 	        valor = valor.toUpperCase();

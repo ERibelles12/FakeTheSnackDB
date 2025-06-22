@@ -49,13 +49,13 @@ public interface SubCategoryRepository extends JpaRepository<SubCategoryDO, Seri
 			+ " FROM  SubCategoryDO r"
 			+ " JOIN FETCH r.category c"
 			+ " WHERE r.active = true "
-			+ " AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))"
+			+ " AND (:name IS NULL OR r.name LIKE %:name%)"
 			+ " AND (:idCategory IS NULL OR r.category.id = :idCategory) ", 
 			countQuery="SELECT COUNT(r) "
 					+ "   FROM  SubCategoryDO r"
 					+ "   INNER JOIN r.category c"
 					+ "   WHERE r.active = true "
-					+ "   AND (:name IS NULL OR (TRANSLATE(UPPER(r.name),'áéíóú','aeiou') LIKE %:name%))"
+					+ "   AND (:name IS NULL OR r.name LIKE %:name%)"
 					+ "   AND (:idCategory IS NULL OR r.category.id = :idCategory) ")
 	Page<SubCategoryDO> findList(@Param("name") String name,@Param("idCategory") Integer idCategory,
                               Pageable pageable);
