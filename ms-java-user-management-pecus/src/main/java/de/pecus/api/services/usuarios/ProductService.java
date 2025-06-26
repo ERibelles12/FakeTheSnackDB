@@ -4,17 +4,7 @@ import java.util.List;
 
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.product.AssociateProductIngredientRequestVO;
-import de.pecus.api.vo.product.CreateProductRequestVO;
-import de.pecus.api.vo.product.DeleteProductIngredientRequestVO;
-import de.pecus.api.vo.product.DeleteProductRequestVO;
-import de.pecus.api.vo.product.FindDetailProductRequestVO;
-import de.pecus.api.vo.product.FindDetailProductResponseVO;
-import de.pecus.api.vo.product.FindListProductRecipeRequestVO;
-import de.pecus.api.vo.product.FindListProductRecipeResponseVO;
-import de.pecus.api.vo.product.FindListProductRequestVO;
-import de.pecus.api.vo.product.FindListProductResponseVO;
-import de.pecus.api.vo.product.UpdateProductRequestVO;
+import de.pecus.api.vo.product.*;
 
 /**
  * Clase de logica de negocio para administracion de Productes
@@ -71,7 +61,7 @@ public interface ProductService {
 	ResponseVO<List<FindListProductResponseVO>> findList(RequestVO<FindListProductRequestVO> request);
 
 	/**
-	 * Asocia una substancia a un producto
+	 * Asocia una ingrediente a un producto
 	 *
 	 * @param request Objeto con parametros de entrada
 	 *
@@ -80,7 +70,7 @@ public interface ProductService {
 	ResponseVO<Long> associateProductIngredient (RequestVO<AssociateProductIngredientRequestVO> request);
 
 	/**
-	 * Asocia una substancia a un producto
+	 * Elimina una ingrediente a un producto
 	 *
 	 * @param request Objeto con parametros de entrada
 	 *
@@ -89,12 +79,23 @@ public interface ProductService {
 	ResponseVO<Boolean> deleteProductIngredient (RequestVO<DeleteProductIngredientRequestVO> request);
 
 	/**
-	 * Consulta la base de datos en base a varios parametros
-	 *
-	 * @return ReponseVO con los datos encontrados
+	 * Consulta la relacion entre producto e ingrediente por:
+	 * - el identificador de la relacion
+	 * - el producto y el ingrediente
 	 *
 	 * @param request Objeto con parametros de entrada
+	 *
+	 * @return Id generado
 	 */
+	ResponseVO<FindDetailRecipeResponseVO> findDetailRecipe(RequestVO<FindDetailRecipeRequestVO> request); 
+
+		/**
+         * Consulta la base de datos en base a varios parametros
+         *
+         * @return ReponseVO con los datos encontrados
+         *
+         * @param request Objeto con parametros de entrada
+         */
 	ResponseVO<List<FindListProductRecipeResponseVO>> findListRecipe(RequestVO<FindListProductRecipeRequestVO> request);
 
 

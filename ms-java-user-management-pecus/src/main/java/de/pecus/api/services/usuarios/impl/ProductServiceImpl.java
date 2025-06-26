@@ -4,6 +4,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.pecus.api.vo.product.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,17 +35,6 @@ import de.pecus.api.util.ValidatorArqUtil;
 import de.pecus.api.util.ValidatorUtil;
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
-import de.pecus.api.vo.product.AssociateProductIngredientRequestVO;
-import de.pecus.api.vo.product.CreateProductRequestVO;
-import de.pecus.api.vo.product.DeleteProductIngredientRequestVO;
-import de.pecus.api.vo.product.DeleteProductRequestVO;
-import de.pecus.api.vo.product.FindDetailProductRequestVO;
-import de.pecus.api.vo.product.FindDetailProductResponseVO;
-import de.pecus.api.vo.product.FindListProductRecipeRequestVO;
-import de.pecus.api.vo.product.FindListProductRecipeResponseVO;
-import de.pecus.api.vo.product.FindListProductRequestVO;
-import de.pecus.api.vo.product.FindListProductResponseVO;
-import de.pecus.api.vo.product.UpdateProductRequestVO;
 
 /**
  * Clase de logica de negocio para administracion de productes
@@ -346,7 +336,9 @@ public class ProductServiceImpl implements ProductService {
 		// Validar campos de entrada
 		if (validateParametersDeleteRecipe(request, response)) {
 
-			RecipeDO recipeDO = this.existRecipe(request.getParameters().getIdRecipe());
+			RecipeDO recipeDO = this.existRecipe(request.getParameters().getIdRecipe(),
+												 request.getParameters().getIdProduct(),
+												 request.getParameters().getIdIngredient());
 
 			if (ValidatorUtil.isNull(recipeDO)) {
 				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_ERROR, request);
@@ -363,6 +355,48 @@ public class ProductServiceImpl implements ProductService {
 				response.setData(Boolean.TRUE);
 			}
 		}
+		return response;
+	}
+
+
+	/**
+	 * Consulta un Recipe por Id único o por producto e Ingrediente
+	 *
+	 * @return Objeto VO con los datos encontrados
+	 *
+	 * @param request Objeto con los datos de busqueda
+	 */
+	public ResponseVO<FindDetailRecipeResponseVO> findDetailRecipe(RequestVO<FindDetailRecipeRequestVO> request) {
+
+		// declaracion de varables
+		ResponseVO<FindDetailRecipeResponseVO> response = new ResponseVO<>();
+		FindDetailRecipeResponseVO salida = new FindDetailRecipeResponseVO();
+
+		// validar que se cumplen las condiciones para realizar la consulta
+		if (validateParametersFindDetailRecipe(request, response)) {
+
+			RecipeDO recipeDO = this.existRecipe(request.getParameters().getId(),
+												request.getParameters().getIdProduct(),
+												request.getParameters().getIdIngredient());
+
+			if (ValidatorUtil.isNull(recipeDO)) {
+				ResponseUtil.addError(request, response, FuncionesBusinessError.NOT_FOUND_ERROR, request);
+			} else {
+
+				salida.setId(recipeDO.getId());
+				salida.setIdProduct(recipeDO.getProduct().getId());
+				salida.setIdIngredient(recipeDO.getIngredient().getId());
+				salida.setNameProduct(recipeDO.getProduct().getName());
+				salida.setNameIngredient(recipeDO.getIngredient().getName());
+				salida.setFechaRegistro(recipeDO.getFechaRegistro());
+
+				response.setData(salida);
+				// regresar la respuesta correcta con los registros obtenidos.
+				response.setSuccess(true);
+			}
+
+		}
+
 		return response;
 	}
 
@@ -596,6 +630,32 @@ public class ProductServiceImpl implements ProductService {
 
 
 	/**
+	 * Valida que los parametros para la operacion de consulta por nombre sean
+	 * correctos
+	 *
+	 * @return true si el nombre no esta vacio
+	 *
+	 * @param request  Objeto con los parametros a valida
+	 * @param response Respuesta donde se agregan los errores
+	 */
+	private boolean validateParametersFindDetailRecipe(RequestVO<FindDetailRecipeRequestVO> request, ResponseVO<FindDetailRecipeResponseVO> response) {
+
+		// Recuperar los parametros de entrada
+		FindDetailRecipeRequestVO parameters = request.getParameters();
+
+		// validar que el campo obligatorio
+		if (ValidatorUtil.isNullOrZero(parameters.getId())) {
+
+			//Buscar por criterio: product and ingredient
+			if (ValidatorUtil.isNullOrZero(parameters.getIdProduct()) || ValidatorUtil.isNullOrZero(parameters.getIdIngredient()) ) {
+				ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_ID_ERROR);
+			}
+		}
+
+		return ValidatorUtil.isSuccessfulResponse(response);
+	}
+
+	/**
 	 * Valida que los parametros para la operacion de consulta por parametros sean
 	 * correctos
 	 * 
@@ -715,7 +775,9 @@ public class ProductServiceImpl implements ProductService {
 
 		// Validaciones de campos obligatorios
 		if (ValidatorUtil.isNullOrZero(request.getParameters().getIdRecipe())) {
-			ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_ID_ERROR);
+			if ((ValidatorUtil.isNullOrZero(request.getParameters().getIdProduct()))  || (ValidatorUtil.isNullOrZero(request.getParameters().getIdIngredient()))) {
+				ResponseUtil.addError(request, response, FuncionesBusinessError.REQUIRED_ID_ERROR);
+			}
 		}
 
 		return ValidatorUtil.isSuccessfulResponse(response);
@@ -839,16 +901,16 @@ public class ProductServiceImpl implements ProductService {
 	 * Regresa el objeto de la base de datos o una excepcion con el error
 	 *
 	 *************************************************************************/
-	public RecipeDO existRecipe(Long idRegistro){
+	public RecipeDO existRecipe(Long idRecipe, Long idProduct, Long idIngredient){
 
 		RecipeDO registro = null;
 
 		try {
 			//Validacion de datos de entrada
-			if (ValidatorUtil.isNullOrZero(idRegistro)) {
-				registro = null;
+			if (ValidatorUtil.isNullOrZero(idRecipe)) {
+				registro = recipeRepository.findByProductAndIngredient(idProduct,idIngredient);
 			} else {
-				registro =recipeRepository.findById(idRegistro);
+				registro =recipeRepository.findById(idRecipe);
 			}
 			//Validacion de existencia
 		} catch (Exception e) {

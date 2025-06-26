@@ -145,7 +145,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8087/user-management/category/list?page=1&size=10&orderBy&orderType&name=genera",
+					"raw": "http://localhost:8087/user-management/category/list?page=1&size=10&orderBy&orderType",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -175,7 +175,8 @@
 						},
 						{
 							"key": "name",
-							"value": "genera"
+							"value": "genera",
+							"disabled": true
 						}
 					]
 				}
@@ -408,7 +409,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8087/user-management/brand/detail?id=1",
+					"raw": "http://localhost:8087/user-management/brand/detail?id=100",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -422,7 +423,7 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "1"
+							"value": "100"
 						},
 						{
 							"key": "name",
@@ -549,7 +550,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8087/user-management/product/list?page=1&size=10&name=",
+					"raw": "http://localhost:8087/user-management/product/list?page=1&size=10&orderBy=name&orderType=desc",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -571,17 +572,16 @@
 						},
 						{
 							"key": "orderBy",
-							"value": null,
-							"disabled": true
+							"value": "name"
 						},
 						{
 							"key": "orderType",
-							"value": null,
-							"disabled": true
+							"value": "desc"
 						},
 						{
 							"key": "name",
-							"value": ""
+							"value": "",
+							"disabled": true
 						}
 					]
 				}
@@ -772,7 +772,7 @@
 			"response": []
 		},
 		{
-			"name": "Delete Product Substance",
+			"name": "Recipe Delete By id",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -813,6 +813,98 @@
 						{
 							"key": "id",
 							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recipe - Delete By IdProduct IdIngredient",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idProduct\":2,\r\n    \"idSubstance\":1,\r\n    \"fechaRegistro\":\"2025-06-05\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8087/user-management/recipe/deleteByProduct/?idProduct=1&idIngredient=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"user-management",
+						"recipe",
+						"deleteByProduct",
+						""
+					],
+					"query": [
+						{
+							"key": "idProduct",
+							"value": "1"
+						},
+						{
+							"key": "idIngredient",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recipe -FindDetail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\":\"producto2\",\r\n\"descripcion\":\"pepito palotes\",\r\n\"idBrand\":1,\r\n\"idCategory\":1,\r\n\"idSubCategory\":1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8087/user-management/recipe/detailRecipeByProduct?idProduct=1&idIngredient=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8087",
+					"path": [
+						"user-management",
+						"recipe",
+						"detailRecipeByProduct"
+					],
+					"query": [
+						{
+							"key": "idRecipe",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "idProduct",
+							"value": "1"
+						},
+						{
+							"key": "idIngredient",
+							"value": "2"
 						}
 					]
 				}
@@ -975,7 +1067,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"idProduct\":1,\r\n    \"idIngredient\": 1,\r\n    \"idRecipe\": 1,\r\n    \"ingredientMeanPercentage\": 5.55,\r\n    \"ingredientStdPercentage\": 3.03,\r\n    \"evaluationDate\":\"2025-06-13\",\r\n    \"resultList\": [\r\n        {\r\n            \"recipeId\": 1,\r\n            \"ingredientId\": 1,\r\n            \"ingredientMeanPercentage\": 11.11,\r\n            \"ingredientStdPercentage\": 1.01\r\n        },\r\n        {\r\n            \"recipeId\": 2,\r\n            \"ingredientId\": 2,\r\n            \"ingredientMeanPercentage\": 22.22,\r\n            \"ingredientStdPercentage\": 2.02\r\n        } \r\n    ]           \r\n}",
+					"raw": "{\r\n    \"idProduct\":1,\r\n    \"idIngredient\": 1,\r\n    \"idRecipe\": 1,\r\n    \"ingredientMeanPercentage\": 5.55,\r\n    \"ingredientStdPercentage\": 3.03,\r\n    \"evaluationDate\":\"\",\r\n    \"resultList\": [\r\n        {\r\n            \"recipeId\": 1,\r\n            \"ingredientId\": 1,\r\n            \"ingredientMeanPercentage\": 11.11,\r\n            \"ingredientStdPercentage\": 1.01\r\n        },\r\n        {\r\n            \"recipeId\": 2,\r\n            \"ingredientId\": 2,\r\n            \"ingredientMeanPercentage\": 22.22,\r\n            \"ingredientStdPercentage\": 2.02\r\n        } \r\n    ]           \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1027,7 +1119,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8087/user-management/evaluation/list?page=1&size=10&orderBy&orderType&idProduct=1",
+					"raw": "http://localhost:8087/user-management/evaluation/listResult?page=1&size=100&orderBy=&orderType&idIngredient=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1036,7 +1128,7 @@
 					"path": [
 						"user-management",
 						"evaluation",
-						"list"
+						"listResult"
 					],
 					"query": [
 						{
@@ -1045,11 +1137,11 @@
 						},
 						{
 							"key": "size",
-							"value": "10"
+							"value": "100"
 						},
 						{
 							"key": "orderBy",
-							"value": null
+							"value": ""
 						},
 						{
 							"key": "orderType",
@@ -1057,6 +1149,11 @@
 						},
 						{
 							"key": "idProduct",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "idIngredient",
 							"value": "1"
 						}
 					]

@@ -13,11 +13,28 @@ import de.pecus.api.entities.RecipeDO;
 public interface RecipeRepository extends JpaRepository<RecipeDO, Serializable> {
 
 	/**
+	 * Consulta por id sin implementacion de query especifico
+	 *
+	 * @return Objeto de mapeo a la entidad
+	 *
+	 * @param id Identificador de registro buscado
+	 */
+	@Query(value = " SELECT r"
+			+ " FROM  RecipeDO r"
+			+ " JOIN FETCH r.product p"
+			+ " JOIN FETCH r.ingredient s"
+			+ " WHERE r.active = true "
+			+ " AND r.id = :id")
+	RecipeDO findById(@Param("id") Long id);
+
+	/**
 	 * Consulta por producto y sustacia
 	 * @return Objeto de mapeo a la entidad
 	 */
 	@Query(value = " SELECT r"
 			+ " FROM  RecipeDO r"
+			+ " JOIN FETCH r.product p"
+			+ " JOIN FETCH r.ingredient s"
 			+ " WHERE r.active = true "
 			+ " AND r.product.id = :idProduct"
 			+ " AND r.ingredient.id = :idIngredient")
@@ -59,19 +76,5 @@ public interface RecipeRepository extends JpaRepository<RecipeDO, Serializable> 
 	Page<RecipeDO> findListByIngredient(@Param("idIngredient") Long idIngredient,
 									  Pageable pageable);
 
-	/**
-	 * Consulta por id sin implementacion de query especifico
-	 * 
-	 * @return Objeto de mapeo a la entidad
-	 * 
-	 * @param id Identificador de registro buscado
-	 */
-	@Query(value = " SELECT r"
-			+ " FROM  RecipeDO r"
-			+ " JOIN FETCH r.product p"
-			+ " JOIN FETCH r.ingredient s"
-			+ " WHERE r.active = true "
-			+ " AND r.id = :id")
-	RecipeDO findById(@Param("id") Long id);
 
 }
