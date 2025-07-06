@@ -1,18 +1,25 @@
 package de.pecus.api.services.usuarios.impl;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import de.pecus.api.entities.*;
-import de.pecus.api.vo.evaluation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import de.pecus.api.entities.BrandDO;
+import de.pecus.api.entities.CategoryDO;
+import de.pecus.api.entities.EvaluationDO;
+import de.pecus.api.entities.IngredientDO;
+import de.pecus.api.entities.ProductDO;
+import de.pecus.api.entities.RecipeDO;
+import de.pecus.api.entities.ResultItemDO;
+import de.pecus.api.entities.SubCategoryDO;
 import de.pecus.api.error.FuncionesBusinessError;
 import de.pecus.api.error.GeneralBusinessErrors;
 import de.pecus.api.repositories.usuarios.EvaluationRepository;
@@ -27,6 +34,13 @@ import de.pecus.api.util.ValidatorArqUtil;
 import de.pecus.api.util.ValidatorUtil;
 import de.pecus.api.vo.RequestVO;
 import de.pecus.api.vo.ResponseVO;
+import de.pecus.api.vo.evaluation.CreateEvaluationRequestVO;
+import de.pecus.api.vo.evaluation.CreateResultItemVO;
+import de.pecus.api.vo.evaluation.FindDetailEvaluationRequestVO;
+import de.pecus.api.vo.evaluation.FindDetailEvaluationResponseVO;
+import de.pecus.api.vo.evaluation.FindListEvaluationRequestVO;
+import de.pecus.api.vo.evaluation.FindListEvaluationResponseVO;
+import de.pecus.api.vo.evaluation.ResultItemVO;
 
 /**
  * Clase de logica de negocio para administracion de evaluationes
@@ -585,7 +599,8 @@ public class EvaluationServiceImpl implements EvaluationService {
 			evaluationVO.setIdIngredient(resultItemDO.getIngredient().getId());
 			evaluationVO.setIngredientName(resultItemDO.getIngredient().getName());
 			evaluationVO.setIdRecipe(resultItemDO.getRecipe().getId());
-			evaluationVO.setEvaluationDate(resultItemDO.getEvaluationDate());
+//          evaluationVO.setEvaluationDate(resultItemDO.getEvaluationDate());
+			evaluationVO.setEvaluationDate(resultItemDO.getCreationDate());
 			evaluationVO.setIngredientMeanPercentage(resultItemDO.getIngredientMeanPercentage());
 			evaluationVO.setIngredientStdPercentage(resultItemDO.getIngredientStdPercentage());
 
