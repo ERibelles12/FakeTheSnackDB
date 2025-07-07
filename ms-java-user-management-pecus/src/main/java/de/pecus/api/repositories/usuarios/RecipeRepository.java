@@ -40,8 +40,26 @@ public interface RecipeRepository extends JpaRepository<RecipeDO, Serializable> 
 			+ " AND r.ingredient.id = :idIngredient")
 	RecipeDO findByProductAndIngredient(@Param("idProduct") Long idProduct, @Param("idIngredient") Long idIngredient);
 
+	/**
+	 * Consulta un registro por idProducto y idIngrediente
+	 * con la caracteristica active=false, es decir que se habia borrado anteriormente
+	 *
+	 * @return Objeto de mapeo a la entidad
+	 */
+	@Query(value = " SELECT r"
+			+ " FROM  RecipeDO r"
+			+ " WHERE r.active = false "
+			+ " AND r.product.id = :idProduct"
+			+ " AND r.ingredient.id = :idIngredient")
+	RecipeDO findRecipeDelete(@Param("idProduct") Long idProduct,@Param("idIngredient") Long idIngredient );
 
 
+
+	/**
+	 * Consulta la lista de ingredientes de un producto
+	 *
+	 * @return Objeto de mapeo a la entidad
+	 */
 	@Query(value = " SELECT r"
 			+ " FROM  RecipeDO r"
 			+ " JOIN FETCH r.product p"
@@ -56,8 +74,9 @@ public interface RecipeRepository extends JpaRepository<RecipeDO, Serializable> 
 				+ "	AND p.id = :idProduct")
 	Page<RecipeDO> findListByProduct(@Param("idProduct") Long idProduct,
 							 Pageable pageable);
+
 	/**
-	 * Consulta por name sin implementacion de query especifico
+	 * Consulta la lista de productos que tienen un ingrediente
 	 *
 	 * @return Objeto de mapeo a la entidad
 	 */

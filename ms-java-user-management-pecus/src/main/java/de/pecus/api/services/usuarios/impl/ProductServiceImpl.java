@@ -300,17 +300,34 @@ public class ProductServiceImpl implements ProductService {
 			IngredientDO ingredientDO = new IngredientDO();
 			ProductDO productDO = new ProductDO();
 
-			productDO.setId(request.getParameters().getIdProduct());
-			ingredientDO.setId(request.getParameters().getIdIngredient());
+			//Se considera un nuevo escenario que es la reactivacion de una relacion
+			//Se buscara si existe previamente una relacion pero inactiva, y en tal caso se reactivara
 
-			recipeDO.setProduct(productDO);
-			recipeDO.setIngredient(ingredientDO);
-			recipeDO.setFechaRegistro(request.getParameters().getFechaRegistro());
+			RecipeDO reciboBorradoDO = recipeRepository.findRecipeDelete(request.getParameters().getIdProduct(),
+					request.getParameters().getIdIngredient());
+
+			if (!ValidatorUtil.isNull(reciboBorradoDO)) {
+				//Si el registro existe y estaba borrado se reactiva
+
+				recipeDO = reciboBorradoDO;
+				recipeDO.setActive(Boolean.TRUE);
+
+			} else {
+
+				//Se inserta el registro
+				productDO.setId(request.getParameters().getIdProduct());
+				ingredientDO.setId(request.getParameters().getIdIngredient());
+
+				recipeDO.setProduct(productDO);
+				recipeDO.setIngredient(ingredientDO);
+				recipeDO.setFechaRegistro(request.getParameters().getFechaRegistro());
+
+			}
 
 			// Actualizar los parametros de auditoria
 			ServiceUtil.setAuditFields(recipeDO, request.getToken());
 
-			// Insertar el registro
+			// Guardar los cambios
 			recipeDO = recipeRepository.saveAndFlush(recipeDO);
 
 			// Regresar la respuesta correcta y el objeto a regresar
